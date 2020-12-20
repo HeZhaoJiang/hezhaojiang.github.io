@@ -1,0 +1,652 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="https://gitee.com/hezhaojiang/MyPics/raw/master/img/20201006232605.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="https://gitee.com/hezhaojiang/MyPics/raw/master/img/20201006232538.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.loli.net/css?family=Bree+Serif:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.0/css/all.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css">
+
+<script class="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"github.hezhaojiang.io","root":"/","scheme":"Gemini","version":"8.0.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":true,"pangu":true,"comments":{"style":"buttons","active":true,"storage":true,"lazyload":true,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}};
+  </script>
+
+  <meta name="description" content="题目描述给出一些不同颜色的盒子，盒子的颜色由数字表示，即不同的数字表示不同的颜色。 你将经过若干轮操作去去掉盒子，直到所有的盒子都去掉为止。每一轮你可以移除具有相同颜色的连续 k 个盒子（k &gt;&#x3D; 1），这样一轮之后你将得到 k*k 个积分。 当你将所有盒子都去掉之后，求你能获得的最大积分和。  详见：https:&#x2F;&#x2F;leetcode-cn.com&#x2F;problems&#x2F;two-sum-ii-i">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Leetcode 刷题总结 - Code546 移除盒子">
+<meta property="og:url" content="http://github.hezhaojiang.io/post/2020/7fbaabf9/index.html">
+<meta property="og:site_name" content="何照江的博客">
+<meta property="og:description" content="题目描述给出一些不同颜色的盒子，盒子的颜色由数字表示，即不同的数字表示不同的颜色。 你将经过若干轮操作去去掉盒子，直到所有的盒子都去掉为止。每一轮你可以移除具有相同颜色的连续 k 个盒子（k &gt;&#x3D; 1），这样一轮之后你将得到 k*k 个积分。 当你将所有盒子都去掉之后，求你能获得的最大积分和。  详见：https:&#x2F;&#x2F;leetcode-cn.com&#x2F;problems&#x2F;two-sum-ii-i">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-08-14T21:18:41.000Z">
+<meta property="article:modified_time" content="2020-08-28T14:42:08.137Z">
+<meta property="article:author" content="何照江">
+<meta property="article:tag" content="Leetcode">
+<meta property="article:tag" content="深度优先搜索">
+<meta property="article:tag" content="动态规划">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="http://github.hezhaojiang.io/post/2020/7fbaabf9/">
+
+
+<script data-pjax class="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>Leetcode 刷题总结 - Code546 移除盒子 | 何照江的博客</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  body { margin-top: 2rem; }
+
+  .use-motion .menu-item,
+  .use-motion .sidebar,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header {
+    visibility: visible;
+  }
+
+  .use-motion .header,
+  .use-motion .site-brand-container .toggle,
+  .use-motion .footer { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle,
+  .use-motion .custom-logo-image {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line {
+    transform: scaleX(1);
+  }
+
+  .search-pop-overlay, .sidebar-nav { display: none; }
+  .sidebar-panel { display: block; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="何照江的博客" type="application/atom+xml"><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">何照江的博客</h1>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-links">
+
+    <a href="/links" rel="section"><i class="fa fa-link fa-fw"></i>友链</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li> 
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <section class="post-toc-wrap sidebar-panel">
+          <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%A2%98%E7%9B%AE%E6%8F%8F%E8%BF%B0"><span class="nav-number">1.</span> <span class="nav-text">题目描述</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%A7%A3%E6%B3%95%E4%B8%80%EF%BC%9A%E6%B7%B1%E5%BA%A6%E4%BC%98%E5%85%88%E6%90%9C%E7%B4%A2"><span class="nav-number">2.</span> <span class="nav-text">解法一：深度优先搜索</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9A%B4%E5%8A%9B%E7%AE%97%E6%B3%95"><span class="nav-number">2.1.</span> <span class="nav-text">暴力算法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9A%B4%E5%8A%9B%E7%AE%97%E6%B3%95%E7%9A%84%E4%BC%98%E5%8C%96"><span class="nav-number">2.2.</span> <span class="nav-text">暴力算法的优化</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%A7%A3%E6%B3%95%E4%BA%8C-%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92"><span class="nav-number">3.</span> <span class="nav-text">解法二 动态规划</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%82%E8%80%83%E6%96%87%E7%8C%AE"><span class="nav-number">4.</span> <span class="nav-text">参考文献</span></a></li></ol></div>
+      </section>
+      <!--/noindex-->
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="何照江"
+      src="https://gitee.com/hezhaojiang/MyPics/raw/master/img/20200801192913.jpg">
+  <p class="site-author-name" itemprop="name">何照江</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">105</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">30</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/hezhaojiang" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;hezhaojiang" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/atom.xml" title="RSS → &#x2F;atom.xml"><i class="fa fa-rss fa-fw"></i>RSS</a>
+      </span>
+  </div>
+
+
+
+      </section>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+  <a href="https://github.com/hezhaojiang" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+      
+
+      
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://github.hezhaojiang.io/post/2020/7fbaabf9/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://gitee.com/hezhaojiang/MyPics/raw/master/img/20200801192913.jpg">
+      <meta itemprop="name" content="何照江">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="何照江的博客">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Leetcode 刷题总结 - Code546 移除盒子
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2020-08-15 05:18:41" itemprop="dateCreated datePublished" datetime="2020-08-15T05:18:41+08:00">2020-08-15</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">更新于</span>
+        <time title="修改时间：2020-08-28 22:42:08" itemprop="dateModified" datetime="2020-08-28T22:42:08+08:00">2020-08-28</time>
+      </span>
+
+  
+    <span id="/post/2020/7fbaabf9/" class="post-meta-item leancloud_visitors" data-flag-title="Leetcode 刷题总结 - Code546 移除盒子" title="阅读次数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span class="leancloud-visitors-count"></span>
+    </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/post/2020/7fbaabf9/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/post/2020/7fbaabf9/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h2 id="题目描述"><a href="#题目描述" class="headerlink" title="题目描述"></a>题目描述</h2><p>给出一些不同颜色的盒子，盒子的颜色由数字表示，即不同的数字表示不同的颜色。</p>
+<p>你将经过若干轮操作去去掉盒子，直到所有的盒子都去掉为止。每一轮你可以移除具有相同颜色的连续 k 个盒子（k &gt;= 1），这样一轮之后你将得到 k*k 个积分。</p>
+<p>当你将所有盒子都去掉之后，求你能获得的最大积分和。</p>
+<blockquote>
+<p>详见：<a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/two-sum-ii-input-array-is-sorted/">https://leetcode-cn.com/problems/two-sum-ii-input-array-is-sorted/</a></p>
+</blockquote>
+<p>这道题是我刷 Leetcode 以来，每日一题中难度最高的一道题，所以在此记录下解题方法。</p>
+<a id="more"></a>
+<h2 id="解法一：深度优先搜索"><a href="#解法一：深度优先搜索" class="headerlink" title="解法一：深度优先搜索"></a>解法一：深度优先搜索</h2><blockquote>
+<p>整理自：<a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/remove-boxes/solution/liang-chong-jie-fa-by-jason-2-53/">https://www.showsql.com/2019/12/10/leetcode546-remove-boxes/</a></p>
+</blockquote>
+<p>数字 A[i] 在数组 A 中多个位置处出现。将相邻的 A[i] 连起来，这样 A[i] 在数组中，就形成了一个个连续的块。</p>
+<p>例如：[1, 3, 3, 2, 2, 3, 3, 3, 4, 3, 1] 中数字 3，构成了 3 个块。[3,3]，[3,3,3]，[3].</p>
+<p>那么，处理数字 3，可有如下的方法。</p>
+<ol>
+<li>处理 [3,3]<ul>
+<li>移除 [3,3]，然后对 [2, 2, 3, 3, 3, 4, 3, 1] 处理。</li>
+<li>保留 [3,3]，移除 [2,2]，使得 [3,3] 与 [3,3,3,4,3,1] 相邻。</li>
+</ul>
+</li>
+<li>处理 [3,3,3]<ul>
+<li>移除 [3,3,3]，然后对 [4, 3, 1] 处理。</li>
+<li>保留 [3,3,3]，移除 [4]，使得 [3,3,3] 与 [3,1] 相邻。</li>
+</ul>
+</li>
+<li>处理 [3]<ul>
+<li>移除 [3], 然后处理 [1]。</li>
+</ul>
+</li>
+</ol>
+<p>从上面粗略的思路中，可总结出相同数字块的处理方法。数字块之间有其它不同的数字填充。</p>
+<p>对块 0 来说，可直接将其移除算分，块 0 之后的区域递归计算</p>
+<p>或者，保留块 0。先将块 0 与块 1 之间区域递归计算后，块 0 与块 1 就连起来了。再递归计算块 1 和块 1 之后的区域。</p>
+<p>对中间的块 j 来说，类似，要么与前面的块 j-1 拼接爆掉，要么保留到下个块 j+1.</p>
+<p>同样，从最后一个块向前考虑，也能用同样的方法。</p>
+<h3 id="暴力算法"><a href="#暴力算法" class="headerlink" title="暴力算法"></a>暴力算法</h3><p>如此能形成递归算法：</p>
+<p>计算区间 [x,y] 的分数，取与 A[x] 相同的数字，组成上述的块。同时要记录区间 [x,y] 左边，与 A[x] 相同的数字个数。用 a 表示。</p>
+<p>代码实现如下：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;vector&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;algorithm&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">removeBoxes</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; &amp;boxes)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> ans = <span class="number">0</span>;</span><br><span class="line">        ans = dfs(boxes, <span class="number">0</span>, boxes.<span class="built_in">size</span>() - <span class="number">1</span>, <span class="number">0</span>);</span><br><span class="line">        <span class="keyword">return</span> ans;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">dfs</span><span class="params">(<span class="keyword">const</span> <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; &amp;A, <span class="keyword">int</span> x, <span class="keyword">int</span> y, <span class="keyword">int</span> a)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (x &gt; y) <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">int</span> ans = <span class="number">0</span>, e = <span class="number">0</span>, f = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">        <span class="comment">/* 求出 A[x] 数据块 A[x..e-1] */</span></span><br><span class="line">        <span class="keyword">for</span> (e = x + <span class="number">1</span>; e &lt;= y; ++e) &#123;</span><br><span class="line">            <span class="keyword">if</span> (A[e] != A[x]) <span class="keyword">break</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment">/* 直接消除 A[x..e] 位的数据块 + 消除 A[e..y] 的剩余数据 */</span></span><br><span class="line">        ans = (a + e - x) * (a + e - x) + dfs(A, e, y, <span class="number">0</span>);</span><br><span class="line"></span><br><span class="line">        <span class="comment">/* 遍历每一块与 A[x] 值相等的数据块，A[f..] */</span></span><br><span class="line">        <span class="keyword">for</span> (f = e; f &lt;= y; ++f) &#123;</span><br><span class="line">            <span class="keyword">if</span> (A[f] == A[x] &amp;&amp; A[f - <span class="number">1</span>] != A[x]) &#123;</span><br><span class="line">                <span class="comment">/* 消除 A[e..f-1] + 消除 A[x..e-1,f..y] */</span></span><br><span class="line">                ans = <span class="built_in">max</span>(ans, dfs(A, e, f - <span class="number">1</span>, <span class="number">0</span>) + dfs(A, f, y, e - x + a));</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> ans;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="暴力算法的优化"><a href="#暴力算法的优化" class="headerlink" title="暴力算法的优化"></a>暴力算法的优化</h3><p>在上面算法中，一定有不少重复计算。用记忆化存储去重。</p>
+<p>用 index[x][y][a] 表示 dfs(x,y,a)。初始 index[x][y][a] = -1，其它不变。</p>
+<p>代码实现如下：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;vector&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;algorithm&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">    <span class="built_in">vector</span>&lt;<span class="built_in">vector</span>&lt;<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&gt;&gt; index; <span class="comment">/* 保存索引 */</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">removeBoxes</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; &amp;boxes)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> ans = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">int</span> N = boxes.<span class="built_in">size</span>();</span><br><span class="line">        index.resize(N, <span class="built_in">vector</span>&lt;<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&gt;(N, <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;(N, <span class="number">-1</span>)));</span><br><span class="line">        ans = dfs(boxes, <span class="number">0</span>, boxes.<span class="built_in">size</span>() - <span class="number">1</span>, <span class="number">0</span>);</span><br><span class="line">        <span class="keyword">return</span> ans;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">dfs</span><span class="params">(<span class="keyword">const</span> <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; &amp;A, <span class="keyword">int</span> x, <span class="keyword">int</span> y, <span class="keyword">int</span> a)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (x &gt; y) <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">if</span>(index[x][y][a] != <span class="number">-1</span>) <span class="keyword">return</span> index[x][y][a]; <span class="comment">/* 检查索引 */</span></span><br><span class="line"></span><br><span class="line">        <span class="keyword">int</span> ans = index[x][y][a], e = <span class="number">0</span>, f = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">        <span class="comment">/* 求出 A[x] 所在数据块 A[x-a..e-1] */</span></span><br><span class="line">        <span class="keyword">for</span> (e = x + <span class="number">1</span>; e &lt;= y; ++e) &#123;</span><br><span class="line">            <span class="keyword">if</span> (A[e] != A[x]) <span class="keyword">break</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment">/* 直接消除 A[x-a..e-1] 位的数据块 + 消除 A[e..y] 的剩余数据 */</span></span><br><span class="line">        ans = (a + e - x) * (a + e - x) + dfs(A, e, y, <span class="number">0</span>);</span><br><span class="line"></span><br><span class="line">        <span class="comment">/* 遍历每一块与 A[x] 值相等的数据块，A[f..] */</span></span><br><span class="line">        <span class="keyword">for</span> (f; f &lt;= y; ++f) &#123;</span><br><span class="line">            <span class="keyword">if</span> (A[f] == A[x] &amp;&amp; A[f - <span class="number">1</span>] != A[x])</span><br><span class="line">                <span class="comment">/* 消除 A[e..f-1] + 消除 A[x-a..e-1,f..y] */</span></span><br><span class="line">                ans = <span class="built_in">max</span>(ans, dfs(A, e, f - <span class="number">1</span>, <span class="number">0</span>) + dfs(A, f, y, e - x + a));</span><br><span class="line">        &#125;</span><br><span class="line">        index[x][y][a] = ans; <span class="comment">/* 保存索引 */</span></span><br><span class="line">        <span class="keyword">return</span> ans;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<h2 id="解法二-动态规划"><a href="#解法二-动态规划" class="headerlink" title="解法二 动态规划"></a>解法二 动态规划</h2><p>将上面记忆化存储的递归算法，改为递推算法。</p>
+<p>上面递归算法的特点是，区间长度从长到短，直到长度为 0.</p>
+<p>那么，递归算法区间长度应该从短到长。枚举长度为 1，2，3，4，…，的区间。</p>
+<p>对确定的区间 [x,y]，关键是要知道 a，即 [x,y] 之前有多少个数字与 A[x] 相同。</p>
+<p>容易知道 a 的范围是 [0,x]，最多 A[x] 之前的数字都与 A[x] 相同。</p>
+<p>代码实现如下：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;vector&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;algorithm&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">    <span class="built_in">vector</span>&lt;<span class="built_in">vector</span>&lt;<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&gt;&gt; index;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">removeBoxes</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; &amp;boxes)</span></span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (boxes.empty()) <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">const</span> <span class="keyword">int</span> N = boxes.<span class="built_in">size</span>() + <span class="number">1</span>;</span><br><span class="line">        index.resize(N, <span class="built_in">vector</span>&lt;<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&gt;(N, <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;(N, <span class="number">0</span>)));</span><br><span class="line"></span><br><span class="line">        <span class="comment">/* 遍历求得所有 index[x][y][a] 的值 */</span></span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> len = <span class="number">1</span>; len &lt;= boxes.<span class="built_in">size</span>(); ++len) &#123;</span><br><span class="line">            <span class="keyword">for</span> (<span class="keyword">int</span> x = <span class="number">0</span>; x + len &lt;= boxes.<span class="built_in">size</span>(); ++x) &#123;</span><br><span class="line">                <span class="keyword">const</span> <span class="keyword">int</span> y = x + len - <span class="number">1</span>;</span><br><span class="line">                <span class="keyword">for</span> (<span class="keyword">int</span> a = <span class="number">0</span>; a &lt;= x; ++a) &#123; <span class="comment">/* 只需求 a &lt;= x 部分 */</span></span><br><span class="line">                    <span class="keyword">int</span> &amp;ans = index[x][y][a], e = <span class="number">0</span>, f = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">                    <span class="comment">/* 求出 A[x] 所在数据块 A[x-a..e-1] */</span></span><br><span class="line">                    <span class="keyword">for</span> (e = x + <span class="number">1</span>; e &lt;= y; ++e) &#123;</span><br><span class="line">                        <span class="keyword">if</span> (boxes[e] != boxes[x]) <span class="keyword">break</span>;</span><br><span class="line">                    &#125;</span><br><span class="line"></span><br><span class="line">                    <span class="comment">/* 直接消除 A[x-a..e-1] 位的数据块 + 消除 A[e..y] 的剩余数据 */</span></span><br><span class="line">                    ans = <span class="built_in">max</span>(ans, (a + e - x) * (a + e - x) + index[e][y][<span class="number">0</span>]);</span><br><span class="line"></span><br><span class="line">                    <span class="comment">/* 遍历每一块与 A[x] 值相等的数据块，A[f..] */</span></span><br><span class="line">                    <span class="keyword">for</span> (f = e; f &lt;= y; ++f) &#123;</span><br><span class="line">                        <span class="keyword">if</span> (boxes[f] == boxes[x] &amp;&amp; boxes[f - <span class="number">1</span>] != boxes[x]) &#123;</span><br><span class="line">                            <span class="comment">/* 消除 A[e..f-1] + 消除 A[x-a..e-1,f..y] */</span></span><br><span class="line">                            ans = <span class="built_in">max</span>(ans, index[e][f - <span class="number">1</span>][<span class="number">0</span>] + index[f][y][e - x + a]);</span><br><span class="line">                        &#125;</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> index[<span class="number">0</span>][boxes.<span class="built_in">size</span>() - <span class="number">1</span>][<span class="number">0</span>];</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<h2 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h2><ul>
+<li>[1] 感谢 LeetCode 中贡献题解的各位大神：<a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/remove-boxes/solution/">https://leetcode-cn.com/problems/remove-boxes/solution/</a></li>
+</ul>
+
+    </div>
+
+    
+    
+    
+      
+  <div class="popular-posts-header">相关文章</div>
+  <ul class="popular-posts">
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\post\2020\9158b835\" rel="bookmark">Leetcode 刷题总结 - 动态规划（前缀和）</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\post\2020\cb02a3b0\" rel="bookmark">Leetcode 刷题总结 - 动态规划（区间动态规划）</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\post\2020\16341583\" rel="bookmark">Leetcode 刷题总结 - 动态规划（数位动态规划）</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\post\2020\2a7541d6\" rel="bookmark">Leetcode 刷题总结 - 动态规划（状态压缩）</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\post\2020\2cea0e37\" rel="bookmark">Leetcode 刷题总结 - 动态规划（背包问题）</a></div>
+    </li>
+  </ul>
+
+
+    <footer class="post-footer">
+          <div class="reward-container">
+  <div></div>
+  <button onclick="document.querySelector('.post-reward').classList.toggle('active');">
+    赞赏
+  </button>
+  <div class="post-reward">
+      <div>
+        <img src="https://gitee.com/hezhaojiang/MyPics/raw/master/img/20200904003518.png" alt="何照江 微信">
+        <span>微信</span>
+      </div>
+      <div>
+        <img src="https://gitee.com/hezhaojiang/MyPics/raw/master/img/20200904003437.png" alt="何照江 支付宝">
+        <span>支付宝</span>
+      </div>
+
+  </div>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/Leetcode/" rel="tag"># Leetcode</a>
+              <a href="/tags/%E6%B7%B1%E5%BA%A6%E4%BC%98%E5%85%88%E6%90%9C%E7%B4%A2/" rel="tag"># 深度优先搜索</a>
+              <a href="/tags/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92/" rel="tag"># 动态规划</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/post/2020/49096de1/" rel="prev" title="编解码技术：H264 - PPS">
+                  <i class="fa fa-chevron-left"></i> 编解码技术：H264 - PPS
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/post/2020/6343ec86/" rel="next" title="编解码技术：H264 - 描述符 & 熵编码">
+                  编解码技术：H264 - 描述符 & 熵编码 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+      
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      const activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      const commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+      
+
+      
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">何照江</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+
+
+  <script src="//cdn.jsdelivr.net/npm/animejs@3.2.0/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/@next-theme/pjax@0.4.0/pjax.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/lozad@1.16.0/dist/lozad.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/pangu@4.0.7/dist/browser/pangu.min.js"></script>
+
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+  <script>
+var pjax = new Pjax({
+  selectors: [
+    'head title',
+    '.page-configurations',
+    '.main-inner',
+    '.post-toc-wrap',
+    '.languages',
+    '.pjax'
+  ],
+  analytics: false,
+  cacheBust: false,
+  scrollRestoration: false,
+  scrollTo: !CONFIG.bookmark.enable
+});
+
+document.addEventListener('pjax:success', () => {
+  pjax.executeScripts(document.querySelectorAll('script[data-pjax], .pjax script'));
+  NexT.boot.refresh();
+  // Define Motion Sequence & Bootstrap Motion.
+  if (CONFIG.motion.enable) {
+    NexT.motion.integrator
+      .init()
+      .add(NexT.motion.middleWares.subMenu)
+      .add(NexT.motion.middleWares.postList)
+      .bootstrap();
+  }
+  const hasTOC = document.querySelector('.post-toc');
+  document.querySelector('.sidebar-inner').classList.toggle('sidebar-nav-active', hasTOC);
+  document.querySelector(hasTOC ? '.sidebar-nav-toc' : '.sidebar-nav-overview').click();
+  NexT.utils.updateSidebarPosition();
+});
+</script>
+
+
+  
+
+
+
+
+  <script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+<script data-pjax>
+if (document.querySelectorAll('.mermaid').length) {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/mermaid@8.8.0/dist/mermaid.min.js', () => {
+    mermaid.init({
+      theme    : 'dark',
+      logLevel : 3,
+      flowchart: { curve     : 'linear' },
+      gantt    : { axisFormat: '%m/%d/%Y' },
+      sequence : { actorMargin: 50 }
+    }, '.mermaid');
+  }, window.mermaid);
+}
+</script>
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+    <div class="pjax">
+  
+
+  
+
+  
+  <script src="//cdn.jsdelivr.net/npm/quicklink@2.0.0/dist/quicklink.umd.js"></script>
+  <script>
+      window.addEventListener('load', () => {
+      quicklink.listen({
+        timeout : 3000,
+        priority: true,
+        ignores : [uri => uri.includes('#'),uri => uri === 'http://github.hezhaojiang.io/post/2020/7fbaabf9/',]
+      });
+      });
+  </script>
+
+<script>
+NexT.utils.loadComments('#valine-comments', () => {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/valine@1.4.14/dist/Valine.min.js', () => {
+    new Valine(Object.assign({
+      el: '#valine-comments',
+      path: "/post/2020/7fbaabf9/",
+      serverURLs: "https://ovsz3ptu.api.lncldglobal.com"
+    },{"enable":true,"appId":"oVsz3ptudld7784mEB48TVJ5-gzGzoHsz","appKey":"j2c9RsmaYmRXLhRBTXLS4NVE","serverURLs":null,"placeholder":"写下你的评论吧...","avatar":"mm","meta":["nick","mail","link"],"pageSize":10,"lang":"zh-cn","visitor":true,"comment_count":true,"recordIP":false,"enableQQ":true,"requiredFields":["nick"]}));
+  }, window.Valine);
+});
+</script>
+
+    </div>
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"jsonPath":"/live2dw/assets/koharu.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":true},"log":false});</script><!-- hexo-inject:begin --><!-- hexo-inject:end --></body>
+</html>
+<script type="text/javascript" src="/js/click_magic.js"></script>
