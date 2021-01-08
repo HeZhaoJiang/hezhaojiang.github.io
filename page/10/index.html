@@ -221,7 +221,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">110</span>
+          <span class="site-state-item-count">112</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -269,6 +269,232 @@
       
 
       
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://github.hezhaojiang.io/post/2020/3bc2314a/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://gitee.com/hezhaojiang/MyPics/raw/master/img/20200801192913.jpg">
+      <meta itemprop="name" content="何照江">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="何照江的博客">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/post/2020/3bc2314a/" class="post-title-link" itemprop="url">编解码技术：x264 - 命令行工具</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2020-08-01 14:02:59" itemprop="dateCreated datePublished" datetime="2020-08-01T14:02:59+08:00">2020-08-01</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">更新于</span>
+        <time title="修改时间：2020-08-26 21:43:17" itemprop="dateModified" datetime="2020-08-26T21:43:17+08:00">2020-08-26</time>
+      </span>
+
+  
+    <span id="/post/2020/3bc2314a/" class="post-meta-item leancloud_visitors" data-flag-title="编解码技术：x264 - 命令行工具" title="阅读次数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span class="leancloud-visitors-count"></span>
+    </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/post/2020/3bc2314a/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/post/2020/3bc2314a/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h2 id="命令行工具简介"><a href="#命令行工具简介" class="headerlink" title="命令行工具简介"></a>命令行工具简介</h2><p>x264 命令行工具执行流程如下：</p>
+<ol>
+<li>首先调用 parse() 解析输入的命令行参数<ol>
+<li>parse()首先调用 x264_param_default() 为存储参数的结构体 x264_param_t 赋默认值</li>
+<li>循环中调用 getopt_long() 逐个解析输入的参数，并作相应的处理</li>
+<li>调用 select_output() 解析输出文件格式（例如 raw，flv，MP4…）</li>
+<li>调用 select_input() 解析输入文件格式（例如 yuv，y4m…）</li>
+</ol>
+</li>
+<li>然后调用 encode() 进行编码<ol>
+<li>encode() 首先调用 x264_encoder_open() 打开 H.264 编码器</li>
+<li>然后调用 x264_encoder_headers() 输出 H.264 码流的头信息（例如 SPS、PPS、SEI）</li>
+<li>循环调用 encode_frame() 逐帧编码视频<ol>
+<li>encode_frame()中调用了x264_encoder_encode()完成了具体的编码工作</li>
+</ol>
+</li>
+<li>调用x264_encoder_close()关闭解码器</li>
+</ol>
+</li>
+</ol>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/post/2020/3bc2314a/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://github.hezhaojiang.io/post/2020/ee0dad8c/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://gitee.com/hezhaojiang/MyPics/raw/master/img/20200801192913.jpg">
+      <meta itemprop="name" content="何照江">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="何照江的博客">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/post/2020/ee0dad8c/" class="post-title-link" itemprop="url">编解码技术：x264 - 简介</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2020-08-01 11:02:13" itemprop="dateCreated datePublished" datetime="2020-08-01T11:02:13+08:00">2020-08-01</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">更新于</span>
+        <time title="修改时间：2020-08-26 21:43:24" itemprop="dateModified" datetime="2020-08-26T21:43:24+08:00">2020-08-26</time>
+      </span>
+
+  
+    <span id="/post/2020/ee0dad8c/" class="post-meta-item leancloud_visitors" data-flag-title="编解码技术：x264 - 简介" title="阅读次数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span class="leancloud-visitors-count"></span>
+    </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/post/2020/ee0dad8c/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/post/2020/ee0dad8c/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h2 id="x264-简介"><a href="#x264-简介" class="headerlink" title="x264 简介"></a>x264 简介</h2><p>x264 是一个免费的软件库和应用程序，用于将视频流编码为 H.264/MPEG-4 AVC 压缩格式，并且根据 GNU GPL 的条款发布。</p>
+<h3 id="功能概述"><a href="#功能概述" class="headerlink" title="功能概述"></a>功能概述</h3><ul>
+<li>提供一流的性能、压缩和功能。</li>
+<li>在单个消费级计算机上实时编码 4 个或更多 1080p 流，实现显著性能。</li>
+<li>提供最佳质量，具有最先进的心理视觉优化。</li>
+<li>支持许多不同应用所需的功能，如电视广播、蓝光低延迟视频应用程序和 Web 视频。</li>
+<li>x264 是许多网络视频服务的核心，如 Youtube、Facebook、Vimeo 和 Hulu。它被电视广播公司和 ISP 广泛使用。</li>
+</ul>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/post/2020/ee0dad8c/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
     
 
 
@@ -939,7 +1165,7 @@ block  +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/post/2020/c30ccf98/" class="post-title-link" itemprop="url">树莓派日记 - 安装 FFmpeg</a>
+            <a href="/post/2020/c30ccf98/" class="post-title-link" itemprop="url">树莓派日记 - 安装 ffmpeg</a>
         </h2>
 
         <div class="post-meta-container">
@@ -957,11 +1183,11 @@ block  +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
           <i class="far fa-calendar-check"></i>
         </span>
         <span class="post-meta-item-text">更新于</span>
-        <time title="修改时间：2020-10-22 00:51:19" itemprop="dateModified" datetime="2020-10-22T00:51:19+08:00">2020-10-22</time>
+        <time title="修改时间：2021-01-09 01:09:22" itemprop="dateModified" datetime="2021-01-09T01:09:22+08:00">2021-01-09</time>
       </span>
 
   
-    <span id="/post/2020/c30ccf98/" class="post-meta-item leancloud_visitors" data-flag-title="树莓派日记 - 安装 FFmpeg" title="阅读次数">
+    <span id="/post/2020/c30ccf98/" class="post-meta-item leancloud_visitors" data-flag-title="树莓派日记 - 安装 ffmpeg" title="阅读次数">
       <span class="post-meta-item-icon">
         <i class="far fa-eye"></i>
       </span>
@@ -1115,226 +1341,10 @@ block  +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 
 
 
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://github.hezhaojiang.io/post/2020/2e43eec/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="https://gitee.com/hezhaojiang/MyPics/raw/master/img/20200801192913.jpg">
-      <meta itemprop="name" content="何照江">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="何照江的博客">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/post/2020/2e43eec/" class="post-title-link" itemprop="url">树莓派日记 - 安装 Ubuntu 20.04</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2020-07-23 14:33:36" itemprop="dateCreated datePublished" datetime="2020-07-23T14:33:36+08:00">2020-07-23</time>
-    </span>
-      <span class="post-meta-item">
-        <span class="post-meta-item-icon">
-          <i class="far fa-calendar-check"></i>
-        </span>
-        <span class="post-meta-item-text">更新于</span>
-        <time title="修改时间：2020-10-22 00:49:46" itemprop="dateModified" datetime="2020-10-22T00:49:46+08:00">2020-10-22</time>
-      </span>
-
-  
-    <span id="/post/2020/2e43eec/" class="post-meta-item leancloud_visitors" data-flag-title="树莓派日记 - 安装 Ubuntu 20.04" title="阅读次数">
-      <span class="post-meta-item-icon">
-        <i class="far fa-eye"></i>
-      </span>
-      <span class="post-meta-item-text">阅读次数：</span>
-      <span class="leancloud-visitors-count"></span>
-    </span>
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="far fa-comment"></i>
-      </span>
-      <span class="post-meta-item-text">Valine：</span>
-    
-    <a title="valine" href="/post/2020/2e43eec/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/post/2020/2e43eec/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <blockquote>
-<p>树莓派开不开机了，身边暂时没有显示器，所以打算直接重装系统吧……<br>记录以下装系统过程，方便以后再发生如此问题（希望不会）</p>
-</blockquote>
-<p>树莓派安装 Ubuntu 的作用：</p>
-<ol>
-<li>作为流媒体服务器学习音视频传输技术</li>
-<li>搭建 Web 服务器学习 Nginx 原理</li>
-<li>学习 Linux 基本操作和 Shell 脚本</li>
-<li>尝试简单的内核级开发</li>
-</ol>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/post/2020/2e43eec/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://github.hezhaojiang.io/post/2020/1a0f9f15/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="https://gitee.com/hezhaojiang/MyPics/raw/master/img/20200801192913.jpg">
-      <meta itemprop="name" content="何照江">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="何照江的博客">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/post/2020/1a0f9f15/" class="post-title-link" itemprop="url">深入理解Select, Poll, Epoll</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2020-06-01 16:27:00" itemprop="dateCreated datePublished" datetime="2020-06-01T16:27:00+08:00">2020-06-01</time>
-    </span>
-      <span class="post-meta-item">
-        <span class="post-meta-item-icon">
-          <i class="far fa-calendar-check"></i>
-        </span>
-        <span class="post-meta-item-text">更新于</span>
-        <time title="修改时间：2020-10-06 23:07:19" itemprop="dateModified" datetime="2020-10-06T23:07:19+08:00">2020-10-06</time>
-      </span>
-
-  
-    <span id="/post/2020/1a0f9f15/" class="post-meta-item leancloud_visitors" data-flag-title="深入理解Select, Poll, Epoll" title="阅读次数">
-      <span class="post-meta-item-icon">
-        <i class="far fa-eye"></i>
-      </span>
-      <span class="post-meta-item-text">阅读次数：</span>
-      <span class="leancloud-visitors-count"></span>
-    </span>
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="far fa-comment"></i>
-      </span>
-      <span class="post-meta-item-text">Valine：</span>
-    
-    <a title="valine" href="/post/2020/1a0f9f15/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/post/2020/1a0f9f15/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h2 id="Linux-I-O-模型"><a href="#Linux-I-O-模型" class="headerlink" title="Linux I/O 模型"></a>Linux I/O 模型</h2><ul>
-<li><code>Blocking IO</code> - 阻塞 IO</li>
-<li><code>NoneBlocking IO</code> - 非阻塞 IO</li>
-<li><code>IO multiplexing</code> - IO 多路复用</li>
-<li><code>signal driven IO</code> - 信号驱动 IO</li>
-<li><code>asynchronous IO</code> - 异步 IO</li>
-</ul>
-<p><code>Select</code>, <code>Poll</code>, <code>Epoll</code> 就是 <code>IO multiplexing</code> 的三种机制。</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/post/2020/1a0f9f15/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/9/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/9/">9</a><span class="page-number current">10</span><a class="page-number" href="/page/11/">11</a><a class="extend next" rel="next" href="/page/11/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
+    <a class="extend prev" rel="prev" href="/page/9/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/9/">9</a><span class="page-number current">10</span><a class="page-number" href="/page/11/">11</a><a class="page-number" href="/page/12/">12</a><a class="extend next" rel="next" href="/page/11/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
   </nav>
 
 
@@ -1495,7 +1505,7 @@ NexT.utils.loadComments('#valine-comments', () => {
 });
 </script>
 
-    </div>
-<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"jsonPath":"/live2dw/assets/koharu.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":true},"log":false});</script><!-- hexo-inject:begin --><!-- hexo-inject:end --></body>
+    </div><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"jsonPath":"/live2dw/assets/koharu.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":true},"log":false});</script></body>
 </html>
 <script type="text/javascript" src="/js/click_magic.js"></script>

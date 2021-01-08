@@ -2625,7 +2625,7 @@ section 里程碑 0.3
 </ul>
 </li>
 </ol>
-<h2 id="测试"><a href="#测试" class="headerlink" title="测试"></a>测试</h2><h3 id="使用-FFmpeg-推流"><a href="#使用-FFmpeg-推流" class="headerlink" title="使用 FFmpeg 推流"></a>使用 FFmpeg 推流</h3><p>在服务器上使用 FFmpeg 向 Nginx-rtmp-module 服务进行推流：</p>
+<h2 id="测试"><a href="#测试" class="headerlink" title="测试"></a>测试</h2><h3 id="使用-ffmpeg-推流"><a href="#使用-ffmpeg-推流" class="headerlink" title="使用 ffmpeg 推流"></a>使用 ffmpeg 推流</h3><p>在服务器上使用 ffmpeg 向 Nginx-rtmp-module 服务进行推流：</p>
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ffmpeg -re -i xxx.flv -r 25 -b 1M -f flv rtmp://127.0.0.1:1935/url</span><br><span class="line"><span class="comment"># 示例：</span></span><br><span class="line">ffmpeg -re -i Read_Book_852x480.flv -ar 22050 -f flv rtmp://127.0.0.1:1935/mylive/1</span><br><span class="line">ffmpeg -re -stream_loop -1 -i Read_Book_1280x720.flv -vcodec libx264 -f flv rtmp://127.0.0.1:1935/mylive/1</span><br></pre></td></tr></table></figure>
 <h3 id="使用-VLC-拉流"><a href="#使用-VLC-拉流" class="headerlink" title="使用 VLC 拉流"></a>使用 VLC 拉流</h3><p>使用可以连接到服务器的计算机打开 <code>VLC</code> 播放器进行拉流：</p>
 <p><img data-src="https://gitee.com/hezhaojiang/MyPics/raw/master/img/20201007225859.png" alt="VLC 拉流测试"></p>
@@ -2884,21 +2884,6 @@ section 里程碑 0.3
       </tags>
   </entry>
   <entry>
-    <title>SDP 协议解析</title>
-    <url>/post/2020/5e447d67/</url>
-    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><h2 id="SDP-协议介绍"><a href="#SDP-协议介绍" class="headerlink" title="SDP 协议介绍"></a>SDP 协议介绍</h2><p>SDP 完全是一种会话描述格式 ― 它不属于传输协议 ― 它只使用不同的适当的传输协议，包括会话通知协议（SAP）、会话初始协议（SIP）、实时流协议（RTSP）、MIME 扩展协议的电子邮件以及超文本传输协议（HTTP）。SDP 协议是也是基于文本的协议，这样就能保证协议的可扩展性比较强，这样就使其具有广泛的应用范围。SDP 不支持会话内容或媒体编码的协商，所以在流媒体中只用来描述媒体信息。媒体协商这一块要用 RTSP 来实现。</p>
-<a id="more"></a>
-<p>SDP描述由许多文本行组成，文本行的格式为&lt;类型&gt;=&lt;值&gt;，&lt;类型&gt;是一个字母，&lt;值&gt;是结构化的文本串，其格式依&lt;类型&gt;而定。</p>
-<p><type>=<value>[CR][LF]</p>
-<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><ul>
-<li>[1] <a href="https://www.cnblogs.com/idignew/p/7249056.html">SDP协议介绍 - SimenLiang - 博客园</a></li>
-</ul>
-]]></content>
-      <tags>
-        <tag>流媒体</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>Ubuntu_Kylin 的环境配置</title>
     <url>/post/2020/a9e409e6/</url>
     <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><!-- toc -->
@@ -2916,6 +2901,21 @@ section 里程碑 0.3
 ]]></content>
       <tags>
         <tag>Linux</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>SDP 协议解析</title>
+    <url>/post/2020/5e447d67/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><h2 id="SDP-协议介绍"><a href="#SDP-协议介绍" class="headerlink" title="SDP 协议介绍"></a>SDP 协议介绍</h2><p>SDP 完全是一种会话描述格式 ― 它不属于传输协议 ― 它只使用不同的适当的传输协议，包括会话通知协议（SAP）、会话初始协议（SIP）、实时流协议（RTSP）、MIME 扩展协议的电子邮件以及超文本传输协议（HTTP）。SDP 协议是也是基于文本的协议，这样就能保证协议的可扩展性比较强，这样就使其具有广泛的应用范围。SDP 不支持会话内容或媒体编码的协商，所以在流媒体中只用来描述媒体信息。媒体协商这一块要用 RTSP 来实现。</p>
+<a id="more"></a>
+<p>SDP描述由许多文本行组成，文本行的格式为&lt;类型&gt;=&lt;值&gt;，&lt;类型&gt;是一个字母，&lt;值&gt;是结构化的文本串，其格式依&lt;类型&gt;而定。</p>
+<p><type>=<value>[CR][LF]</p>
+<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><ul>
+<li>[1] <a href="https://www.cnblogs.com/idignew/p/7249056.html">SDP协议介绍 - SimenLiang - 博客园</a></li>
+</ul>
+]]></content>
+      <tags>
+        <tag>流媒体</tag>
       </tags>
   </entry>
   <entry>
@@ -3453,15 +3453,6 @@ section 里程碑 0.3
       </tags>
   </entry>
   <entry>
-    <title>东方时尚实际道路训练考试路线图</title>
-    <url>/post/2018/32900a5b/</url>
-    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><p><img data-src="https://gitee.com/hezhaojiang/MyPics/raw/master/img/20200517155411.jpg" alt="东方时尚实际道路训练考试路线图"></p>
-]]></content>
-      <tags>
-        <tag>生活</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>一键脚本整理</title>
     <url>/post/2020/f284099/</url>
     <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><h2 id="Docker"><a href="#Docker" class="headerlink" title="Docker"></a>Docker</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">curl -sSL https://get.docker.com/ | sh</span><br><span class="line"><span class="comment"># 阿里云</span></span><br><span class="line">curl -sSL http://acs-public-mirror.oss-cn-hangzhou.aliyuncs.com/docker-engine/internet | sh -</span><br><span class="line"><span class="comment"># DaoCloud</span></span><br><span class="line">curl -sSL https://get.daocloud.io/docker | sh</span><br></pre></td></tr></table></figure>
@@ -3579,6 +3570,15 @@ section 里程碑 0.3
       <tags>
         <tag>Linux</tag>
         <tag>内存管理</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>东方时尚实际道路训练考试路线图</title>
+    <url>/post/2018/32900a5b/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><p><img data-src="https://gitee.com/hezhaojiang/MyPics/raw/master/img/20200517155411.jpg" alt="东方时尚实际道路训练考试路线图"></p>
+]]></content>
+      <tags>
+        <tag>生活</tag>
       </tags>
   </entry>
   <entry>
@@ -3788,32 +3788,6 @@ section 里程碑 0.3
       </tags>
   </entry>
   <entry>
-    <title>树莓派日记 - 安装 FFmpeg</title>
-    <url>/post/2020/c30ccf98/</url>
-    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><h2 id="环境准备"><a href="#环境准备" class="headerlink" title="环境准备"></a>环境准备</h2><ul>
-<li>Ubuntu Server 20.04 LTS</li>
-</ul>
-<blockquote>
-<p>安装过程详见：<a href="/post/2020/2e43eec/" title="树莓派日记 - 安装 Ubuntu 20.04">树莓派日记 - 安装 Ubuntu 20.04</a></p>
-</blockquote>
-<a id="more"></a>
-<h2 id="依赖环境"><a href="#依赖环境" class="headerlink" title="依赖环境"></a>依赖环境</h2><h3 id="cmake"><a href="#cmake" class="headerlink" title="cmake"></a>cmake</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># For Ubuntu</span></span><br><span class="line">$ sudo apt-get install -y cmake cmake-curses-gui</span><br></pre></td></tr></table></figure>
-<h3 id="gcc-g"><a href="#gcc-g" class="headerlink" title="gcc/g++"></a>gcc/g++</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># For Ubuntu</span></span><br><span class="line">$ sudo apt-get install -y build-essential</span><br></pre></td></tr></table></figure>
-<h3 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># For Ubuntu</span></span><br><span class="line">$ sudo apt-get install -y pkg-config</span><br></pre></td></tr></table></figure>
-<h2 id="安装方式一：包管理器安装"><a href="#安装方式一：包管理器安装" class="headerlink" title="安装方式一：包管理器安装"></a>安装方式一：包管理器安装</h2><p>Ubuntu 系统通过 apt 包管理器安装 FFmpeg 较为方便，依次执行以下命令即可完成安装</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ sudo apt-get install -y libsdl-dev libavcodec-dev libavutil-dev</span><br><span class="line">$ sudo apt-get install ffmpeg ffmpeg-devel</span><br></pre></td></tr></table></figure>
-<p>对于 CentOS 系统，yum 包管理器中并没有 FFmpeg 包，需要手动添加额外的</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">yum install -y epel-release</span><br><span class="line">sudo rpm --import http://li.nux.ro/download/nux/RPM-GPG-KEY-nux.ro</span><br><span class="line"></span><br><span class="line"><span class="comment"># CentOS 7 执行以下命令</span></span><br><span class="line">sudo rpm -Uvh http://li.nux.ro/download/nux/dextop/el7/x86_64/nux-dextop-release-0-5.el7.nux.noarch.rpm</span><br><span class="line"></span><br><span class="line"><span class="comment"># CentOS 7 执行以下命令</span></span><br><span class="line">sudo rpm -Uvh http://li.nux.ro/download/nux/dextop/el6/x86_64/nux-dextop-release-0-2.el6.nux.noarch.rpm</span><br><span class="line"></span><br><span class="line">yum repolist</span><br><span class="line">yum install -y ffmpeg ffmpeg-devel</span><br></pre></td></tr></table></figure>
-<h2 id="安装方式二：源码安装"><a href="#安装方式二：源码安装" class="headerlink" title="安装方式二：源码安装"></a>安装方式二：源码安装</h2><h3 id="安装依赖库"><a href="#安装依赖库" class="headerlink" title="安装依赖库"></a>安装依赖库</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># nasm, x264 依赖 nasm 的汇编加速</span></span><br><span class="line">$ wget https://www.nasm.us/pub/nasm/releasebuilds/2.15rc12/nasm-2.15rc12.tar.xz</span><br><span class="line">$ tar -xJf nasm-2.15rc12.tar.xz</span><br><span class="line">$ <span class="built_in">cd</span> nasm-2.15rc12/</span><br><span class="line">$ ./configure &amp;&amp; make &amp;&amp; sudo make install</span><br><span class="line"></span><br><span class="line"><span class="comment"># x264, 建议安装 x264 的 H264 编码质量较高</span></span><br><span class="line">$ git <span class="built_in">clone</span> https://code.videolan.org/videolan/x264.git</span><br><span class="line">$ <span class="built_in">cd</span> x264</span><br><span class="line">$ ./configure --<span class="built_in">enable</span>-shared --<span class="built_in">enable</span>-static &amp;&amp; make &amp;&amp; sudo make install</span><br><span class="line"></span><br><span class="line"><span class="comment"># yasm, ffmpeg 依赖 yasm</span></span><br><span class="line">$ wget http://www.tortall.net/projects/yasm/releases/yasm-1.3.0.tar.gz</span><br><span class="line">$ tar xzf yasm-1.3.0.tar.gz</span><br><span class="line">$ <span class="built_in">cd</span> yasm-1.3.0/</span><br><span class="line">$ sed -i <span class="string">&#x27;s#) ytasm.*#)#&#x27;</span> Makefile.in</span><br><span class="line">$ ./configure --prefix=/usr &amp;&amp; make &amp;&amp; sudo make install</span><br><span class="line"></span><br><span class="line"><span class="comment"># 以下依赖库可选安装</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># x265</span></span><br><span class="line"><span class="comment"># get x265 at http://ftp.videolan.org/pub/videolan/x265/</span></span><br><span class="line">$ tar xzf x265_2.3.tar.gz</span><br><span class="line">$ <span class="built_in">cd</span> x265_2.3/build/linux/</span><br><span class="line">$ ./make-Makefiles.bash     <span class="comment"># 注意将 ENABLE_PIC 设置为 ON</span></span><br><span class="line">$ make &amp;&amp; sudo make install</span><br><span class="line"></span><br><span class="line"><span class="comment"># fdk-aac</span></span><br><span class="line">$ git <span class="built_in">clone</span> https://github.com/mstorsjo/fdk-aac.git</span><br><span class="line">$ <span class="built_in">cd</span> fdk-aac</span><br><span class="line">$ sudo apt install -y autoconf libtool</span><br><span class="line">$ ./configure CFLAGS=-fPIC &amp;&amp; make &amp;&amp; sudo make install</span><br></pre></td></tr></table></figure>
-<h3 id="编译-amp-安装"><a href="#编译-amp-安装" class="headerlink" title="编译 &amp; 安装"></a>编译 &amp; 安装</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ git <span class="built_in">clone</span> https://github.com/FFmpeg/FFmpeg.git ffmpeg</span><br><span class="line">$ <span class="built_in">cd</span> ffmpeg/</span><br><span class="line">$ ./configure --<span class="built_in">enable</span>-libx264 --<span class="built_in">enable</span>-gpl</span><br><span class="line">$ make -j4 &amp;&amp; sudo make install</span><br></pre></td></tr></table></figure>
-<h3 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ sudo <span class="built_in">echo</span> <span class="string">&quot;/usr/local/x264/lib/&quot;</span> &gt; /etc/ld.so.conf.d/ffmpeg.conf</span><br><span class="line">$ ldconfig</span><br></pre></td></tr></table></figure>
-<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2>]]></content>
-      <tags>
-        <tag>树莓派</tag>
-        <tag>FFmpeg</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>树莓派日记 - 安装 RTMPDump</title>
     <url>/post/2020/5ff634f/</url>
     <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><p><code>RTMPDump</code> 是一个 <code>C++</code> 的开源工程，也可以说是一个用来处理 <code>RTMP</code> 流媒体的工具包，支持 <code>rtmp://</code>, <code>rtmpt://</code>, <code>rtmpe://</code>, <code>rtmpte://</code>, 和 <code>rtmps://</code> 等。我们可以通过对 <code>RTMPDump</code> 的学习来学习 <code>RTMP</code> 协议。</p>
@@ -3856,7 +3830,7 @@ section 里程碑 0.3
 <h3 id="启用-HLS-和-HTTP-FLV"><a href="#启用-HLS-和-HTTP-FLV" class="headerlink" title="启用 HLS 和 HTTP_FLV"></a>启用 HLS 和 HTTP_FLV</h3><p>修改 <code>SRS</code> 的配置文件 <code>/usr/local/srs/conf/srs.conf</code>：</p>
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># main config for srs.</span></span><br><span class="line"><span class="comment"># @see full.conf for detail config.</span></span><br><span class="line"></span><br><span class="line">listen              1935;</span><br><span class="line">max_connections     1000;</span><br><span class="line">srs_log_tank        file;</span><br><span class="line">srs_log_file        ./objs/srs.log;</span><br><span class="line">http_api &#123;</span><br><span class="line">    enabled         on;</span><br><span class="line">    listen          1985;</span><br><span class="line">&#125;</span><br><span class="line">http_server &#123;</span><br><span class="line">    enabled         on;</span><br><span class="line">    listen          8080;</span><br><span class="line">    dir             ./objs/nginx/html;</span><br><span class="line">&#125;</span><br><span class="line">stats &#123;</span><br><span class="line">    network         0;</span><br><span class="line">    disk            sda sdb xvda xvdb;</span><br><span class="line">&#125;</span><br><span class="line">vhost __defaultVhost__ &#123;</span><br><span class="line">    <span class="comment"># HTTP_FLV Configure</span></span><br><span class="line">    http_remux&#123;</span><br><span class="line">        enabled    on;</span><br><span class="line">        mount      [vhost]/[app]/[stream].flv;</span><br><span class="line">        hstrs      on;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment"># HLS Configure</span></span><br><span class="line">    hls&#123;</span><br><span class="line">        enabled       on;</span><br><span class="line">        hls_path      ./objs/nginx/html;</span><br><span class="line">        hls_fragment  10;</span><br><span class="line">        hls_window    60;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>重新启动 <code>SRS</code> 服务：<code>sudo systemctl restart srs</code>。</p>
-<h2 id="测试"><a href="#测试" class="headerlink" title="测试"></a>测试</h2><h3 id="使用-FFmpeg-推流"><a href="#使用-FFmpeg-推流" class="headerlink" title="使用 FFmpeg 推流"></a>使用 FFmpeg 推流</h3><p>在服务器上使用 FFmpeg 向 SRS 服务进行推流，例如：</p>
+<h2 id="测试"><a href="#测试" class="headerlink" title="测试"></a>测试</h2><h3 id="使用-ffmpeg-推流"><a href="#使用-ffmpeg-推流" class="headerlink" title="使用 ffmpeg 推流"></a>使用 ffmpeg 推流</h3><p>在服务器上使用 ffmpeg 向 SRS 服务进行推流，例如：</p>
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ffmpeg -i <span class="string">&quot;rtsp://username:password@192.168.199.242/ch1/main/av_stream&quot;</span> \</span><br><span class="line">    -vcodec libx264 -vprofile baseline -acodec libmp3lame -ar 44100 -ac 1 \</span><br><span class="line">    -f flv rtmp://localhost:1935/hls/movie</span><br></pre></td></tr></table></figure>
 <h3 id="使用-VLC-拉流"><a href="#使用-VLC-拉流" class="headerlink" title="使用 VLC 拉流"></a>使用 VLC 拉流</h3><p>使用可以连接到服务器的计算机打开 <code>VLC</code> 播放器进行拉流，<code>VLC</code> 的 <code>URL</code> 格式如下：</p>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">RTMP : rtmp:&#x2F;&#x2F;192.168.199.152:1935&#x2F;hls&#x2F;movie</span><br><span class="line">RTMP : http:&#x2F;&#x2F;192.168.199.152:8080&#x2F;hls&#x2F;movie.m3u8</span><br><span class="line">HTTP_FLV : http:&#x2F;&#x2F;192.168.199.152:8080&#x2F;hls&#x2F;movie.flv</span><br></pre></td></tr></table></figure>
@@ -3922,7 +3896,7 @@ section 里程碑 0.3
 <h3 id="安装常用工具"><a href="#安装常用工具" class="headerlink" title="安装常用工具"></a>安装常用工具</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ <span class="comment"># sudo apt-get install net-tools # 已启用，建议使用 iproute2</span></span><br><span class="line">$ sudo apt-get install samba <span class="comment"># 需要配置</span></span><br><span class="line">$ sudo apt-get install lrzsz</span><br></pre></td></tr></table></figure>
 <h3 id="安装开发环境"><a href="#安装开发环境" class="headerlink" title="安装开发环境"></a>安装开发环境</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ sudo apt-get install build-essential</span><br><span class="line">$ sudo apt-get install cmake cmake-curses-gui</span><br><span class="line">$ sudo apt-get install python3 python3-dev</span><br></pre></td></tr></table></figure>
 <h2 id="进阶环境配置过程"><a href="#进阶环境配置过程" class="headerlink" title="进阶环境配置过程"></a>进阶环境配置过程</h2><h3 id="Web"><a href="#Web" class="headerlink" title="Web"></a>Web</h3><h3 id="安装-Nginx"><a href="#安装-Nginx" class="headerlink" title="安装 Nginx"></a>安装 Nginx</h3><p>详见：<a href="/post/2020/8f761f75/" title="Nginx - 环境搭建">Nginx - 环境搭建</a></p>
-<h3 id="音视频"><a href="#音视频" class="headerlink" title="音视频"></a>音视频</h3><h4 id="安装-FFmpeg"><a href="#安装-FFmpeg" class="headerlink" title="安装 FFmpeg"></a>安装 FFmpeg</h4><p>详见：<a href="/post/2020/c30ccf98/" title="树莓派日记 - 安装 FFmpeg">树莓派日记 - 安装 FFmpeg</a></p>
+<h3 id="音视频"><a href="#音视频" class="headerlink" title="音视频"></a>音视频</h3><h4 id="安装-ffmpeg"><a href="#安装-ffmpeg" class="headerlink" title="安装 ffmpeg"></a>安装 ffmpeg</h4><p>详见：<a href="/post/2020/c30ccf98/" title="树莓派日记 - 安装 ffmpeg">树莓派日记 - 安装 ffmpeg</a></p>
 <h4 id="安装-SRS"><a href="#安装-SRS" class="headerlink" title="安装 SRS"></a>安装 SRS</h4><p>详见：<a href="/post/2020/f3c9706d/" title="树莓派日记 - 安装 SRS">树莓派日记 - 安装 SRS</a></p>
 <h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><ul>
 <li>[1] <a href="https://ubuntu.com/download/raspberry-pi">Install Ubuntu Server on a Raspberry Pi 2, 3 or 4 | Ubuntu</a></li>
@@ -3931,6 +3905,32 @@ section 里程碑 0.3
       <tags>
         <tag>Linux</tag>
         <tag>树莓派</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>树莓派日记 - 安装 ffmpeg</title>
+    <url>/post/2020/c30ccf98/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><h2 id="环境准备"><a href="#环境准备" class="headerlink" title="环境准备"></a>环境准备</h2><ul>
+<li>Ubuntu Server 20.04 LTS</li>
+</ul>
+<blockquote>
+<p>安装过程详见：<a href="/post/2020/2e43eec/" title="树莓派日记 - 安装 Ubuntu 20.04">树莓派日记 - 安装 Ubuntu 20.04</a></p>
+</blockquote>
+<a id="more"></a>
+<h2 id="依赖环境"><a href="#依赖环境" class="headerlink" title="依赖环境"></a>依赖环境</h2><h3 id="cmake"><a href="#cmake" class="headerlink" title="cmake"></a>cmake</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># For Ubuntu</span></span><br><span class="line">$ sudo apt-get install -y cmake cmake-curses-gui</span><br></pre></td></tr></table></figure>
+<h3 id="gcc-g"><a href="#gcc-g" class="headerlink" title="gcc/g++"></a>gcc/g++</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># For Ubuntu</span></span><br><span class="line">$ sudo apt-get install -y build-essential</span><br></pre></td></tr></table></figure>
+<h3 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># For Ubuntu</span></span><br><span class="line">$ sudo apt-get install -y pkg-config</span><br></pre></td></tr></table></figure>
+<h2 id="安装方式一：包管理器安装"><a href="#安装方式一：包管理器安装" class="headerlink" title="安装方式一：包管理器安装"></a>安装方式一：包管理器安装</h2><p><code>Ubuntu</code> 系统通过 <code>apt</code> 包管理器安装 <code>ffmpeg</code> 较为方便，依次执行以下命令即可完成安装</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ sudo apt-get install -y libsdl-dev libavcodec-dev libavutil-dev</span><br><span class="line">$ sudo apt-get install ffmpeg ffmpeg-devel</span><br></pre></td></tr></table></figure>
+<p>对于 <code>CentOS</code> 系统，<code>yum</code> 包管理器中并没有 <code>ffmpeg</code> 包，需要手动添加额外的</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">yum install -y epel-release</span><br><span class="line">sudo rpm --import http://li.nux.ro/download/nux/RPM-GPG-KEY-nux.ro</span><br><span class="line"></span><br><span class="line"><span class="comment"># CentOS 7 执行以下命令</span></span><br><span class="line">sudo rpm -Uvh http://li.nux.ro/download/nux/dextop/el7/x86_64/nux-dextop-release-0-5.el7.nux.noarch.rpm</span><br><span class="line"></span><br><span class="line"><span class="comment"># CentOS 7 执行以下命令</span></span><br><span class="line">sudo rpm -Uvh http://li.nux.ro/download/nux/dextop/el6/x86_64/nux-dextop-release-0-2.el6.nux.noarch.rpm</span><br><span class="line"></span><br><span class="line">yum repolist</span><br><span class="line">yum install -y ffmpeg ffmpeg-devel</span><br></pre></td></tr></table></figure>
+<h2 id="安装方式二：源码安装"><a href="#安装方式二：源码安装" class="headerlink" title="安装方式二：源码安装"></a>安装方式二：源码安装</h2><h3 id="安装依赖库"><a href="#安装依赖库" class="headerlink" title="安装依赖库"></a>安装依赖库</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># nasm, x264 依赖 nasm 的汇编加速</span></span><br><span class="line">$ wget https://www.nasm.us/pub/nasm/releasebuilds/2.15rc12/nasm-2.15rc12.tar.xz</span><br><span class="line">$ tar -xJf nasm-2.15rc12.tar.xz</span><br><span class="line">$ <span class="built_in">cd</span> nasm-2.15rc12/</span><br><span class="line">$ ./configure &amp;&amp; make &amp;&amp; sudo make install</span><br><span class="line"></span><br><span class="line"><span class="comment"># x264, 建议安装 x264 的 H264 编码质量较高</span></span><br><span class="line">$ git <span class="built_in">clone</span> https://code.videolan.org/videolan/x264.git</span><br><span class="line">$ <span class="built_in">cd</span> x264</span><br><span class="line">$ ./configure --<span class="built_in">enable</span>-shared --<span class="built_in">enable</span>-static &amp;&amp; make &amp;&amp; sudo make install</span><br><span class="line"></span><br><span class="line"><span class="comment"># yasm, ffmpeg 依赖 yasm</span></span><br><span class="line">$ wget http://www.tortall.net/projects/yasm/releases/yasm-1.3.0.tar.gz</span><br><span class="line">$ tar xzf yasm-1.3.0.tar.gz</span><br><span class="line">$ <span class="built_in">cd</span> yasm-1.3.0/</span><br><span class="line">$ sed -i <span class="string">&#x27;s#) ytasm.*#)#&#x27;</span> Makefile.in</span><br><span class="line">$ ./configure --prefix=/usr &amp;&amp; make &amp;&amp; sudo make install</span><br><span class="line"></span><br><span class="line"><span class="comment"># 以下依赖库可选安装</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># x265</span></span><br><span class="line"><span class="comment"># get x265 at http://ftp.videolan.org/pub/videolan/x265/</span></span><br><span class="line">$ tar xzf x265_2.3.tar.gz</span><br><span class="line">$ <span class="built_in">cd</span> x265_2.3/build/linux/</span><br><span class="line">$ ./make-Makefiles.bash     <span class="comment"># 注意将 ENABLE_PIC 设置为 ON</span></span><br><span class="line">$ make &amp;&amp; sudo make install</span><br><span class="line"></span><br><span class="line"><span class="comment"># fdk-aac</span></span><br><span class="line">$ git <span class="built_in">clone</span> https://github.com/mstorsjo/fdk-aac.git</span><br><span class="line">$ <span class="built_in">cd</span> fdk-aac</span><br><span class="line">$ sudo apt install -y autoconf libtool</span><br><span class="line">$ ./configure CFLAGS=-fPIC &amp;&amp; make &amp;&amp; sudo make install</span><br></pre></td></tr></table></figure>
+<h3 id="编译-amp-安装"><a href="#编译-amp-安装" class="headerlink" title="编译 &amp; 安装"></a>编译 &amp; 安装</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ git <span class="built_in">clone</span> https://github.com/FFmpeg/FFmpeg.git ffmpeg</span><br><span class="line">$ <span class="built_in">cd</span> ffmpeg/</span><br><span class="line">$ ./configure --<span class="built_in">enable</span>-libx264 --<span class="built_in">enable</span>-gpl</span><br><span class="line">$ make -j4 &amp;&amp; sudo make install</span><br></pre></td></tr></table></figure>
+<h3 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ sudo <span class="built_in">echo</span> <span class="string">&quot;/usr/local/x264/lib/&quot;</span> &gt; /etc/ld.so.conf.d/ffmpeg.conf</span><br><span class="line">$ ldconfig</span><br></pre></td></tr></table></figure>
+<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2>]]></content>
+      <tags>
+        <tag>树莓派</tag>
+        <tag>ffmpeg</tag>
       </tags>
   </entry>
   <entry>
@@ -6312,76 +6312,6 @@ a = *（0 个或多个会话属性行）
       </tags>
   </entry>
   <entry>
-    <title>源码阅读 libevent - 数据结构：尾队列</title>
-    <url>/post/2020/e6338d04/</url>
-    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><p>本文分析的数据结构为 <code>TAILQ</code> 尾队列。</p>
-<p><code>libevent</code> 中 <code>TAILQ</code> 尾队列其实就是升级版的 <code>LIST</code> 双向链表。</p>
-<a id="more"></a>
-<blockquote>
-<p>数据结构 <code>LIST</code> 双向链表的分析详见：<a href="/post/2020/ee7292d/" title="源码阅读 libevent - 数据结构：双向链表">源码阅读 libevent - 数据结构：双向链表</a></p>
-</blockquote>
-<h2 id="尾队列的定义"><a href="#尾队列的定义" class="headerlink" title="尾队列的定义"></a>尾队列的定义</h2><h3 id="尾队列的定义宏"><a href="#尾队列的定义宏" class="headerlink" title="尾队列的定义宏"></a>尾队列的定义宏</h3><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">define</span> TAILQ_HEAD(name, type)                      \</span></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">name</span> &#123;</span>                                       \</span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">type</span> *<span class="title">tqh_first</span>;</span> <span class="comment">/* first element */</span>                         \</span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">type</span> **<span class="title">tqh_last</span>;</span> <span class="comment">/* addr of last next element */</span>             \</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> TAILQ_ENTRY(type)                           \</span></span><br><span class="line"><span class="class"><span class="keyword">struct</span> &#123;</span>                                            \</span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">type</span> *<span class="title">tqe_next</span>;</span>  <span class="comment">/* next element */</span>      \</span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">type</span> **<span class="title">tqe_prev</span>;</span> <span class="comment">/* address of previous next element */</span>      \</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h3 id="尾队列的节点结构"><a href="#尾队列的节点结构" class="headerlink" title="尾队列的节点结构"></a>尾队列的节点结构</h3><p>同双向链表一样，我们通过代码来分析尾队列的节点结构：</p>
-<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;stdlib.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&quot;queue.h&quot;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> <span class="title">Node</span> &#123;</span></span><br><span class="line">    <span class="keyword">int</span> val;</span><br><span class="line">    TAILQ_ENTRY(Node) node;</span><br><span class="line">&#125; Node;</span><br><span class="line">TAILQ_HEAD(Head, Node);</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">void</span>)</span> </span>&#123;</span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">Head</span> <span class="title">tailQHead</span>;</span></span><br><span class="line">    TAILQ_INIT(&amp;tailQHead);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">3</span>; i++) &#123;</span><br><span class="line">        Node* new_item = <span class="built_in">malloc</span>(<span class="keyword">sizeof</span>(Node));</span><br><span class="line">        new_item-&gt;val = i;</span><br><span class="line">        TAILQ_INSERT_HEAD(&amp;tailQHead, new_item, node); <span class="comment">// 头插法插入新节点</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    Node* p;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;[HEAD] %20p [HEAD ADDR] %20p\n\n&quot;</span>,tailQHead.tqh_first, &amp;tailQHead);</span><br><span class="line">    TAILQ_FOREACH(p, &amp;tailQHead, node) &#123;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;[NODE] %20d [NODE ADDR] %20p\n&quot;</span>, p-&gt;val, p);</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;[NEXT] %20p [NEXT ADDR] %20p\n&quot;</span>, p-&gt;node.tqe_next, &amp;p-&gt;node.tqe_next);</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;[PREV] %20p [PREV ADDR] %20p\n\n&quot;</span>, p-&gt;node.tqe_prev, &amp;p-&gt;node.tqe_prev);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;[TAIL] %20p [HEAD ADDR] %20p\n\n&quot;</span>,tailQHead.tqh_last, &amp;tailQHead);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>在该程序中，定义了节点类型为 <code>Node</code> 类型，其中包含了一个 <code>int</code> 型的 <code>val</code> 变量以及 <code>TAILQ_ENTRY</code> 所定义的结构体。可以看到，调用 <code>TAILQ_HEAD</code> 宏函数时，传入的 <code>name</code> 参数 <code>Head</code> 最终就成为了 <code>TAILQ_HEAD</code> 下结构体类型名。然后用 <code>struct Head</code> 来定义一个 <code>tailQHead</code> 变量作为尾队列的头节点，其中保存的即是尾队列中的首尾节点信息了。接着就是以头插法形式插入三个节点，然后遍历输出各个节点中关键成员的值与地址，结果如下：</p>
-<p><img data-src="https://gitee.com/hezhaojiang/MyPics/raw/master/img/20201025215558.png" alt="libevent 尾队列"></p>
-<p>从代码结果种可得出尾队列结构如下：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">      Head                       Node1                   Node2                   Node3</span><br><span class="line">+--------------+    +-----&gt;+--------------+    +--&gt;+--------------+    +--&gt;+--------------+</span><br><span class="line">|   tqh_first  |----+      |    value     |    |   |    value     |    |   |    value     |</span><br><span class="line">|              |&lt;-----+    +--------------+    |   +--------------+    |   +--------------+</span><br><span class="line">+--------------+      |    |   tqe_next   |----+   |   tqe_next   |----+   |   tqe_next   |-----------+</span><br><span class="line">|   tqh_last   |---+  |    |              |&lt;--+    |              |&lt;--+    |              |&lt;---+      |</span><br><span class="line">+--------------+   |  |    +--------------+   |    +--------------+   |    +--------------+    |    -----</span><br><span class="line">                   |  +----|   tqe_prev   |   +----|   tqe_prev   |   +----|   tqe_prev   |    |     ---</span><br><span class="line">                   |       +--------------+        +--------------+        +--------------+    |      -</span><br><span class="line">                   |                                                                           |</span><br><span class="line">                   +---------------------------------------------------------------------------+</span><br></pre></td></tr></table></figure>
-<h2 id="尾队列的访问"><a href="#尾队列的访问" class="headerlink" title="尾队列的访问"></a>尾队列的访问</h2><h3 id="尾队列的访问宏"><a href="#尾队列的访问宏" class="headerlink" title="尾队列的访问宏"></a>尾队列的访问宏</h3><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">define</span> TAILQ_FIRST(head)           ((head)-&gt;tqh_first)</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> TAILQ_END(head)             NULL</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> TAILQ_NEXT(elm, field)      ((elm)-&gt;field.tqe_next)</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> TAILQ_LAST(head, headname)  (*(((struct headname *)((head)-&gt;tqh_last))-&gt;tqh_last))</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> TAILQ_PREV(elm, headname, field)    (*(((struct headname *)((elm)-&gt;field.tqe_prev))-&gt;tqh_last))</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> TAILQ_EMPTY(head)           (TAILQ_FIRST(head) == TAILQ_END(head))</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> TAILQ_FOREACH(var, head, field)             \</span></span><br><span class="line">    <span class="keyword">for</span>((var) = TAILQ_FIRST(head); (var) != TAILQ_END(head); (var) = TAILQ_NEXT(var, field))</span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> TAILQ_FOREACH_REVERSE(var, head, headname, field)       \</span></span><br><span class="line">    <span class="keyword">for</span>((var) = TAILQ_LAST(head, headname); (var) != TAILQ_END(head); (var) = TAILQ_PREV(var, headname, field))</span><br></pre></td></tr></table></figure>
-<h3 id="尾队列的访问宏的作用"><a href="#尾队列的访问宏的作用" class="headerlink" title="尾队列的访问宏的作用"></a>尾队列的访问宏的作用</h3><p>从宏定义名即可看出每个宏的作用：</p>
-<ul>
-<li><code>TAILQ_FIRST</code>：获取尾队列的首节点</li>
-<li><code>TAILQ_END</code>：尾队列的末尾，值恒为 <code>NULL</code></li>
-<li><code>TAILQ_NEXT</code>：获取尾队列的后继节点的地址</li>
-<li><code>TAILQ_LAST</code>：获取尾队列的最后一个节点的地址</li>
-<li><code>TAILQ_PREV</code>：获取尾队列的前继节点的地址</li>
-<li><code>TAILQ_EMPTY</code>：判断尾队列是否为空，为空时返回真</li>
-<li><code>TAILQ_FOREACH</code>：遍历尾队列</li>
-<li><code>TAILQ_FOREACH_REVERSE</code>：反向遍历尾队列</li>
-</ul>
-<blockquote>
-<p>注意：在使用 <code>TAILQ_FOREACH</code> 或 <code>TAILQ_FOREACH_REVERSE</code> 遍历尾队列时要避免尾队列的初始化、删除、替换操作！</p>
-</blockquote>
-<h3 id="尾队列的访问过程"><a href="#尾队列的访问过程" class="headerlink" title="尾队列的访问过程"></a>尾队列的访问过程</h3><h4 id="尾队列的正向遍历"><a href="#尾队列的正向遍历" class="headerlink" title="尾队列的正向遍历"></a>尾队列的正向遍历</h4><p><code>libevent</code> 的尾队列正向遍历方式与双向链表遍历方式一致，可参见：<a href="/post/2020/ee7292d/" title="源码阅读 libevent - 数据结构：双向链表">源码阅读 libevent - 数据结构：双向链表</a>。</p>
-<h4 id="尾队列的尾节点获取"><a href="#尾队列的尾节点获取" class="headerlink" title="尾队列的尾节点获取"></a>尾队列的尾节点获取</h4><p>尾队列的尾节点获取方式如下：</p>
-<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">define</span> TAILQ_LAST(head, headname)  (*(((struct headname *)((head)-&gt;tqh_last))-&gt;tqh_last))</span></span><br></pre></td></tr></table></figure>
-<p>由尾队列结构结合下图可知，尾队列的尾节点获取可通过以下步骤获取：</p>
-<ol>
-<li>通过 <code>last</code> 指针获得尾结点的 <code>next</code> 指针的地址</li>
-<li>通过尾结点的 <code>next</code> 指针的地址加上偏移可以直到尾节点的 <code>prev</code> 指针地址</li>
-<li>通过 <code>prev</code> 指针指向的地址获取尾节点的前一个节点的 <code>next</code> 指针地址</li>
-<li>前一个节点的 <code>next</code> 指针指向的地址即为尾节点的地址</li>
-</ol>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">      Head                       Node1                   Node2                   Node3</span><br><span class="line">+--------------+    +-----&gt;+--------------+    +--&gt;+--------------+    +&gt;&gt;&gt;+--------------+</span><br><span class="line">|   tqh_first  |----+      |    value     |    |   |    value     |    ③   |    value     |</span><br><span class="line">|              |&lt;-----+    +--------------+    |   +--------------+    |   +--------------+</span><br><span class="line">+--------------+      |    |   tqe_next   |----+   |   tqe_next   |&gt;&gt;&gt;&gt;+   |   tqe_next   |-----------+</span><br><span class="line">|   tqh_last   |&gt;&gt;&gt;+  |    |              |&lt;--+    |              |&lt;&lt;&lt;+    |              |&lt;&lt;&lt;&lt;+      |</span><br><span class="line">+--------------+   |  |    +--------------+   |    +--------------+   ②    +--------------+    |    -----</span><br><span class="line">                   |  +----|   tqe_prev   |   +----|   tqe_prev   |   +&lt;&lt;&lt;&lt;|   tqe_prev   |    |     ---</span><br><span class="line">                   |       +--------------+        +--------------+        +--------------+    |      -</span><br><span class="line">                   |                                                                           |</span><br><span class="line">                   +&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;①&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;+</span><br></pre></td></tr></table></figure>
-<p>而 <code>TAILQ_LAST</code> 在实现时，为了屏蔽头节点和其他节点结构体上的区别，利用了头节点 <code>first</code>/<code>last</code> 两个指针和其他节点 <code>next</code>/<code>prev</code> 指针在内存中结构一致的特点，将 <code>next</code>/<code>prev</code> 结构体强转为了 <code>first</code>/<code>last</code> 结构体统一了头节点和其他节点在地址查找上的差异。</p>
-<h4 id="尾队列的前继节点获取"><a href="#尾队列的前继节点获取" class="headerlink" title="尾队列的前继节点获取"></a>尾队列的前继节点获取</h4><p>尾队列的前继节点获取方式如下：</p>
-<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">define</span> TAILQ_PREV(elm, headname, field)    (*(((struct headname *)((elm)-&gt;field.tqe_prev))-&gt;tqh_last))</span></span><br></pre></td></tr></table></figure>
-<p>尾队列的前继节点获取和尾队列的尾节点获取原理一致，可参考下图进行理解（获取 <code>Node3</code> 的前继节点）：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">      Head                       Node1                   Node2                   Node3</span><br><span class="line">+--------------+    +-----&gt;+--------------+    +&gt;&gt;&gt;+--------------+    +--&gt;+--------------+</span><br><span class="line">|   tqh_first  |----+      |    value     |    ③   |    value     |    |   |    value     |</span><br><span class="line">|              |&lt;-----+    +--------------+    |   +--------------+    |   +--------------+</span><br><span class="line">+--------------+      |    |   tqe_next   |&gt;&gt;&gt;&gt;+   |   tqe_next   |----+   |   tqe_next   |-----------+</span><br><span class="line">|   tqh_last   |---+  |    |              |&lt;&lt;&lt;+    |              |&lt;&lt;&lt;+    |              |&lt;---+      |</span><br><span class="line">+--------------+   |  |    +--------------+   ②    +--------------+   ①    +--------------+    |    -----</span><br><span class="line">                   |  +----|   tqe_prev   |   +&lt;&lt;&lt;&lt;|   tqe_prev   |   +&lt;&lt;&lt;&lt;|   tqe_prev   |    |     ---</span><br><span class="line">                   |       +--------------+        +--------------+        +--------------+    |      -</span><br><span class="line">                   |                                                                           |</span><br><span class="line">                   +---------------------------------------------------------------------------+</span><br></pre></td></tr></table></figure>
-<h4 id="尾队列的反向遍历"><a href="#尾队列的反向遍历" class="headerlink" title="尾队列的反向遍历"></a>尾队列的反向遍历</h4><p>反向遍历操作同样有三个关键点：遍历的起始节点，遍历的下一节点的获取，遍历的结束条件。</p>
-<ul>
-<li>遍历的起始节点：参考尾队列的尾节点获取</li>
-<li>遍历的下一节点的获取：参考尾队列的前继节点获取</li>
-<li><p>遍历的结束条件：<code>TAILQ_PREV</code> 获取地址为空，下图为反向遍历到最后一个节点的情况：</p>
-  <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">      Head                       Node1                   Node2                   Node3</span><br><span class="line">+--------------+    +-----&gt;+--------------+    +--&gt;+--------------+    +--&gt;+--------------+</span><br><span class="line">|   tqh_first  |----+      |    value     |    |   |    value     |    |   |    value     |</span><br><span class="line">|              |&lt;&lt;&lt;&lt;&lt;&lt;+    +--------------+    |   +--------------+    |   +--------------+</span><br><span class="line">+--------------+      |    |   tqe_next   |----+   |   tqe_next   |----+   |   tqe_next   |&gt;&gt;&gt;&gt;&gt;&gt;③&gt;&gt;&gt;&gt;+</span><br><span class="line">|   tqh_last   |&gt;&gt;&gt;+  ①    |              |&lt;--+    |              |&lt;--+    |              |&lt;&lt;&lt;&lt;+      |</span><br><span class="line">+--------------+   |  |    +--------------+   |    +--------------+   |    +--------------+    |    -----</span><br><span class="line">                   |  +&lt;&lt;&lt;&lt;|   tqe_prev   |   +----|   tqe_prev   |   +----|   tqe_prev   |    |     ---</span><br><span class="line">                   |       +--------------+        +--------------+        +--------------+    |      -</span><br><span class="line">                   |                                                                           |</span><br><span class="line">                   +&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;②&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;+</span><br></pre></td></tr></table></figure>
-</li>
-</ul>
-<h2 id="尾队列操作"><a href="#尾队列操作" class="headerlink" title="尾队列操作"></a>尾队列操作</h2><h3 id="初始化"><a href="#初始化" class="headerlink" title="初始化"></a>初始化</h3><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">define</span> TAILQ_INIT(head) do &#123;                       \</span></span><br><span class="line">    (head)-&gt;tqh_first = <span class="literal">NULL</span>;                       \</span><br><span class="line">    (head)-&gt;tqh_last = &amp;(head)-&gt;tqh_first;          \</span><br><span class="line">&#125; <span class="keyword">while</span> (<span class="number">0</span>)</span><br></pre></td></tr></table></figure>
-<h3 id="头插法"><a href="#头插法" class="headerlink" title="头插法"></a>头插法</h3><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">define</span> TAILQ_INSERT_HEAD(head, elm, field) do &#123;    \</span></span><br><span class="line">    <span class="keyword">if</span> (((elm)-&gt;field.tqe_next = (head)-&gt;tqh_first) != <span class="literal">NULL</span>)    \</span><br><span class="line">        (head)-&gt;tqh_first-&gt;field.tqe_prev = &amp;(elm)-&gt;field.tqe_next;             \</span><br><span class="line">    <span class="keyword">else</span> (head)-&gt;tqh_last = &amp;(elm)-&gt;field.tqe_next; \</span><br><span class="line">    (head)-&gt;tqh_first = (elm);                      \</span><br><span class="line">    (elm)-&gt;field.tqe_prev = &amp;(head)-&gt;tqh_first;     \</span><br><span class="line">&#125; <span class="keyword">while</span> (<span class="number">0</span>)</span><br></pre></td></tr></table></figure>
-<h3 id="尾插法"><a href="#尾插法" class="headerlink" title="尾插法"></a>尾插法</h3><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">define</span> TAILQ_INSERT_TAIL(head, elm, field) do &#123;    \</span></span><br><span class="line">    (elm)-&gt;field.tqe_next = <span class="literal">NULL</span>;                   \</span><br><span class="line">    (elm)-&gt;field.tqe_prev = (head)-&gt;tqh_last;       \</span><br><span class="line">    *(head)-&gt;tqh_last = (elm);                      \</span><br><span class="line">    (head)-&gt;tqh_last = &amp;(elm)-&gt;field.tqe_next;      \</span><br><span class="line">&#125; <span class="keyword">while</span> (<span class="number">0</span>)</span><br></pre></td></tr></table></figure>
-<h3 id="后插法"><a href="#后插法" class="headerlink" title="后插法"></a>后插法</h3><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">define</span> TAILQ_INSERT_AFTER(head, listelm, elm, field) do &#123;                      \</span></span><br><span class="line">    <span class="keyword">if</span> (((elm)-&gt;field.tqe_next = (listelm)-&gt;field.tqe_next) != <span class="literal">NULL</span>)            \</span><br><span class="line">        (elm)-&gt;field.tqe_next-&gt;field.tqe_prev = &amp;(elm)-&gt;field.tqe_next;         \</span><br><span class="line">    <span class="keyword">else</span> (head)-&gt;tqh_last = &amp;(elm)-&gt;field.tqe_next;                             \</span><br><span class="line">    (listelm)-&gt;field.tqe_next = (elm);              \</span><br><span class="line">    (elm)-&gt;field.tqe_prev = &amp;(listelm)-&gt;field.tqe_next;                         \</span><br><span class="line">&#125; <span class="keyword">while</span> (<span class="number">0</span>)</span><br></pre></td></tr></table></figure>
-<h3 id="前插法"><a href="#前插法" class="headerlink" title="前插法"></a>前插法</h3><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">define</span> TAILQ_INSERT_BEFORE(listelm, elm, field) do &#123;                           \</span></span><br><span class="line">    (elm)-&gt;field.tqe_prev = (listelm)-&gt;field.tqe_prev;                          \</span><br><span class="line">    (elm)-&gt;field.tqe_next = (listelm);              \</span><br><span class="line">    *(listelm)-&gt;field.tqe_prev = (elm);             \</span><br><span class="line">    (listelm)-&gt;field.tqe_prev = &amp;(elm)-&gt;field.tqe_next;                         \</span><br><span class="line">&#125; <span class="keyword">while</span> (<span class="number">0</span>)</span><br></pre></td></tr></table></figure>
-<h3 id="删除节点"><a href="#删除节点" class="headerlink" title="删除节点"></a>删除节点</h3><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">define</span> TAILQ_REMOVE(head, elm, field) do &#123;         \</span></span><br><span class="line">    <span class="keyword">if</span> (((elm)-&gt;field.tqe_next) != <span class="literal">NULL</span>)            \</span><br><span class="line">        (elm)-&gt;field.tqe_next-&gt;field.tqe_prev = (elm)-&gt;field.tqe_prev;          \</span><br><span class="line">    <span class="keyword">else</span> (head)-&gt;tqh_last = (elm)-&gt;field.tqe_prev;  \</span><br><span class="line">    *(elm)-&gt;field.tqe_prev = (elm)-&gt;field.tqe_next; \</span><br><span class="line">&#125; <span class="keyword">while</span> (<span class="number">0</span>)</span><br></pre></td></tr></table></figure>
-<h3 id="替换节点"><a href="#替换节点" class="headerlink" title="替换节点"></a>替换节点</h3><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">define</span> TAILQ_REPLACE(head, elm, elm2, field) do &#123;                              \</span></span><br><span class="line">    <span class="keyword">if</span> (((elm2)-&gt;field.tqe_next = (elm)-&gt;field.tqe_next) != <span class="literal">NULL</span>)               \</span><br><span class="line">        (elm2)-&gt;field.tqe_next-&gt;field.tqe_prev = &amp;(elm2)-&gt;field.tqe_next;       \</span><br><span class="line">    <span class="keyword">else</span> (head)-&gt;tqh_last = &amp;(elm2)-&gt;field.tqe_next;                            \</span><br><span class="line">    (elm2)-&gt;field.tqe_prev = (elm)-&gt;field.tqe_prev; \</span><br><span class="line">    *(elm2)-&gt;field.tqe_prev = (elm2);               \</span><br><span class="line">&#125; <span class="keyword">while</span> (<span class="number">0</span>)</span><br></pre></td></tr></table></figure>
-<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><ul>
-<li>[1] <a href="https://github.com/libevent/libevent/releases/download/release-2.1.11-stable/libevent-2.1.11-stable.tar.gz">libevent-2.1.11-stable.tar.gz (Released 2019-08-01)</a></li>
-</ul>
-]]></content>
-      <tags>
-        <tag>源码</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>源码阅读 libevent - 数据结构：小根堆</title>
     <url>/post/2020/3a941cca/</url>
     <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><p>在 <code>libevent</code> 中，使用 <code>min_heap</code> 这一数据结构来管理各个 <code>event</code> 的超时，也就是小根堆，整个堆是根据各个 <code>event</code> 的超时时间来构成的，因此堆顶肯定就对应超时时间最小的 <code>event</code>，这样就可以按照超时顺序进行处理了。</p>
@@ -6467,6 +6397,76 @@ a = *（0 个或多个会话属性行）
 <h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><ul>
 <li>[1] <a href="https://github.com/libevent/libevent/releases/download/release-2.1.11-stable/libevent-2.1.11-stable.tar.gz">libevent-2.1.11-stable.tar.gz (Released 2019-08-01)</a></li>
 <li>[2] <a href="https://blog.csdn.net/qq_28114615/article/details/95342338">libevent 源码学习（10）：min_heap 数据结构解析_HerofH_的博客 - CSDN 博客</a></li>
+</ul>
+]]></content>
+      <tags>
+        <tag>源码</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>源码阅读 libevent - 数据结构：尾队列</title>
+    <url>/post/2020/e6338d04/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><p>本文分析的数据结构为 <code>TAILQ</code> 尾队列。</p>
+<p><code>libevent</code> 中 <code>TAILQ</code> 尾队列其实就是升级版的 <code>LIST</code> 双向链表。</p>
+<a id="more"></a>
+<blockquote>
+<p>数据结构 <code>LIST</code> 双向链表的分析详见：<a href="/post/2020/ee7292d/" title="源码阅读 libevent - 数据结构：双向链表">源码阅读 libevent - 数据结构：双向链表</a></p>
+</blockquote>
+<h2 id="尾队列的定义"><a href="#尾队列的定义" class="headerlink" title="尾队列的定义"></a>尾队列的定义</h2><h3 id="尾队列的定义宏"><a href="#尾队列的定义宏" class="headerlink" title="尾队列的定义宏"></a>尾队列的定义宏</h3><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">define</span> TAILQ_HEAD(name, type)                      \</span></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">name</span> &#123;</span>                                       \</span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">type</span> *<span class="title">tqh_first</span>;</span> <span class="comment">/* first element */</span>                         \</span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">type</span> **<span class="title">tqh_last</span>;</span> <span class="comment">/* addr of last next element */</span>             \</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> TAILQ_ENTRY(type)                           \</span></span><br><span class="line"><span class="class"><span class="keyword">struct</span> &#123;</span>                                            \</span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">type</span> *<span class="title">tqe_next</span>;</span>  <span class="comment">/* next element */</span>      \</span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">type</span> **<span class="title">tqe_prev</span>;</span> <span class="comment">/* address of previous next element */</span>      \</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="尾队列的节点结构"><a href="#尾队列的节点结构" class="headerlink" title="尾队列的节点结构"></a>尾队列的节点结构</h3><p>同双向链表一样，我们通过代码来分析尾队列的节点结构：</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;stdlib.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&quot;queue.h&quot;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> <span class="title">Node</span> &#123;</span></span><br><span class="line">    <span class="keyword">int</span> val;</span><br><span class="line">    TAILQ_ENTRY(Node) node;</span><br><span class="line">&#125; Node;</span><br><span class="line">TAILQ_HEAD(Head, Node);</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">void</span>)</span> </span>&#123;</span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">Head</span> <span class="title">tailQHead</span>;</span></span><br><span class="line">    TAILQ_INIT(&amp;tailQHead);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">3</span>; i++) &#123;</span><br><span class="line">        Node* new_item = <span class="built_in">malloc</span>(<span class="keyword">sizeof</span>(Node));</span><br><span class="line">        new_item-&gt;val = i;</span><br><span class="line">        TAILQ_INSERT_HEAD(&amp;tailQHead, new_item, node); <span class="comment">// 头插法插入新节点</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    Node* p;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;[HEAD] %20p [HEAD ADDR] %20p\n\n&quot;</span>,tailQHead.tqh_first, &amp;tailQHead);</span><br><span class="line">    TAILQ_FOREACH(p, &amp;tailQHead, node) &#123;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;[NODE] %20d [NODE ADDR] %20p\n&quot;</span>, p-&gt;val, p);</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;[NEXT] %20p [NEXT ADDR] %20p\n&quot;</span>, p-&gt;node.tqe_next, &amp;p-&gt;node.tqe_next);</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;[PREV] %20p [PREV ADDR] %20p\n\n&quot;</span>, p-&gt;node.tqe_prev, &amp;p-&gt;node.tqe_prev);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;[TAIL] %20p [HEAD ADDR] %20p\n\n&quot;</span>,tailQHead.tqh_last, &amp;tailQHead);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>在该程序中，定义了节点类型为 <code>Node</code> 类型，其中包含了一个 <code>int</code> 型的 <code>val</code> 变量以及 <code>TAILQ_ENTRY</code> 所定义的结构体。可以看到，调用 <code>TAILQ_HEAD</code> 宏函数时，传入的 <code>name</code> 参数 <code>Head</code> 最终就成为了 <code>TAILQ_HEAD</code> 下结构体类型名。然后用 <code>struct Head</code> 来定义一个 <code>tailQHead</code> 变量作为尾队列的头节点，其中保存的即是尾队列中的首尾节点信息了。接着就是以头插法形式插入三个节点，然后遍历输出各个节点中关键成员的值与地址，结果如下：</p>
+<p><img data-src="https://gitee.com/hezhaojiang/MyPics/raw/master/img/20201025215558.png" alt="libevent 尾队列"></p>
+<p>从代码结果种可得出尾队列结构如下：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">      Head                       Node1                   Node2                   Node3</span><br><span class="line">+--------------+    +-----&gt;+--------------+    +--&gt;+--------------+    +--&gt;+--------------+</span><br><span class="line">|   tqh_first  |----+      |    value     |    |   |    value     |    |   |    value     |</span><br><span class="line">|              |&lt;-----+    +--------------+    |   +--------------+    |   +--------------+</span><br><span class="line">+--------------+      |    |   tqe_next   |----+   |   tqe_next   |----+   |   tqe_next   |-----------+</span><br><span class="line">|   tqh_last   |---+  |    |              |&lt;--+    |              |&lt;--+    |              |&lt;---+      |</span><br><span class="line">+--------------+   |  |    +--------------+   |    +--------------+   |    +--------------+    |    -----</span><br><span class="line">                   |  +----|   tqe_prev   |   +----|   tqe_prev   |   +----|   tqe_prev   |    |     ---</span><br><span class="line">                   |       +--------------+        +--------------+        +--------------+    |      -</span><br><span class="line">                   |                                                                           |</span><br><span class="line">                   +---------------------------------------------------------------------------+</span><br></pre></td></tr></table></figure>
+<h2 id="尾队列的访问"><a href="#尾队列的访问" class="headerlink" title="尾队列的访问"></a>尾队列的访问</h2><h3 id="尾队列的访问宏"><a href="#尾队列的访问宏" class="headerlink" title="尾队列的访问宏"></a>尾队列的访问宏</h3><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">define</span> TAILQ_FIRST(head)           ((head)-&gt;tqh_first)</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> TAILQ_END(head)             NULL</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> TAILQ_NEXT(elm, field)      ((elm)-&gt;field.tqe_next)</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> TAILQ_LAST(head, headname)  (*(((struct headname *)((head)-&gt;tqh_last))-&gt;tqh_last))</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> TAILQ_PREV(elm, headname, field)    (*(((struct headname *)((elm)-&gt;field.tqe_prev))-&gt;tqh_last))</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> TAILQ_EMPTY(head)           (TAILQ_FIRST(head) == TAILQ_END(head))</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> TAILQ_FOREACH(var, head, field)             \</span></span><br><span class="line">    <span class="keyword">for</span>((var) = TAILQ_FIRST(head); (var) != TAILQ_END(head); (var) = TAILQ_NEXT(var, field))</span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> TAILQ_FOREACH_REVERSE(var, head, headname, field)       \</span></span><br><span class="line">    <span class="keyword">for</span>((var) = TAILQ_LAST(head, headname); (var) != TAILQ_END(head); (var) = TAILQ_PREV(var, headname, field))</span><br></pre></td></tr></table></figure>
+<h3 id="尾队列的访问宏的作用"><a href="#尾队列的访问宏的作用" class="headerlink" title="尾队列的访问宏的作用"></a>尾队列的访问宏的作用</h3><p>从宏定义名即可看出每个宏的作用：</p>
+<ul>
+<li><code>TAILQ_FIRST</code>：获取尾队列的首节点</li>
+<li><code>TAILQ_END</code>：尾队列的末尾，值恒为 <code>NULL</code></li>
+<li><code>TAILQ_NEXT</code>：获取尾队列的后继节点的地址</li>
+<li><code>TAILQ_LAST</code>：获取尾队列的最后一个节点的地址</li>
+<li><code>TAILQ_PREV</code>：获取尾队列的前继节点的地址</li>
+<li><code>TAILQ_EMPTY</code>：判断尾队列是否为空，为空时返回真</li>
+<li><code>TAILQ_FOREACH</code>：遍历尾队列</li>
+<li><code>TAILQ_FOREACH_REVERSE</code>：反向遍历尾队列</li>
+</ul>
+<blockquote>
+<p>注意：在使用 <code>TAILQ_FOREACH</code> 或 <code>TAILQ_FOREACH_REVERSE</code> 遍历尾队列时要避免尾队列的初始化、删除、替换操作！</p>
+</blockquote>
+<h3 id="尾队列的访问过程"><a href="#尾队列的访问过程" class="headerlink" title="尾队列的访问过程"></a>尾队列的访问过程</h3><h4 id="尾队列的正向遍历"><a href="#尾队列的正向遍历" class="headerlink" title="尾队列的正向遍历"></a>尾队列的正向遍历</h4><p><code>libevent</code> 的尾队列正向遍历方式与双向链表遍历方式一致，可参见：<a href="/post/2020/ee7292d/" title="源码阅读 libevent - 数据结构：双向链表">源码阅读 libevent - 数据结构：双向链表</a>。</p>
+<h4 id="尾队列的尾节点获取"><a href="#尾队列的尾节点获取" class="headerlink" title="尾队列的尾节点获取"></a>尾队列的尾节点获取</h4><p>尾队列的尾节点获取方式如下：</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">define</span> TAILQ_LAST(head, headname)  (*(((struct headname *)((head)-&gt;tqh_last))-&gt;tqh_last))</span></span><br></pre></td></tr></table></figure>
+<p>由尾队列结构结合下图可知，尾队列的尾节点获取可通过以下步骤获取：</p>
+<ol>
+<li>通过 <code>last</code> 指针获得尾结点的 <code>next</code> 指针的地址</li>
+<li>通过尾结点的 <code>next</code> 指针的地址加上偏移可以直到尾节点的 <code>prev</code> 指针地址</li>
+<li>通过 <code>prev</code> 指针指向的地址获取尾节点的前一个节点的 <code>next</code> 指针地址</li>
+<li>前一个节点的 <code>next</code> 指针指向的地址即为尾节点的地址</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">      Head                       Node1                   Node2                   Node3</span><br><span class="line">+--------------+    +-----&gt;+--------------+    +--&gt;+--------------+    +&gt;&gt;&gt;+--------------+</span><br><span class="line">|   tqh_first  |----+      |    value     |    |   |    value     |    ③   |    value     |</span><br><span class="line">|              |&lt;-----+    +--------------+    |   +--------------+    |   +--------------+</span><br><span class="line">+--------------+      |    |   tqe_next   |----+   |   tqe_next   |&gt;&gt;&gt;&gt;+   |   tqe_next   |-----------+</span><br><span class="line">|   tqh_last   |&gt;&gt;&gt;+  |    |              |&lt;--+    |              |&lt;&lt;&lt;+    |              |&lt;&lt;&lt;&lt;+      |</span><br><span class="line">+--------------+   |  |    +--------------+   |    +--------------+   ②    +--------------+    |    -----</span><br><span class="line">                   |  +----|   tqe_prev   |   +----|   tqe_prev   |   +&lt;&lt;&lt;&lt;|   tqe_prev   |    |     ---</span><br><span class="line">                   |       +--------------+        +--------------+        +--------------+    |      -</span><br><span class="line">                   |                                                                           |</span><br><span class="line">                   +&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;①&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;+</span><br></pre></td></tr></table></figure>
+<p>而 <code>TAILQ_LAST</code> 在实现时，为了屏蔽头节点和其他节点结构体上的区别，利用了头节点 <code>first</code>/<code>last</code> 两个指针和其他节点 <code>next</code>/<code>prev</code> 指针在内存中结构一致的特点，将 <code>next</code>/<code>prev</code> 结构体强转为了 <code>first</code>/<code>last</code> 结构体统一了头节点和其他节点在地址查找上的差异。</p>
+<h4 id="尾队列的前继节点获取"><a href="#尾队列的前继节点获取" class="headerlink" title="尾队列的前继节点获取"></a>尾队列的前继节点获取</h4><p>尾队列的前继节点获取方式如下：</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">define</span> TAILQ_PREV(elm, headname, field)    (*(((struct headname *)((elm)-&gt;field.tqe_prev))-&gt;tqh_last))</span></span><br></pre></td></tr></table></figure>
+<p>尾队列的前继节点获取和尾队列的尾节点获取原理一致，可参考下图进行理解（获取 <code>Node3</code> 的前继节点）：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">      Head                       Node1                   Node2                   Node3</span><br><span class="line">+--------------+    +-----&gt;+--------------+    +&gt;&gt;&gt;+--------------+    +--&gt;+--------------+</span><br><span class="line">|   tqh_first  |----+      |    value     |    ③   |    value     |    |   |    value     |</span><br><span class="line">|              |&lt;-----+    +--------------+    |   +--------------+    |   +--------------+</span><br><span class="line">+--------------+      |    |   tqe_next   |&gt;&gt;&gt;&gt;+   |   tqe_next   |----+   |   tqe_next   |-----------+</span><br><span class="line">|   tqh_last   |---+  |    |              |&lt;&lt;&lt;+    |              |&lt;&lt;&lt;+    |              |&lt;---+      |</span><br><span class="line">+--------------+   |  |    +--------------+   ②    +--------------+   ①    +--------------+    |    -----</span><br><span class="line">                   |  +----|   tqe_prev   |   +&lt;&lt;&lt;&lt;|   tqe_prev   |   +&lt;&lt;&lt;&lt;|   tqe_prev   |    |     ---</span><br><span class="line">                   |       +--------------+        +--------------+        +--------------+    |      -</span><br><span class="line">                   |                                                                           |</span><br><span class="line">                   +---------------------------------------------------------------------------+</span><br></pre></td></tr></table></figure>
+<h4 id="尾队列的反向遍历"><a href="#尾队列的反向遍历" class="headerlink" title="尾队列的反向遍历"></a>尾队列的反向遍历</h4><p>反向遍历操作同样有三个关键点：遍历的起始节点，遍历的下一节点的获取，遍历的结束条件。</p>
+<ul>
+<li>遍历的起始节点：参考尾队列的尾节点获取</li>
+<li>遍历的下一节点的获取：参考尾队列的前继节点获取</li>
+<li><p>遍历的结束条件：<code>TAILQ_PREV</code> 获取地址为空，下图为反向遍历到最后一个节点的情况：</p>
+  <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">      Head                       Node1                   Node2                   Node3</span><br><span class="line">+--------------+    +-----&gt;+--------------+    +--&gt;+--------------+    +--&gt;+--------------+</span><br><span class="line">|   tqh_first  |----+      |    value     |    |   |    value     |    |   |    value     |</span><br><span class="line">|              |&lt;&lt;&lt;&lt;&lt;&lt;+    +--------------+    |   +--------------+    |   +--------------+</span><br><span class="line">+--------------+      |    |   tqe_next   |----+   |   tqe_next   |----+   |   tqe_next   |&gt;&gt;&gt;&gt;&gt;&gt;③&gt;&gt;&gt;&gt;+</span><br><span class="line">|   tqh_last   |&gt;&gt;&gt;+  ①    |              |&lt;--+    |              |&lt;--+    |              |&lt;&lt;&lt;&lt;+      |</span><br><span class="line">+--------------+   |  |    +--------------+   |    +--------------+   |    +--------------+    |    -----</span><br><span class="line">                   |  +&lt;&lt;&lt;&lt;|   tqe_prev   |   +----|   tqe_prev   |   +----|   tqe_prev   |    |     ---</span><br><span class="line">                   |       +--------------+        +--------------+        +--------------+    |      -</span><br><span class="line">                   |                                                                           |</span><br><span class="line">                   +&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;②&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;+</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h2 id="尾队列操作"><a href="#尾队列操作" class="headerlink" title="尾队列操作"></a>尾队列操作</h2><h3 id="初始化"><a href="#初始化" class="headerlink" title="初始化"></a>初始化</h3><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">define</span> TAILQ_INIT(head) do &#123;                       \</span></span><br><span class="line">    (head)-&gt;tqh_first = <span class="literal">NULL</span>;                       \</span><br><span class="line">    (head)-&gt;tqh_last = &amp;(head)-&gt;tqh_first;          \</span><br><span class="line">&#125; <span class="keyword">while</span> (<span class="number">0</span>)</span><br></pre></td></tr></table></figure>
+<h3 id="头插法"><a href="#头插法" class="headerlink" title="头插法"></a>头插法</h3><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">define</span> TAILQ_INSERT_HEAD(head, elm, field) do &#123;    \</span></span><br><span class="line">    <span class="keyword">if</span> (((elm)-&gt;field.tqe_next = (head)-&gt;tqh_first) != <span class="literal">NULL</span>)    \</span><br><span class="line">        (head)-&gt;tqh_first-&gt;field.tqe_prev = &amp;(elm)-&gt;field.tqe_next;             \</span><br><span class="line">    <span class="keyword">else</span> (head)-&gt;tqh_last = &amp;(elm)-&gt;field.tqe_next; \</span><br><span class="line">    (head)-&gt;tqh_first = (elm);                      \</span><br><span class="line">    (elm)-&gt;field.tqe_prev = &amp;(head)-&gt;tqh_first;     \</span><br><span class="line">&#125; <span class="keyword">while</span> (<span class="number">0</span>)</span><br></pre></td></tr></table></figure>
+<h3 id="尾插法"><a href="#尾插法" class="headerlink" title="尾插法"></a>尾插法</h3><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">define</span> TAILQ_INSERT_TAIL(head, elm, field) do &#123;    \</span></span><br><span class="line">    (elm)-&gt;field.tqe_next = <span class="literal">NULL</span>;                   \</span><br><span class="line">    (elm)-&gt;field.tqe_prev = (head)-&gt;tqh_last;       \</span><br><span class="line">    *(head)-&gt;tqh_last = (elm);                      \</span><br><span class="line">    (head)-&gt;tqh_last = &amp;(elm)-&gt;field.tqe_next;      \</span><br><span class="line">&#125; <span class="keyword">while</span> (<span class="number">0</span>)</span><br></pre></td></tr></table></figure>
+<h3 id="后插法"><a href="#后插法" class="headerlink" title="后插法"></a>后插法</h3><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">define</span> TAILQ_INSERT_AFTER(head, listelm, elm, field) do &#123;                      \</span></span><br><span class="line">    <span class="keyword">if</span> (((elm)-&gt;field.tqe_next = (listelm)-&gt;field.tqe_next) != <span class="literal">NULL</span>)            \</span><br><span class="line">        (elm)-&gt;field.tqe_next-&gt;field.tqe_prev = &amp;(elm)-&gt;field.tqe_next;         \</span><br><span class="line">    <span class="keyword">else</span> (head)-&gt;tqh_last = &amp;(elm)-&gt;field.tqe_next;                             \</span><br><span class="line">    (listelm)-&gt;field.tqe_next = (elm);              \</span><br><span class="line">    (elm)-&gt;field.tqe_prev = &amp;(listelm)-&gt;field.tqe_next;                         \</span><br><span class="line">&#125; <span class="keyword">while</span> (<span class="number">0</span>)</span><br></pre></td></tr></table></figure>
+<h3 id="前插法"><a href="#前插法" class="headerlink" title="前插法"></a>前插法</h3><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">define</span> TAILQ_INSERT_BEFORE(listelm, elm, field) do &#123;                           \</span></span><br><span class="line">    (elm)-&gt;field.tqe_prev = (listelm)-&gt;field.tqe_prev;                          \</span><br><span class="line">    (elm)-&gt;field.tqe_next = (listelm);              \</span><br><span class="line">    *(listelm)-&gt;field.tqe_prev = (elm);             \</span><br><span class="line">    (listelm)-&gt;field.tqe_prev = &amp;(elm)-&gt;field.tqe_next;                         \</span><br><span class="line">&#125; <span class="keyword">while</span> (<span class="number">0</span>)</span><br></pre></td></tr></table></figure>
+<h3 id="删除节点"><a href="#删除节点" class="headerlink" title="删除节点"></a>删除节点</h3><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">define</span> TAILQ_REMOVE(head, elm, field) do &#123;         \</span></span><br><span class="line">    <span class="keyword">if</span> (((elm)-&gt;field.tqe_next) != <span class="literal">NULL</span>)            \</span><br><span class="line">        (elm)-&gt;field.tqe_next-&gt;field.tqe_prev = (elm)-&gt;field.tqe_prev;          \</span><br><span class="line">    <span class="keyword">else</span> (head)-&gt;tqh_last = (elm)-&gt;field.tqe_prev;  \</span><br><span class="line">    *(elm)-&gt;field.tqe_prev = (elm)-&gt;field.tqe_next; \</span><br><span class="line">&#125; <span class="keyword">while</span> (<span class="number">0</span>)</span><br></pre></td></tr></table></figure>
+<h3 id="替换节点"><a href="#替换节点" class="headerlink" title="替换节点"></a>替换节点</h3><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">define</span> TAILQ_REPLACE(head, elm, elm2, field) do &#123;                              \</span></span><br><span class="line">    <span class="keyword">if</span> (((elm2)-&gt;field.tqe_next = (elm)-&gt;field.tqe_next) != <span class="literal">NULL</span>)               \</span><br><span class="line">        (elm2)-&gt;field.tqe_next-&gt;field.tqe_prev = &amp;(elm2)-&gt;field.tqe_next;       \</span><br><span class="line">    <span class="keyword">else</span> (head)-&gt;tqh_last = &amp;(elm2)-&gt;field.tqe_next;                            \</span><br><span class="line">    (elm2)-&gt;field.tqe_prev = (elm)-&gt;field.tqe_prev; \</span><br><span class="line">    *(elm2)-&gt;field.tqe_prev = (elm2);               \</span><br><span class="line">&#125; <span class="keyword">while</span> (<span class="number">0</span>)</span><br></pre></td></tr></table></figure>
+<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><ul>
+<li>[1] <a href="https://github.com/libevent/libevent/releases/download/release-2.1.11-stable/libevent-2.1.11-stable.tar.gz">libevent-2.1.11-stable.tar.gz (Released 2019-08-01)</a></li>
 </ul>
 ]]></content>
       <tags>
@@ -8651,7 +8651,7 @@ H.264
     <url>/post/2020/1472cc3/</url>
     <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><p>文章 <a href="/post/2020/9064839e/" title="音视频封装 - PS 封装格式">音视频封装 - PS 封装格式</a> 中分析了 <code>PS</code> 流的结构，但文章中中涉及到的元素过多，难以理解，故通过一段真实的码流的分析来加强对 <code>PS</code> 流结构的理解。</p>
 <blockquote>
-<p>注 1：本文中的 <code>PS</code> 码流 A 截取自一段经 <code>FFmpeg</code> 转码的网络视频，码流 B 截取自海康摄像机的 <code>GB28181</code> 码流。<br>注 2：本文中的数字一般为十进制表示，如果是其他进制数据，会在数字后携带 <code>(2)</code> 代表二进制，在数字前添加 <code>0x</code> 代表十六进制<br>注 3：截图中的码流信息均使用十六进制</p>
+<p>注 1：本文中的 <code>PS</code> 码流 A 截取自一段经 <code>ffmpeg</code> 转码的网络视频，码流 B 截取自海康摄像机的 <code>GB28181</code> 码流。<br>注 2：本文中的数字一般为十进制表示，如果是其他进制数据，会在数字后携带 <code>(2)</code> 代表二进制，在数字前添加 <code>0x</code> 代表十六进制<br>注 3：截图中的码流信息均使用十六进制</p>
 </blockquote>
 <a id="more"></a>
 <h2 id="PS-Stream-A"><a href="#PS-Stream-A" class="headerlink" title="PS Stream A"></a>PS Stream A</h2><h3 id="PS-Header"><a href="#PS-Header" class="headerlink" title="PS Header"></a>PS Header</h3><p><code>PS</code> 码流由多个 <code>PS Pack</code> 组成，而 <code>PS Pack</code> 的起始符为 <code>0x00 00 01 ba</code>。</p>
@@ -8741,187 +8741,6 @@ H.264
 ]]></content>
       <tags>
         <tag>封装格式</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>音视频封装 - TS 封装解析示例</title>
-    <url>/post/2020/a03a01c2/</url>
-    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><p>文章 <a href="/post/2020/c6ae0d94/" title="音视频封装 - TS 封装格式">音视频封装 - TS 封装格式</a> 中分析了 <code>TS</code> 流的结构，本文通过一段真实的码流的分析来加强对 <code>TS</code> 流结构的理解。</p>
-<blockquote>
-<p>注 1：本文中的 <code>TS</code> 码流截取自一段从网络下载的网络视频</p>
-</blockquote>
-<a id="more"></a>
-<h2 id="PAT-包解析"><a href="#PAT-包解析" class="headerlink" title="PAT 包解析"></a>PAT 包解析</h2><p>该段码流中第一包并不是 <code>PAT</code> 包，而 TS 封装的解析需要从 <code>PAT</code> 包开始，所以我们向后寻找 PID 为 0 的第一包，该段码流中第二包 PID 为 0，是一个 <code>PAT</code> 包：</p>
-<p><img data-src="https://gitee.com/hezhaojiang/MyPics/raw/master/img/20201128145341.png" alt="Packet 2"></p>
-<p>第一部分：<code>TS</code> 包头</p>
-<pre><code>HEX 47       40       00       10
-BIN 01000111 01000000 00000000 00010000
-</code></pre><p>对比该部分结构，可代码定义如下：</p>
-<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> <span class="title">TS_HEAD</span> &#123;</span></span><br><span class="line">    <span class="keyword">unsigned</span> sync_byte                    : <span class="number">8</span>;  <span class="comment">// 同步字节，固定为 0x47</span></span><br><span class="line">    <span class="keyword">unsigned</span> transport_error_indicator    : <span class="number">1</span>;  <span class="comment">// 传输错误指示符，0 表明在 TS 头的 adapt 域后没有无用字节</span></span><br><span class="line">    <span class="keyword">unsigned</span> payload_unit_start_indicator : <span class="number">1</span>;  <span class="comment">// 负载单元起始标示符，一个完整的数据包开始时标记为 1</span></span><br><span class="line">    <span class="keyword">unsigned</span> transport_priority           : <span class="number">1</span>;  <span class="comment">// 传输优先级，0 为低优先级</span></span><br><span class="line">    <span class="keyword">unsigned</span> pid                          : <span class="number">13</span>; <span class="comment">// PID 值，0 表示 TS 头后面就是 PAT 表</span></span><br><span class="line">    <span class="keyword">unsigned</span> transport_scrambling_controls    : <span class="number">2</span>;  <span class="comment">// TS 流 ID，一般为 0x0001，区别于一个网络中其它多路复用的流</span></span><br><span class="line">    <span class="keyword">unsigned</span> adaptation_field_control         : <span class="number">2</span>;  <span class="comment">// 是否包含自适应区，&#x27;01&#x27;为无自适应域，仅含有效负载</span></span><br><span class="line">    <span class="keyword">unsigned</span> continuity_counter               : <span class="number">4</span>;  <span class="comment">// 递增计数器，0-F，起始值不一定取 0，但必须是连续的</span></span><br><span class="line">&#125; TS_HEAD;</span><br></pre></td></tr></table></figure>
-<p>第二部分：<code>TS</code> 包调整字节</p>
-<pre><code>HEX 00
-BIN 00000000
-</code></pre><p>对比该部分结构，代码定义分析如下：</p>
-<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> <span class="title">TS_ADAPT</span> &#123;</span></span><br><span class="line">    <span class="keyword">unsigned</span> <span class="keyword">char</span> adaptation_field_length;  <span class="comment">// 自适应域长度，后面的字节数，此包中为 7 字节</span></span><br><span class="line">    <span class="keyword">unsigned</span> <span class="keyword">char</span> flag;                     <span class="comment">// 0x50 表示包含 PCR，0x40 表示不包含 PCR</span></span><br><span class="line">    <span class="keyword">if</span> (flag == <span class="number">0x50</span>) <span class="keyword">unsigned</span> <span class="keyword">char</span> PCR[<span class="number">5</span>]; <span class="comment">// 节目时钟参考 40bit</span></span><br><span class="line">    <span class="built_in">vector</span>&lt;<span class="keyword">unsigned</span> <span class="keyword">char</span>&gt; stuffing_bytes;   <span class="comment">// 填充字节，取值 0xFF</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p><code>adaptation_field_length</code> 为 <code>0</code>，故该部分后续字节数为 <code>0</code>。</p>
-<p>第三部分：<code>TS</code> 包有效载荷 - 即 <code>PSI</code> 表 <code>PAT</code> 的数据：</p>
-<pre><code>HEX 00 B0 0D 00 01 C1 00 00  00 01 F0 00 2A B1 04 B2
-BIN 00000000 10110000 00001101 00000000 00000001 11000001 00000000 00000000
-    00000000 00000001 11110000 00000000 00101010 10110001 00000100 10110010
-</code></pre><p>对比该部分结构，代码定义分析如下：</p>
-<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> <span class="title">TS_PAT</span> &#123;</span></span><br><span class="line">    <span class="keyword">unsigned</span> table_id                     : <span class="number">8</span>;  <span class="comment">// 固定 0x00 ，标志是该表是 PAT</span></span><br><span class="line">    <span class="keyword">unsigned</span> section_syntax_indicator     : <span class="number">1</span>;  <span class="comment">// 段语法标志位，固定为 1</span></span><br><span class="line">    <span class="keyword">unsigned</span> zero                         : <span class="number">1</span>;  <span class="comment">// 0</span></span><br><span class="line">    <span class="keyword">unsigned</span> reserved_1                   : <span class="number">2</span>;  <span class="comment">// 保留位，固定为 11</span></span><br><span class="line">    <span class="keyword">unsigned</span> section_length               : <span class="number">12</span>; <span class="comment">// 段长度，0000 00001101 值为 13</span></span><br><span class="line">    <span class="keyword">unsigned</span> transport_stream_id          : <span class="number">16</span>; <span class="comment">// TS 流 ID，一般为 0x0001，区别于一个网络中其它多路复用的流</span></span><br><span class="line">    <span class="keyword">unsigned</span> reserved_2                   : <span class="number">2</span>;  <span class="comment">// 保留位，固定为 11</span></span><br><span class="line">    <span class="keyword">unsigned</span> version_number               : <span class="number">5</span>;  <span class="comment">// PAT 版本号，固定为 00000，如果 PAT 有变化则版本号加 1</span></span><br><span class="line">    <span class="keyword">unsigned</span> current_next_indicator       : <span class="number">1</span>;  <span class="comment">// 固定为 1，表示这个 PAT 表有效，如果为 0 则要等待下一个 PAT 表</span></span><br><span class="line">    <span class="keyword">unsigned</span> section_number               : <span class="number">8</span>;  <span class="comment">// 分段的号码。PAT 可能分为多段传输，第一段为 00，以后每个分段加 1，最多可能有 256 个分段</span></span><br><span class="line">    <span class="keyword">unsigned</span> last_section_number          : <span class="number">8</span>;  <span class="comment">// 最后一个分段的号码</span></span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">vector</span>&lt;TS_PAT_Program&gt; program; = &#123;    <span class="comment">// 该包中仅有一个 TS_PAT_Program</span></span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">unsigned</span> program_number       :<span class="number">16</span>;  <span class="comment">// 节目号，为 0x0000 时表示这是 NIT，节目号为 0x0001 时, 表示这是 PMT</span></span><br><span class="line">            <span class="keyword">unsigned</span> reserved             :<span class="number">3</span>    <span class="comment">// 保留，固定为 111</span></span><br><span class="line">            <span class="keyword">if</span> (program_number == <span class="number">0x0000</span>)</span><br><span class="line">                <span class="keyword">unsigned</span> network_PID      :<span class="number">13</span>;</span><br><span class="line">            <span class="keyword">else</span> <span class="keyword">if</span> (program_number == <span class="number">0x0001</span>)</span><br><span class="line">                <span class="keyword">unsigned</span> program_map_PID  :<span class="number">13</span>;  <span class="comment">// 节目号对应内容的 PID 值，该 PAT 包取值为 0x1000 = 4096</span></span><br><span class="line">            &#125;</span><br><span class="line">        &#125;,</span><br><span class="line">    &#125;;</span><br><span class="line">    <span class="keyword">unsigned</span> CRC_32                       : <span class="number">32</span>; <span class="comment">// CRC32 校验码</span></span><br><span class="line">&#125; TS_PAT;</span><br></pre></td></tr></table></figure>
-<h2 id="PMT-包解析"><a href="#PMT-包解析" class="headerlink" title="PMT 包解析"></a>PMT 包解析</h2><p><code>PAT</code> 信息中可知 <code>PMT</code> 表的 <code>PID</code> 为 <code>4096</code>，我们向后寻找 <code>PID</code> 为 <code>4096</code> 的 <code>TS</code> 包，发现第 <code>3</code> 包 <code>TS</code> 包即为 <code>PMT</code> 包：</p>
-<p><img data-src="https://gitee.com/hezhaojiang/MyPics/raw/master/img/20201128155219.png" alt="PMT"></p>
-<p>第一部分：<code>TS</code> 包头</p>
-<pre><code>HEX 47       50       00       10
-BIN 01000111 01010000 00000000 00010000
-</code></pre><p>从 <code>TS</code> 包头可知该 <code>TS</code> 包的 <code>PID</code> 值为 <code>4096</code>，是我们寻找的 <code>PMT</code> 包。</p>
-<p>第二部分：<code>TS</code> 包调整字节，该部分只有一个字节 <code>0x00</code>，详见上文解析，此处不再重复。</p>
-<p>第三部分：<code>TS</code> 包有效载荷 - <code>PMT</code></p>
-<pre><code>HEX 02 B0 23 00 01 C1 00 00  E1 00 F0 00 24 E1 00 F0
-    06 05 04 48 45 56 43 03  E1 01 F0 06 0A 04 75 6E
-    64 00 DD 33 FC 6A
-BIN 00000010 10110000 00100011 00000000 00000001 11000001 00000000 00000000
-    11100001 00000000 11110000 00000000 00100100 11100001 00000000 11110000
-    00000110 00000101 00000100 01001000 01000101 01010110 01000011 00000011
-    11100001 00000001 11110000 00000110 00001010 00000100 01110101 01101110
-    01100100 00000000 11011101 00110011 11111100 01101010
-</code></pre><p>对比该部分结构，代码定义分析如下：</p>
-<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> <span class="title">TS_PMT</span> &#123;</span></span><br><span class="line">    <span class="keyword">unsigned</span> table_id                     : <span class="number">8</span>;  <span class="comment">// 取值随意，一般使用 0x02, 表示 PMT 表</span></span><br><span class="line">    <span class="keyword">unsigned</span> section_syntax_indicator     : <span class="number">1</span>;  <span class="comment">// 段语法标志位，固定为 1</span></span><br><span class="line">    <span class="keyword">unsigned</span> zero                         : <span class="number">1</span>;  <span class="comment">// 保留位，固定为 0</span></span><br><span class="line">    <span class="keyword">unsigned</span> reserved_1                   : <span class="number">2</span>;  <span class="comment">// 保留位，固定为 11</span></span><br><span class="line">    <span class="keyword">unsigned</span> section_length               : <span class="number">12</span>; <span class="comment">// 段长度，0000 00100011 = 35 字节</span></span><br><span class="line">    <span class="keyword">unsigned</span> program_number               : <span class="number">16</span>; <span class="comment">// 当前 PMT 表映射到的节目号，1、2、3</span></span><br><span class="line">    <span class="keyword">unsigned</span> reserved_2                   : <span class="number">2</span>;  <span class="comment">// 保留位，固定为 11</span></span><br><span class="line">    <span class="keyword">unsigned</span> version_number               : <span class="number">5</span>;  <span class="comment">// PMT 版本号码，固定为 00000，如果 PAT 有变化则版本号加 1</span></span><br><span class="line">    <span class="keyword">unsigned</span> current_next_indicator       : <span class="number">1</span>;  <span class="comment">// 发送的 PMT 表， 1 当前有效 PMT 有效</span></span><br><span class="line">    <span class="keyword">unsigned</span> section_number               : <span class="number">8</span>;  <span class="comment">// 分段的号码。PMT 可能分为多段传输，第一段为 00，以后每个分段加 1，最多可能有 256 个分段</span></span><br><span class="line">    <span class="keyword">unsigned</span> last_section_number          : <span class="number">8</span>;  <span class="comment">// 分段数</span></span><br><span class="line">    <span class="keyword">unsigned</span> reserved_3                   : <span class="number">3</span>;  <span class="comment">// 保留位，固定为 111</span></span><br><span class="line">    <span class="keyword">unsigned</span> PCR_PID                      : <span class="number">13</span>; <span class="comment">// 指明 TS 包的 PID 值 (0x0100 = 256)，该 TS 包含有 PCR 同步时钟，</span></span><br><span class="line">    <span class="keyword">unsigned</span> reserved_4                   : <span class="number">4</span>;  <span class="comment">// 预留位，固定为 1111</span></span><br><span class="line">    <span class="keyword">unsigned</span> program_info_length          : <span class="number">12</span>; <span class="comment">// 前 2bit 为 00，该域指出跟随其后对节目信息的描述的字节数 (0x000 = 0)。</span></span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">vector</span>&lt;<span class="keyword">unsigned</span> <span class="keyword">char</span>&gt; descriptor;      <span class="comment">// 0 字节</span></span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">vector</span>&lt;TS_PMT_Stream&gt; PMT_Stream = &#123;</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">unsigned</span> stream_type          : <span class="number">8</span>;  <span class="comment">// 指示本节目流的类型，H.265 编码对应 0x24</span></span><br><span class="line">            <span class="keyword">unsigned</span> reserved1            : <span class="number">3</span>;  <span class="comment">// 保留位，固定为 111</span></span><br><span class="line">            <span class="keyword">unsigned</span> elementary_PID       : <span class="number">13</span>; <span class="comment">// 指示该流的 PID 值 (0x100 = 256)</span></span><br><span class="line">            <span class="keyword">unsigned</span> reserved2            : <span class="number">3</span>;  <span class="comment">// 保留位，固定为 1111</span></span><br><span class="line">            <span class="keyword">unsigned</span> ES_info_length       : <span class="number">12</span>; <span class="comment">// 前两位 bit 为 00，指示跟随其后的描述相关节目元素的字节数 (0x006 = 6)</span></span><br><span class="line">            <span class="built_in">std</span>::<span class="built_in">vector</span>&lt;<span class="keyword">unsigned</span> <span class="keyword">char</span>&gt; descriptor;   <span class="comment">// 6 字节</span></span><br><span class="line">        &#125;,</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">unsigned</span> stream_type          : <span class="number">8</span>;  <span class="comment">// 指示本节目流的类型，MP3 编码对应 0x03</span></span><br><span class="line">            <span class="keyword">unsigned</span> reserved1            : <span class="number">3</span>;  <span class="comment">// 保留位，固定为 111</span></span><br><span class="line">            <span class="keyword">unsigned</span> elementary_PID       : <span class="number">13</span>; <span class="comment">// 指示该流的 PID 值 (0x101 = 257)</span></span><br><span class="line">            <span class="keyword">unsigned</span> reserved2            : <span class="number">3</span>;  <span class="comment">// 保留位，固定为 1111</span></span><br><span class="line">            <span class="keyword">unsigned</span> ES_info_length       : <span class="number">12</span>; <span class="comment">// 前两位 bit 为 00，指示跟随其后的描述相关节目元素的字节数 (0x006 = 6)</span></span><br><span class="line">            <span class="built_in">std</span>::<span class="built_in">vector</span>&lt;<span class="keyword">unsigned</span> <span class="keyword">char</span>&gt; descriptor;   <span class="comment">// 6 字节</span></span><br><span class="line">        &#125;,</span><br><span class="line">    &#125;;</span><br><span class="line">    <span class="keyword">unsigned</span> CRC_32                       : <span class="number">32</span>; <span class="comment">// CRC32 校验码</span></span><br><span class="line">&#125; TS_PMT;</span><br></pre></td></tr></table></figure>
-<p><code>PMT</code> 是定义每路节目的音视频类型 <code>TYPE</code> 和编号 <code>PID</code> 的关键，该 <code>TS</code> 码流中：</p>
-<pre><code>- 视频流格式为 `H.265`，对应 `PID` 为 `256`
-- 视频流格式为 `MP3`，对应 `PID` 为 `257`
-</code></pre><h2 id="视频包解析"><a href="#视频包解析" class="headerlink" title="视频包解析"></a>视频包解析</h2><p>第 <code>4</code> 包的 <code>PID</code> 值为 <code>256</code>，根据上述分析可知，该包为一个视频包：</p>
-<p><img data-src="https://gitee.com/hezhaojiang/MyPics/raw/master/img/20201128163234.png" alt="视频包"></p>
-<p>第一部分：<code>TS</code> 包头</p>
-<pre><code>HEX 47       41       00       30
-BIN 01000111 01000001 00000000 00110000
-</code></pre><p>从 <code>TS</code> 包头可知该 <code>TS</code> 包的 <code>PID</code> 值为 <code>256</code>，是我们寻找的视频包，另外，TS 包头中 <code>adaptation_field_control</code> 字段为 <code>11</code>，代表同时带有自适应域和有效负载。</p>
-<p>第二部分：<code>TS</code> 包调整字节</p>
-<pre><code>HEX 07 50 00 00 7C F7 7E 00
-BIN 00000111 01010000 00000000 00000000 01111100 11110111 01111110 00000000
-</code></pre><p>对比该部分结构，代码定义分析如下：</p>
-<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> <span class="title">TS_ADAPT</span> &#123;</span></span><br><span class="line">    <span class="keyword">unsigned</span> <span class="keyword">char</span> adaptation_field_length;  <span class="comment">// 自适应域长度，后面的字节数，此包中为 7 字节</span></span><br><span class="line">    <span class="keyword">unsigned</span> <span class="keyword">char</span> flag;                     <span class="comment">// 0x50 表示包含 PCR</span></span><br><span class="line">    <span class="keyword">if</span> (flag == <span class="number">0x50</span>) <span class="keyword">unsigned</span> <span class="keyword">char</span> PCR[<span class="number">5</span>]; <span class="comment">// 节目时钟参考 40bit</span></span><br><span class="line">    <span class="built_in">vector</span>&lt;<span class="keyword">unsigned</span> <span class="keyword">char</span>&gt; stuffing_bytes;   <span class="comment">// 填充字节，取值 0xFF</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>第三部分：<code>TS</code> 包有效载荷 - <code>PES</code></p>
-<pre><code>HEX 00 00 01 E0 00 00 80 80  05 21 00 07 E0 0D
-BIN 00000000 00000000 00000001 11100000 00000000 00000000 10000000 10000000
-    00000101 00100001 00000000 00000111 11100000 00001101
-</code></pre><p>对比该部分结构，代码定义分析如下：</p>
-<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> <span class="title">TS_ADAPT</span> &#123;</span></span><br><span class="line">    <span class="keyword">unsigned</span> start_code_prefix        : <span class="number">24</span>; <span class="comment">// 包头起始码，固定为 0x000001</span></span><br><span class="line">    <span class="keyword">unsigned</span> stream_id;               : <span class="number">8</span>;  <span class="comment">// PES 包中的负载流类型，一般视频为 0xe0，音频为 0xc0</span></span><br><span class="line">    <span class="keyword">unsigned</span> PES_packet_length        : <span class="number">16</span>; <span class="comment">// PES 包长度，包括此字节后的可选包头和负载的长度</span></span><br><span class="line">    <span class="keyword">unsigned</span> reserved_1               : <span class="number">2</span>;  <span class="comment">// 保留位，固定为 10</span></span><br><span class="line">    <span class="keyword">unsigned</span> PES_scrambling_control   : <span class="number">2</span>;  <span class="comment">// 加密模式，00 未加密，01 或 10 或 11 由用户定义</span></span><br><span class="line">    <span class="keyword">unsigned</span> PES_priority             : <span class="number">1</span>;  <span class="comment">// 有效负载的优先级，值为 1 比值为 0 的负载优先级高</span></span><br><span class="line">    <span class="keyword">unsigned</span> Data_alignment_indicator : <span class="number">1</span>;  <span class="comment">// 数据定位指示器</span></span><br><span class="line">    <span class="keyword">unsigned</span> Copyright                : <span class="number">1</span>;  <span class="comment">// 版权信息，1 为有版权，0 无版权</span></span><br><span class="line">    <span class="keyword">unsigned</span> Original_or_copy         : <span class="number">1</span>;  <span class="comment">// 原始或备份，1 为原始，0 为备份</span></span><br><span class="line">    <span class="keyword">unsigned</span> PTS_DTS_flags            : <span class="number">2</span>;  <span class="comment">// PTS 和 DTS 标志位，10 表示首部有 PTS 字段，11 表示有 PTS 和 DTS 字段，00 表示都没有，01 被禁止</span></span><br><span class="line">    <span class="keyword">unsigned</span> ESCR_flag                : <span class="number">1</span>;  <span class="comment">// ESCR 标志，1 表示首部有 ESCR 字段，0 则无此字段</span></span><br><span class="line">    <span class="keyword">unsigned</span> ES_rate_flag             : <span class="number">1</span>;  <span class="comment">// ES_rate 字段，1 表示首部有此字段，0 无此字段</span></span><br><span class="line">    <span class="keyword">unsigned</span> DSM_trick_mode_flag      : <span class="number">1</span>;  <span class="comment">// 1 表示有 8 位的 DSM_trick_mode_flag 字段，0 无此字段</span></span><br><span class="line">    <span class="keyword">unsigned</span> Additional_copy_info_flag: <span class="number">1</span>;  <span class="comment">// 1 表示首部有此字段，0 表示无此字段</span></span><br><span class="line">    <span class="keyword">unsigned</span> PES_CRC_flag             : <span class="number">1</span>;  <span class="comment">// 1 表示 PES 分组有 CRC 字段，0 无此字段</span></span><br><span class="line">    <span class="keyword">unsigned</span> PES_extension_flag       : <span class="number">1</span>;  <span class="comment">// 扩展标志位，置 1 表示有扩展字段，0 无此字段</span></span><br><span class="line">    <span class="keyword">unsigned</span> PES_header_data_length   : <span class="number">8</span>;  <span class="comment">// PES 首部中可选字段和填充字段的长度，可选字段的内容由上面 7 个 flags 来进行控制</span></span><br><span class="line">    if (PTS_DTS_flags == &#x27;10&#x27;) &#123;</span><br><span class="line">        <span class="keyword">unsigned</span> reserved_1           : <span class="number">4</span>;  <span class="comment">// 保留位，固定为 0010</span></span><br><span class="line">        <span class="keyword">unsigned</span> PTS_32_30            : <span class="number">3</span>;  <span class="comment">// PTS</span></span><br><span class="line">        <span class="keyword">unsigned</span> marker_1             : <span class="number">1</span>;  <span class="comment">// 保留位，固定为 1</span></span><br><span class="line">        <span class="keyword">unsigned</span> PTS_29_15            : <span class="number">15</span>; <span class="comment">// PTS</span></span><br><span class="line">        <span class="keyword">unsigned</span> marker_2             : <span class="number">1</span>;  <span class="comment">// 保留位，固定为 1</span></span><br><span class="line">        <span class="keyword">unsigned</span> PTS_14_0             : <span class="number">15</span>; <span class="comment">// PTS</span></span><br><span class="line">        <span class="keyword">unsigned</span> marker_3             : <span class="number">1</span>;  <span class="comment">// 保留位，固定为 1</span></span><br><span class="line">    &#125;</span><br><span class="line">    if (PTS_DTS_flags == &#x27;11&#x27;) &#123;</span><br><span class="line">        <span class="keyword">unsigned</span> reserved_1           : <span class="number">4</span>;  <span class="comment">// 保留位，固定为 0011</span></span><br><span class="line">        <span class="keyword">unsigned</span> PTS_32_30            : <span class="number">3</span>;  <span class="comment">// PTS</span></span><br><span class="line">        <span class="keyword">unsigned</span> marker_1             : <span class="number">1</span>;  <span class="comment">// 保留位，固定为 1</span></span><br><span class="line">        <span class="keyword">unsigned</span> PTS_29_15            : <span class="number">15</span>; <span class="comment">// PTS</span></span><br><span class="line">        <span class="keyword">unsigned</span> marker_2             : <span class="number">1</span>;  <span class="comment">// 保留位，固定为 1</span></span><br><span class="line">        <span class="keyword">unsigned</span> PTS_14_0             : <span class="number">15</span>; <span class="comment">// PTS</span></span><br><span class="line">        <span class="keyword">unsigned</span> marker_3             : <span class="number">1</span>;  <span class="comment">// 保留位，固定为 1</span></span><br><span class="line">        <span class="keyword">unsigned</span> reserved_2           : <span class="number">4</span>;  <span class="comment">// 保留位，固定为 0001</span></span><br><span class="line">        <span class="keyword">unsigned</span> DTS_32_30            : <span class="number">3</span>;  <span class="comment">// DTS</span></span><br><span class="line">        <span class="keyword">unsigned</span> marker_1             : <span class="number">1</span>;  <span class="comment">// 保留位，固定为 1</span></span><br><span class="line">        <span class="keyword">unsigned</span> DTS_29_15            : <span class="number">15</span>; <span class="comment">// DTS</span></span><br><span class="line">        <span class="keyword">unsigned</span> marker_2             : <span class="number">1</span>;  <span class="comment">// 保留位，固定为 1</span></span><br><span class="line">        <span class="keyword">unsigned</span> DTS_14_0             : <span class="number">15</span>; <span class="comment">// DTS</span></span><br><span class="line">        <span class="keyword">unsigned</span> marker_3             : <span class="number">1</span>;  <span class="comment">// 保留位，固定为 1</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> (ESCR_flag) ...</span><br><span class="line">    <span class="keyword">if</span> (ES_rate_flag) ...</span><br><span class="line">    ...</span><br><span class="line">    <span class="keyword">if</span> (PES_extension_flag) ...</span><br><span class="line">    <span class="built_in">vector</span>&lt;<span class="keyword">unsigned</span> <span class="keyword">char</span>&gt; stuffing_bytes;   <span class="comment">// 填充字段，固定为 0xFF，不得超过 32 字节</span></span><br><span class="line">    <span class="built_in">vector</span>&lt;<span class="keyword">unsigned</span> <span class="keyword">char</span>&gt; PES_packet_data_byte <span class="comment">// PES 包的负载数据</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>对比代码和码流数据，发现码流中 <code>PES_packet_length</code> 值为 <code>0</code>，其表示 <code>PES</code> 分组长度要么没有规定要么没有限制。这种情况只允许出现在有效负载包含来源于传输流分组中某个视频基本流的字节的 <code>PES</code> 分组中。</p>
-<p>该段视频流中 <code>PTS_DTS_flags == &#39;10&#39;</code>，故其还有 <code>5</code> 字节的 <code>PTS</code> 信息，我们尝试解析 <code>PTS</code> 信息：</p>
-<ol>
-<li><code>PTS</code> 的 <code>5</code> 字节信息为 <code>21 00 07 E0 0D</code>，对应二进制 <code>00100001 00000000 00000111 11100000 00001101</code></li>
-<li>除去 <code>reserved</code> 和 <code>marker</code> 字段为 <code>000 00000000 0000011 11100000 0000110</code></li>
-<li>整理可得 <code>0 00000000 00000001 11110000 00000110</code>，即 <code>0x001F006</code></li>
-<li>转为十进制为 <code>126982</code>，与工具计算结果一致</li>
-</ol>
-<p><code>PES</code> 包头数据分析完，剩下的数据就是帧视频数据的一部分了。</p>
-<h2 id="音频包解析"><a href="#音频包解析" class="headerlink" title="音频包解析"></a>音频包解析</h2><p>音频包与视频包均使用 <code>PES</code> 格式封装，解析方式基本一致，比如：</p>
-<p><img data-src="https://gitee.com/hezhaojiang/MyPics/raw/master/img/20201128192950.png" alt="音频包"></p>
-<p>音频包中第三部分：<code>TS</code> 包有效载荷 - <code>PES</code></p>
-<pre><code>HEX 00 00 01 C0 09 D3 80 80 05 21 00 07 D8 61 FF
-BIN 00000000 00000000 00000001 11000000 00001001 11010011 10000000 10000000
-    00000101 00100001 00000000 00000111 11011000 01010001 11111111
-</code></pre><p>该段视频流中 <code>PTS_DTS_flags == &#39;10&#39;</code>，故其也有 <code>5</code> 字节的 <code>PTS</code> 信息，我们尝试解析 <code>PTS</code> 信息：</p>
-<ol>
-<li><code>PTS</code> 的 <code>5</code> 字节信息为 <code>21 00 07 D8 61</code>，对应二进制 <code>00100001 00000000 00000111 11011000 01100001</code></li>
-<li>除去 <code>reserved</code> 和 <code>marker</code> 字段为 <code>000 00000000 0000011 11011000 0110000</code></li>
-<li>整理可得 <code>0 00000000 00000001 11101100 00110000</code>，即 <code>0x001EC30</code></li>
-<li>转为十进制为 <code>126000</code>，与工具计算结果一致</li>
-</ol>
-<p><code>PES</code> 包头数据分析完，剩下的数据就音频数据的一部分了。</p>
-<ul>
-<li>[1] <a href="https://cloud.tencent.com/developer/article/1746983">音视频封装：MPTG2-TS 媒体封装实例解析和说明 - 云 + 社区 - 腾讯云</a></li>
-<li>[2] <a href="/post/2020/c6ae0d94/" title="音视频封装 - TS 封装格式">音视频封装 - TS 封装格式</a></li>
-<li>[3] <a href="https://github.com/daniep01/MPEG-2-Transport-Stream-Packet-Analyser">daniep01/MPEG-2-Transport-Stream-Packet-Analyser: MPEG-2 Transport Stream packet analyser…</a></li>
-<li>[4] 文中 <code>TS</code> 码流视频源文件：<a href="/slave/TS/TestVideoTS.7z" title="密码：github.com">点击下载</a></li>
-</ul>
-]]></content>
-      <tags>
-        <tag>封装格式</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>音视频技术总览</title>
-    <url>/post/2020/8a06ddbd/</url>
-    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><h2 id="音视频技术体系"><a href="#音视频技术体系" class="headerlink" title="音视频技术体系"></a>音视频技术体系</h2><blockquote>
-<p><img data-src="https://gitee.com/hezhaojiang/MyPics/raw/master/img/20200821004823.png" alt="音视频核心技术"><br>图转自微信公众号：智媒黑板报</p>
-</blockquote>
-<a id="more"></a>
-<h3 id="音视频封装技术"><a href="#音视频封装技术" class="headerlink" title="音视频封装技术"></a>音视频封装技术</h3><h4 id="1-MPEG2-PS"><a href="#1-MPEG2-PS" class="headerlink" title="1. MPEG2-PS"></a>1. MPEG2-PS</h4><ul>
-<li><a href="/post/2020/9064839e/" title="音视频封装 - PS 封装格式">音视频封装 - PS 封装格式</a></li>
-<li><a href="/post/2020/f33d2f13/" title="音视频封装 - PES 封装格式">音视频封装 - PES 封装格式</a></li>
-<li><a href="/post/2020/1472cc3/" title="音视频封装 - PS 封装解析示例">音视频封装 - PS 封装解析示例</a>
-</li>
-</ul>
-<h4 id="2-MPEG2-TS"><a href="#2-MPEG2-TS" class="headerlink" title="2. MPEG2-TS"></a>2. MPEG2-TS</h4><ul>
-<li><a href="/post/2020/c6ae0d94/" title="音视频封装 - TS 封装格式">音视频封装 - TS 封装格式</a></li>
-<li><a href="/post/2020/a03a01c2/" title="音视频封装 - TS 封装解析示例">音视频封装 - TS 封装解析示例</a>
-</li>
-</ul>
-<h4 id="3-MP4-FMP4"><a href="#3-MP4-FMP4" class="headerlink" title="3. MP4/FMP4"></a>3. MP4/FMP4</h4><h4 id="4-AVI"><a href="#4-AVI" class="headerlink" title="4. AVI"></a>4. AVI</h4><h4 id="5-FLV"><a href="#5-FLV" class="headerlink" title="5. FLV"></a>5. FLV</h4><ul>
-<li><a href="/post/2020/dff5a5c3/" title="音视频封装 - FLV 封装格式">音视频封装 - FLV 封装格式</a>
-</li>
-</ul>
-<h3 id="音视频传输技术（流媒体传输）"><a href="#音视频传输技术（流媒体传输）" class="headerlink" title="音视频传输技术（流媒体传输）"></a>音视频传输技术（流媒体传输）</h3><h4 id="1-RTSP-RTP-RTCP"><a href="#1-RTSP-RTP-RTCP" class="headerlink" title="1. RTSP/RTP/RTCP"></a>1. RTSP/RTP/RTCP</h4><ul>
-<li><a href="/post/2020/cf84018a/" title="流媒体传输 - RTSP 协议">流媒体传输 - RTSP 协议</a></li>
-<li><a href="/post/2020/c8d9fa71/" title="流媒体传输 - RTSP 协议报文分析">流媒体传输 - RTSP 协议报文分析</a></li>
-<li><a href="/post/2020/faccfa50/" title="流媒体传输 - RTP 协议">流媒体传输 - RTP 协议</a></li>
-<li><a href="/post/2020/634443fb/" title="流媒体传输 - RTCP 协议">流媒体传输 - RTCP 协议</a></li>
-<li><a href="/post/2020/fc237a45/" title="流媒体传输 - RTP 荷载 H264">流媒体传输 - RTP 荷载 H264</a></li>
-<li><a href="/post/2020/8b244ad3/" title="流媒体传输 - RTP 荷载 H265">流媒体传输 - RTP 荷载 H265</a></li>
-<li><a href="/post/2020/65370ad/" title="流媒体传输 - RTSP Over HTTP">流媒体传输 - RTSP Over HTTP</a></li>
-<li><a href="/post/2020/880163e6/" title="流媒体传输 - RTSP Over HTTPS">流媒体传输 - RTSP Over HTTPS</a>
-</li>
-</ul>
-<h4 id="2-SIP-SDP-GB28181"><a href="#2-SIP-SDP-GB28181" class="headerlink" title="2. SIP/SDP/GB28181"></a>2. SIP/SDP/GB28181</h4><ul>
-<li><a href="/post/2020/1fa21384/" title="流媒体传输 - SDP 协议">流媒体传输 - SDP 协议</a></li>
-<li><a href="/post/2020/de00def7/" title="GB28181 - 注册与注销">GB28181 - 注册与注销</a></li>
-<li><a href="#">Post not found: GB28181 - 保活</a></li>
-<li>GB28181 - 目录检索 （未更新）</li>
-<li>GB28181 - 预览（未更新）</li>
-<li>GB28181 - 回放 &amp; 下载 （未更新）</li>
-</ul>
-<h4 id="3-RTMP"><a href="#3-RTMP" class="headerlink" title="3. RTMP"></a>3. RTMP</h4><h4 id="4-HLS"><a href="#4-HLS" class="headerlink" title="4. HLS"></a>4. HLS</h4><h4 id="5-DASH"><a href="#5-DASH" class="headerlink" title="5. DASH"></a>5. DASH</h4><h3 id="音视频编解码技术"><a href="#音视频编解码技术" class="headerlink" title="音视频编解码技术"></a>音视频编解码技术</h3><h4 id="基础知识"><a href="#基础知识" class="headerlink" title="基础知识"></a>基础知识</h4><ul>
-<li><a href="/post/2020/b179cf14/" title="数据压缩技术 - 熵编码原理">数据压缩技术 - 熵编码原理</a></li>
-<li><a href="/post/2020/28999b3b/" title="数据压缩技术 - Huffman 编码">数据压缩技术 - Huffman 编码</a></li>
-<li><a href="/post/2020/814ee4c2/" title="数据压缩技术 - 算术编码">数据压缩技术 - 算术编码</a></li>
-<li><a href="/post/2020/cff0aa33/" title="数据压缩技术 - 游程编码">数据压缩技术 - 游程编码</a>
-</li>
-</ul>
-<h4 id="H264-AVC"><a href="#H264-AVC" class="headerlink" title="H264/AVC"></a>H264/AVC</h4><h5 id="句法与语义"><a href="#句法与语义" class="headerlink" title="句法与语义"></a>句法与语义</h5><ul>
-<li><a href="/post/2020/977d1006/" title="编解码技术：H264 - 基础概念">编解码技术：H264 - 基础概念</a></li>
-<li><a href="/post/2020/f2a4ae37/" title="编解码技术：H264 - NAL Unit">编解码技术：H264 - NAL Unit</a></li>
-<li><a href="/post/2020/5224fbf9/" title="编解码技术：H264 - Profile">编解码技术：H264 - Profile</a></li>
-<li><a href="/post/2020/3552c034/" title="编解码技术：H264 - Level">编解码技术：H264 - Level</a></li>
-<li><a href="/post/2020/4b4fd3b8/" title="编解码技术：H264 - SPS">编解码技术：H264 - SPS</a></li>
-<li><a href="/post/2020/49096de1/" title="编解码技术：H264 - PPS">编解码技术：H264 - PPS</a>
-</li>
-</ul>
-<h5 id="基本编码方式"><a href="#基本编码方式" class="headerlink" title="基本编码方式"></a>基本编码方式</h5><ul>
-<li><a href="/post/2020/6343ec86/" title="编解码技术：H264 - 描述符 &amp; 熵编码">编解码技术：H264 - 描述符 &amp; 熵编码</a></li>
-<li><a href="/post/2020/4f888bde/" title="编解码技术：H264 - CAVLC">编解码技术：H264 - CAVLC</a> （未完成，暂停更新）</li>
-<li><a href="#">Post not found: 编解码技术：H264 - CABAC</a> （未完成，暂停更新）</li>
-</ul>
-<h5 id="帧内预测"><a href="#帧内预测" class="headerlink" title="帧内预测"></a>帧内预测</h5><h5 id="帧间预测"><a href="#帧间预测" class="headerlink" title="帧间预测"></a>帧间预测</h5><h5 id="码率控制"><a href="#码率控制" class="headerlink" title="码率控制"></a>码率控制</h5><h4 id="H265-HEVC"><a href="#H265-HEVC" class="headerlink" title="H265/HEVC"></a>H265/HEVC</h4><h4 id="H266-VVC"><a href="#H266-VVC" class="headerlink" title="H266/VVC"></a>H266/VVC</h4><h4 id="VP8"><a href="#VP8" class="headerlink" title="VP8"></a>VP8</h4><h4 id="VP9"><a href="#VP9" class="headerlink" title="VP9"></a>VP9</h4><h4 id="AV1"><a href="#AV1" class="headerlink" title="AV1"></a>AV1</h4><h3 id="开源项目"><a href="#开源项目" class="headerlink" title="开源项目"></a>开源项目</h3><h4 id="Nginx-rtmp-module"><a href="#Nginx-rtmp-module" class="headerlink" title="Nginx-rtmp-module"></a>Nginx-rtmp-module</h4><ul>
-<li><a href="#">Post not found: Nginx - 介绍</a></li>
-<li><a href="/post/2020/8f761f75/" title="Nginx - 环境搭建">Nginx - 环境搭建</a></li>
-<li><a href="/post/2020/f45df2c9/" title="Nginx - 命令行参数和信号">Nginx - 命令行参数和信号</a></li>
-<li>Nginx - 配置</li>
-<li><a href="/post/2020/71c958c4/" title="NRM - 环境搭建">NRM - 环境搭建</a>
-</li>
-</ul>
-<h4 id="Live555"><a href="#Live555" class="headerlink" title="Live555"></a>Live555</h4><h4 id="x264"><a href="#x264" class="headerlink" title="x264"></a>x264</h4><ul>
-<li><a href="/post/2020/ee0dad8c/" title="编解码技术：x264 - 简介">编解码技术：x264 - 简介</a></li>
-<li><a href="/post/2020/3bc2314a/" title="编解码技术：x264 - 命令行工具">编解码技术：x264 - 命令行工具</a></li>
-<li><a href="/post/2020/e6d88726/" title="编解码技术：x264 - 常用结构体">编解码技术：x264 - 常用结构体</a> （未完成，暂停更新）</li>
-<li><a href="#">Post not found: 编解码技术：x264 - 编码 API</a> （未完成，暂停更新）</li>
-</ul>
-<h4 id="x265"><a href="#x265" class="headerlink" title="x265"></a>x265</h4><h4 id="FFmpeg"><a href="#FFmpeg" class="headerlink" title="FFmpeg"></a>FFmpeg</h4><h4 id="SRS"><a href="#SRS" class="headerlink" title="SRS"></a>SRS</h4><h2 id="其他资料"><a href="#其他资料" class="headerlink" title="其他资料"></a>其他资料</h2><p><a href="https://github.com/ty6815/AvStackDocs">ty6815/AvStackDocs: 音视频基础知识整理和相关协议文档说明</a></p>
-]]></content>
-      <tags>
-        <tag>博客目录</tag>
       </tags>
   </entry>
   <entry>
@@ -9114,13 +8933,203 @@ One Packet:          4bytes              184bytes
       </tags>
   </entry>
   <entry>
-    <title>音视频日记 - Windows 安装 FFmpeg</title>
-    <url>/post/2021/a1b64acb/</url>
-    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><p>在 Windows 上编译 FFmpeg 没有在 Linux 上简单方便，在此记录编译过程</p>
+    <title>音视频封装 - TS 封装解析示例</title>
+    <url>/post/2020/a03a01c2/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><p>文章 <a href="/post/2020/c6ae0d94/" title="音视频封装 - TS 封装格式">音视频封装 - TS 封装格式</a> 中分析了 <code>TS</code> 流的结构，本文通过一段真实的码流的分析来加强对 <code>TS</code> 流结构的理解。</p>
+<blockquote>
+<p>注 1：本文中的 <code>TS</code> 码流截取自一段从网络下载的网络视频</p>
+</blockquote>
 <a id="more"></a>
-<h2 id="配置-MSVC-编译环境"><a href="#配置-MSVC-编译环境" class="headerlink" title="配置 MSVC 编译环境"></a>配置 MSVC 编译环境</h2><h2 id="MSYS2-的安装与配置"><a href="#MSYS2-的安装与配置" class="headerlink" title="MSYS2 的安装与配置"></a>MSYS2 的安装与配置</h2><h2 id="安装依赖环境"><a href="#安装依赖环境" class="headerlink" title="安装依赖环境"></a>安装依赖环境</h2><h2 id="编译-x264"><a href="#编译-x264" class="headerlink" title="编译 x264"></a>编译 x264</h2><h2 id="编译-x265"><a href="#编译-x265" class="headerlink" title="编译 x265"></a>编译 x265</h2><h2 id="编译-FFmpeg"><a href="#编译-FFmpeg" class="headerlink" title="编译 FFmpeg"></a>编译 FFmpeg</h2>]]></content>
+<h2 id="PAT-包解析"><a href="#PAT-包解析" class="headerlink" title="PAT 包解析"></a>PAT 包解析</h2><p>该段码流中第一包并不是 <code>PAT</code> 包，而 TS 封装的解析需要从 <code>PAT</code> 包开始，所以我们向后寻找 PID 为 0 的第一包，该段码流中第二包 PID 为 0，是一个 <code>PAT</code> 包：</p>
+<p><img data-src="https://gitee.com/hezhaojiang/MyPics/raw/master/img/20201128145341.png" alt="Packet 2"></p>
+<p>第一部分：<code>TS</code> 包头</p>
+<pre><code>HEX 47       40       00       10
+BIN 01000111 01000000 00000000 00010000
+</code></pre><p>对比该部分结构，可代码定义如下：</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> <span class="title">TS_HEAD</span> &#123;</span></span><br><span class="line">    <span class="keyword">unsigned</span> sync_byte                    : <span class="number">8</span>;  <span class="comment">// 同步字节，固定为 0x47</span></span><br><span class="line">    <span class="keyword">unsigned</span> transport_error_indicator    : <span class="number">1</span>;  <span class="comment">// 传输错误指示符，0 表明在 TS 头的 adapt 域后没有无用字节</span></span><br><span class="line">    <span class="keyword">unsigned</span> payload_unit_start_indicator : <span class="number">1</span>;  <span class="comment">// 负载单元起始标示符，一个完整的数据包开始时标记为 1</span></span><br><span class="line">    <span class="keyword">unsigned</span> transport_priority           : <span class="number">1</span>;  <span class="comment">// 传输优先级，0 为低优先级</span></span><br><span class="line">    <span class="keyword">unsigned</span> pid                          : <span class="number">13</span>; <span class="comment">// PID 值，0 表示 TS 头后面就是 PAT 表</span></span><br><span class="line">    <span class="keyword">unsigned</span> transport_scrambling_controls    : <span class="number">2</span>;  <span class="comment">// TS 流 ID，一般为 0x0001，区别于一个网络中其它多路复用的流</span></span><br><span class="line">    <span class="keyword">unsigned</span> adaptation_field_control         : <span class="number">2</span>;  <span class="comment">// 是否包含自适应区，&#x27;01&#x27;为无自适应域，仅含有效负载</span></span><br><span class="line">    <span class="keyword">unsigned</span> continuity_counter               : <span class="number">4</span>;  <span class="comment">// 递增计数器，0-F，起始值不一定取 0，但必须是连续的</span></span><br><span class="line">&#125; TS_HEAD;</span><br></pre></td></tr></table></figure>
+<p>第二部分：<code>TS</code> 包调整字节</p>
+<pre><code>HEX 00
+BIN 00000000
+</code></pre><p>对比该部分结构，代码定义分析如下：</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> <span class="title">TS_ADAPT</span> &#123;</span></span><br><span class="line">    <span class="keyword">unsigned</span> <span class="keyword">char</span> adaptation_field_length;  <span class="comment">// 自适应域长度，后面的字节数，此包中为 7 字节</span></span><br><span class="line">    <span class="keyword">unsigned</span> <span class="keyword">char</span> flag;                     <span class="comment">// 0x50 表示包含 PCR，0x40 表示不包含 PCR</span></span><br><span class="line">    <span class="keyword">if</span> (flag == <span class="number">0x50</span>) <span class="keyword">unsigned</span> <span class="keyword">char</span> PCR[<span class="number">5</span>]; <span class="comment">// 节目时钟参考 40bit</span></span><br><span class="line">    <span class="built_in">vector</span>&lt;<span class="keyword">unsigned</span> <span class="keyword">char</span>&gt; stuffing_bytes;   <span class="comment">// 填充字节，取值 0xFF</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><code>adaptation_field_length</code> 为 <code>0</code>，故该部分后续字节数为 <code>0</code>。</p>
+<p>第三部分：<code>TS</code> 包有效载荷 - 即 <code>PSI</code> 表 <code>PAT</code> 的数据：</p>
+<pre><code>HEX 00 B0 0D 00 01 C1 00 00  00 01 F0 00 2A B1 04 B2
+BIN 00000000 10110000 00001101 00000000 00000001 11000001 00000000 00000000
+    00000000 00000001 11110000 00000000 00101010 10110001 00000100 10110010
+</code></pre><p>对比该部分结构，代码定义分析如下：</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> <span class="title">TS_PAT</span> &#123;</span></span><br><span class="line">    <span class="keyword">unsigned</span> table_id                     : <span class="number">8</span>;  <span class="comment">// 固定 0x00 ，标志是该表是 PAT</span></span><br><span class="line">    <span class="keyword">unsigned</span> section_syntax_indicator     : <span class="number">1</span>;  <span class="comment">// 段语法标志位，固定为 1</span></span><br><span class="line">    <span class="keyword">unsigned</span> zero                         : <span class="number">1</span>;  <span class="comment">// 0</span></span><br><span class="line">    <span class="keyword">unsigned</span> reserved_1                   : <span class="number">2</span>;  <span class="comment">// 保留位，固定为 11</span></span><br><span class="line">    <span class="keyword">unsigned</span> section_length               : <span class="number">12</span>; <span class="comment">// 段长度，0000 00001101 值为 13</span></span><br><span class="line">    <span class="keyword">unsigned</span> transport_stream_id          : <span class="number">16</span>; <span class="comment">// TS 流 ID，一般为 0x0001，区别于一个网络中其它多路复用的流</span></span><br><span class="line">    <span class="keyword">unsigned</span> reserved_2                   : <span class="number">2</span>;  <span class="comment">// 保留位，固定为 11</span></span><br><span class="line">    <span class="keyword">unsigned</span> version_number               : <span class="number">5</span>;  <span class="comment">// PAT 版本号，固定为 00000，如果 PAT 有变化则版本号加 1</span></span><br><span class="line">    <span class="keyword">unsigned</span> current_next_indicator       : <span class="number">1</span>;  <span class="comment">// 固定为 1，表示这个 PAT 表有效，如果为 0 则要等待下一个 PAT 表</span></span><br><span class="line">    <span class="keyword">unsigned</span> section_number               : <span class="number">8</span>;  <span class="comment">// 分段的号码。PAT 可能分为多段传输，第一段为 00，以后每个分段加 1，最多可能有 256 个分段</span></span><br><span class="line">    <span class="keyword">unsigned</span> last_section_number          : <span class="number">8</span>;  <span class="comment">// 最后一个分段的号码</span></span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">vector</span>&lt;TS_PAT_Program&gt; program; = &#123;    <span class="comment">// 该包中仅有一个 TS_PAT_Program</span></span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">unsigned</span> program_number       :<span class="number">16</span>;  <span class="comment">// 节目号，为 0x0000 时表示这是 NIT，节目号为 0x0001 时, 表示这是 PMT</span></span><br><span class="line">            <span class="keyword">unsigned</span> reserved             :<span class="number">3</span>    <span class="comment">// 保留，固定为 111</span></span><br><span class="line">            <span class="keyword">if</span> (program_number == <span class="number">0x0000</span>)</span><br><span class="line">                <span class="keyword">unsigned</span> network_PID      :<span class="number">13</span>;</span><br><span class="line">            <span class="keyword">else</span> <span class="keyword">if</span> (program_number == <span class="number">0x0001</span>)</span><br><span class="line">                <span class="keyword">unsigned</span> program_map_PID  :<span class="number">13</span>;  <span class="comment">// 节目号对应内容的 PID 值，该 PAT 包取值为 0x1000 = 4096</span></span><br><span class="line">            &#125;</span><br><span class="line">        &#125;,</span><br><span class="line">    &#125;;</span><br><span class="line">    <span class="keyword">unsigned</span> CRC_32                       : <span class="number">32</span>; <span class="comment">// CRC32 校验码</span></span><br><span class="line">&#125; TS_PAT;</span><br></pre></td></tr></table></figure>
+<h2 id="PMT-包解析"><a href="#PMT-包解析" class="headerlink" title="PMT 包解析"></a>PMT 包解析</h2><p><code>PAT</code> 信息中可知 <code>PMT</code> 表的 <code>PID</code> 为 <code>4096</code>，我们向后寻找 <code>PID</code> 为 <code>4096</code> 的 <code>TS</code> 包，发现第 <code>3</code> 包 <code>TS</code> 包即为 <code>PMT</code> 包：</p>
+<p><img data-src="https://gitee.com/hezhaojiang/MyPics/raw/master/img/20201128155219.png" alt="PMT"></p>
+<p>第一部分：<code>TS</code> 包头</p>
+<pre><code>HEX 47       50       00       10
+BIN 01000111 01010000 00000000 00010000
+</code></pre><p>从 <code>TS</code> 包头可知该 <code>TS</code> 包的 <code>PID</code> 值为 <code>4096</code>，是我们寻找的 <code>PMT</code> 包。</p>
+<p>第二部分：<code>TS</code> 包调整字节，该部分只有一个字节 <code>0x00</code>，详见上文解析，此处不再重复。</p>
+<p>第三部分：<code>TS</code> 包有效载荷 - <code>PMT</code></p>
+<pre><code>HEX 02 B0 23 00 01 C1 00 00  E1 00 F0 00 24 E1 00 F0
+    06 05 04 48 45 56 43 03  E1 01 F0 06 0A 04 75 6E
+    64 00 DD 33 FC 6A
+BIN 00000010 10110000 00100011 00000000 00000001 11000001 00000000 00000000
+    11100001 00000000 11110000 00000000 00100100 11100001 00000000 11110000
+    00000110 00000101 00000100 01001000 01000101 01010110 01000011 00000011
+    11100001 00000001 11110000 00000110 00001010 00000100 01110101 01101110
+    01100100 00000000 11011101 00110011 11111100 01101010
+</code></pre><p>对比该部分结构，代码定义分析如下：</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> <span class="title">TS_PMT</span> &#123;</span></span><br><span class="line">    <span class="keyword">unsigned</span> table_id                     : <span class="number">8</span>;  <span class="comment">// 取值随意，一般使用 0x02, 表示 PMT 表</span></span><br><span class="line">    <span class="keyword">unsigned</span> section_syntax_indicator     : <span class="number">1</span>;  <span class="comment">// 段语法标志位，固定为 1</span></span><br><span class="line">    <span class="keyword">unsigned</span> zero                         : <span class="number">1</span>;  <span class="comment">// 保留位，固定为 0</span></span><br><span class="line">    <span class="keyword">unsigned</span> reserved_1                   : <span class="number">2</span>;  <span class="comment">// 保留位，固定为 11</span></span><br><span class="line">    <span class="keyword">unsigned</span> section_length               : <span class="number">12</span>; <span class="comment">// 段长度，0000 00100011 = 35 字节</span></span><br><span class="line">    <span class="keyword">unsigned</span> program_number               : <span class="number">16</span>; <span class="comment">// 当前 PMT 表映射到的节目号，1、2、3</span></span><br><span class="line">    <span class="keyword">unsigned</span> reserved_2                   : <span class="number">2</span>;  <span class="comment">// 保留位，固定为 11</span></span><br><span class="line">    <span class="keyword">unsigned</span> version_number               : <span class="number">5</span>;  <span class="comment">// PMT 版本号码，固定为 00000，如果 PAT 有变化则版本号加 1</span></span><br><span class="line">    <span class="keyword">unsigned</span> current_next_indicator       : <span class="number">1</span>;  <span class="comment">// 发送的 PMT 表， 1 当前有效 PMT 有效</span></span><br><span class="line">    <span class="keyword">unsigned</span> section_number               : <span class="number">8</span>;  <span class="comment">// 分段的号码。PMT 可能分为多段传输，第一段为 00，以后每个分段加 1，最多可能有 256 个分段</span></span><br><span class="line">    <span class="keyword">unsigned</span> last_section_number          : <span class="number">8</span>;  <span class="comment">// 分段数</span></span><br><span class="line">    <span class="keyword">unsigned</span> reserved_3                   : <span class="number">3</span>;  <span class="comment">// 保留位，固定为 111</span></span><br><span class="line">    <span class="keyword">unsigned</span> PCR_PID                      : <span class="number">13</span>; <span class="comment">// 指明 TS 包的 PID 值 (0x0100 = 256)，该 TS 包含有 PCR 同步时钟，</span></span><br><span class="line">    <span class="keyword">unsigned</span> reserved_4                   : <span class="number">4</span>;  <span class="comment">// 预留位，固定为 1111</span></span><br><span class="line">    <span class="keyword">unsigned</span> program_info_length          : <span class="number">12</span>; <span class="comment">// 前 2bit 为 00，该域指出跟随其后对节目信息的描述的字节数 (0x000 = 0)。</span></span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">vector</span>&lt;<span class="keyword">unsigned</span> <span class="keyword">char</span>&gt; descriptor;      <span class="comment">// 0 字节</span></span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">vector</span>&lt;TS_PMT_Stream&gt; PMT_Stream = &#123;</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">unsigned</span> stream_type          : <span class="number">8</span>;  <span class="comment">// 指示本节目流的类型，H.265 编码对应 0x24</span></span><br><span class="line">            <span class="keyword">unsigned</span> reserved1            : <span class="number">3</span>;  <span class="comment">// 保留位，固定为 111</span></span><br><span class="line">            <span class="keyword">unsigned</span> elementary_PID       : <span class="number">13</span>; <span class="comment">// 指示该流的 PID 值 (0x100 = 256)</span></span><br><span class="line">            <span class="keyword">unsigned</span> reserved2            : <span class="number">3</span>;  <span class="comment">// 保留位，固定为 1111</span></span><br><span class="line">            <span class="keyword">unsigned</span> ES_info_length       : <span class="number">12</span>; <span class="comment">// 前两位 bit 为 00，指示跟随其后的描述相关节目元素的字节数 (0x006 = 6)</span></span><br><span class="line">            <span class="built_in">std</span>::<span class="built_in">vector</span>&lt;<span class="keyword">unsigned</span> <span class="keyword">char</span>&gt; descriptor;   <span class="comment">// 6 字节</span></span><br><span class="line">        &#125;,</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">unsigned</span> stream_type          : <span class="number">8</span>;  <span class="comment">// 指示本节目流的类型，MP3 编码对应 0x03</span></span><br><span class="line">            <span class="keyword">unsigned</span> reserved1            : <span class="number">3</span>;  <span class="comment">// 保留位，固定为 111</span></span><br><span class="line">            <span class="keyword">unsigned</span> elementary_PID       : <span class="number">13</span>; <span class="comment">// 指示该流的 PID 值 (0x101 = 257)</span></span><br><span class="line">            <span class="keyword">unsigned</span> reserved2            : <span class="number">3</span>;  <span class="comment">// 保留位，固定为 1111</span></span><br><span class="line">            <span class="keyword">unsigned</span> ES_info_length       : <span class="number">12</span>; <span class="comment">// 前两位 bit 为 00，指示跟随其后的描述相关节目元素的字节数 (0x006 = 6)</span></span><br><span class="line">            <span class="built_in">std</span>::<span class="built_in">vector</span>&lt;<span class="keyword">unsigned</span> <span class="keyword">char</span>&gt; descriptor;   <span class="comment">// 6 字节</span></span><br><span class="line">        &#125;,</span><br><span class="line">    &#125;;</span><br><span class="line">    <span class="keyword">unsigned</span> CRC_32                       : <span class="number">32</span>; <span class="comment">// CRC32 校验码</span></span><br><span class="line">&#125; TS_PMT;</span><br></pre></td></tr></table></figure>
+<p><code>PMT</code> 是定义每路节目的音视频类型 <code>TYPE</code> 和编号 <code>PID</code> 的关键，该 <code>TS</code> 码流中：</p>
+<pre><code>- 视频流格式为 `H.265`，对应 `PID` 为 `256`
+- 视频流格式为 `MP3`，对应 `PID` 为 `257`
+</code></pre><h2 id="视频包解析"><a href="#视频包解析" class="headerlink" title="视频包解析"></a>视频包解析</h2><p>第 <code>4</code> 包的 <code>PID</code> 值为 <code>256</code>，根据上述分析可知，该包为一个视频包：</p>
+<p><img data-src="https://gitee.com/hezhaojiang/MyPics/raw/master/img/20201128163234.png" alt="视频包"></p>
+<p>第一部分：<code>TS</code> 包头</p>
+<pre><code>HEX 47       41       00       30
+BIN 01000111 01000001 00000000 00110000
+</code></pre><p>从 <code>TS</code> 包头可知该 <code>TS</code> 包的 <code>PID</code> 值为 <code>256</code>，是我们寻找的视频包，另外，TS 包头中 <code>adaptation_field_control</code> 字段为 <code>11</code>，代表同时带有自适应域和有效负载。</p>
+<p>第二部分：<code>TS</code> 包调整字节</p>
+<pre><code>HEX 07 50 00 00 7C F7 7E 00
+BIN 00000111 01010000 00000000 00000000 01111100 11110111 01111110 00000000
+</code></pre><p>对比该部分结构，代码定义分析如下：</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> <span class="title">TS_ADAPT</span> &#123;</span></span><br><span class="line">    <span class="keyword">unsigned</span> <span class="keyword">char</span> adaptation_field_length;  <span class="comment">// 自适应域长度，后面的字节数，此包中为 7 字节</span></span><br><span class="line">    <span class="keyword">unsigned</span> <span class="keyword">char</span> flag;                     <span class="comment">// 0x50 表示包含 PCR</span></span><br><span class="line">    <span class="keyword">if</span> (flag == <span class="number">0x50</span>) <span class="keyword">unsigned</span> <span class="keyword">char</span> PCR[<span class="number">5</span>]; <span class="comment">// 节目时钟参考 40bit</span></span><br><span class="line">    <span class="built_in">vector</span>&lt;<span class="keyword">unsigned</span> <span class="keyword">char</span>&gt; stuffing_bytes;   <span class="comment">// 填充字节，取值 0xFF</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>第三部分：<code>TS</code> 包有效载荷 - <code>PES</code></p>
+<pre><code>HEX 00 00 01 E0 00 00 80 80  05 21 00 07 E0 0D
+BIN 00000000 00000000 00000001 11100000 00000000 00000000 10000000 10000000
+    00000101 00100001 00000000 00000111 11100000 00001101
+</code></pre><p>对比该部分结构，代码定义分析如下：</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> <span class="title">TS_ADAPT</span> &#123;</span></span><br><span class="line">    <span class="keyword">unsigned</span> start_code_prefix        : <span class="number">24</span>; <span class="comment">// 包头起始码，固定为 0x000001</span></span><br><span class="line">    <span class="keyword">unsigned</span> stream_id;               : <span class="number">8</span>;  <span class="comment">// PES 包中的负载流类型，一般视频为 0xe0，音频为 0xc0</span></span><br><span class="line">    <span class="keyword">unsigned</span> PES_packet_length        : <span class="number">16</span>; <span class="comment">// PES 包长度，包括此字节后的可选包头和负载的长度</span></span><br><span class="line">    <span class="keyword">unsigned</span> reserved_1               : <span class="number">2</span>;  <span class="comment">// 保留位，固定为 10</span></span><br><span class="line">    <span class="keyword">unsigned</span> PES_scrambling_control   : <span class="number">2</span>;  <span class="comment">// 加密模式，00 未加密，01 或 10 或 11 由用户定义</span></span><br><span class="line">    <span class="keyword">unsigned</span> PES_priority             : <span class="number">1</span>;  <span class="comment">// 有效负载的优先级，值为 1 比值为 0 的负载优先级高</span></span><br><span class="line">    <span class="keyword">unsigned</span> Data_alignment_indicator : <span class="number">1</span>;  <span class="comment">// 数据定位指示器</span></span><br><span class="line">    <span class="keyword">unsigned</span> Copyright                : <span class="number">1</span>;  <span class="comment">// 版权信息，1 为有版权，0 无版权</span></span><br><span class="line">    <span class="keyword">unsigned</span> Original_or_copy         : <span class="number">1</span>;  <span class="comment">// 原始或备份，1 为原始，0 为备份</span></span><br><span class="line">    <span class="keyword">unsigned</span> PTS_DTS_flags            : <span class="number">2</span>;  <span class="comment">// PTS 和 DTS 标志位，10 表示首部有 PTS 字段，11 表示有 PTS 和 DTS 字段，00 表示都没有，01 被禁止</span></span><br><span class="line">    <span class="keyword">unsigned</span> ESCR_flag                : <span class="number">1</span>;  <span class="comment">// ESCR 标志，1 表示首部有 ESCR 字段，0 则无此字段</span></span><br><span class="line">    <span class="keyword">unsigned</span> ES_rate_flag             : <span class="number">1</span>;  <span class="comment">// ES_rate 字段，1 表示首部有此字段，0 无此字段</span></span><br><span class="line">    <span class="keyword">unsigned</span> DSM_trick_mode_flag      : <span class="number">1</span>;  <span class="comment">// 1 表示有 8 位的 DSM_trick_mode_flag 字段，0 无此字段</span></span><br><span class="line">    <span class="keyword">unsigned</span> Additional_copy_info_flag: <span class="number">1</span>;  <span class="comment">// 1 表示首部有此字段，0 表示无此字段</span></span><br><span class="line">    <span class="keyword">unsigned</span> PES_CRC_flag             : <span class="number">1</span>;  <span class="comment">// 1 表示 PES 分组有 CRC 字段，0 无此字段</span></span><br><span class="line">    <span class="keyword">unsigned</span> PES_extension_flag       : <span class="number">1</span>;  <span class="comment">// 扩展标志位，置 1 表示有扩展字段，0 无此字段</span></span><br><span class="line">    <span class="keyword">unsigned</span> PES_header_data_length   : <span class="number">8</span>;  <span class="comment">// PES 首部中可选字段和填充字段的长度，可选字段的内容由上面 7 个 flags 来进行控制</span></span><br><span class="line">    if (PTS_DTS_flags == &#x27;10&#x27;) &#123;</span><br><span class="line">        <span class="keyword">unsigned</span> reserved_1           : <span class="number">4</span>;  <span class="comment">// 保留位，固定为 0010</span></span><br><span class="line">        <span class="keyword">unsigned</span> PTS_32_30            : <span class="number">3</span>;  <span class="comment">// PTS</span></span><br><span class="line">        <span class="keyword">unsigned</span> marker_1             : <span class="number">1</span>;  <span class="comment">// 保留位，固定为 1</span></span><br><span class="line">        <span class="keyword">unsigned</span> PTS_29_15            : <span class="number">15</span>; <span class="comment">// PTS</span></span><br><span class="line">        <span class="keyword">unsigned</span> marker_2             : <span class="number">1</span>;  <span class="comment">// 保留位，固定为 1</span></span><br><span class="line">        <span class="keyword">unsigned</span> PTS_14_0             : <span class="number">15</span>; <span class="comment">// PTS</span></span><br><span class="line">        <span class="keyword">unsigned</span> marker_3             : <span class="number">1</span>;  <span class="comment">// 保留位，固定为 1</span></span><br><span class="line">    &#125;</span><br><span class="line">    if (PTS_DTS_flags == &#x27;11&#x27;) &#123;</span><br><span class="line">        <span class="keyword">unsigned</span> reserved_1           : <span class="number">4</span>;  <span class="comment">// 保留位，固定为 0011</span></span><br><span class="line">        <span class="keyword">unsigned</span> PTS_32_30            : <span class="number">3</span>;  <span class="comment">// PTS</span></span><br><span class="line">        <span class="keyword">unsigned</span> marker_1             : <span class="number">1</span>;  <span class="comment">// 保留位，固定为 1</span></span><br><span class="line">        <span class="keyword">unsigned</span> PTS_29_15            : <span class="number">15</span>; <span class="comment">// PTS</span></span><br><span class="line">        <span class="keyword">unsigned</span> marker_2             : <span class="number">1</span>;  <span class="comment">// 保留位，固定为 1</span></span><br><span class="line">        <span class="keyword">unsigned</span> PTS_14_0             : <span class="number">15</span>; <span class="comment">// PTS</span></span><br><span class="line">        <span class="keyword">unsigned</span> marker_3             : <span class="number">1</span>;  <span class="comment">// 保留位，固定为 1</span></span><br><span class="line">        <span class="keyword">unsigned</span> reserved_2           : <span class="number">4</span>;  <span class="comment">// 保留位，固定为 0001</span></span><br><span class="line">        <span class="keyword">unsigned</span> DTS_32_30            : <span class="number">3</span>;  <span class="comment">// DTS</span></span><br><span class="line">        <span class="keyword">unsigned</span> marker_1             : <span class="number">1</span>;  <span class="comment">// 保留位，固定为 1</span></span><br><span class="line">        <span class="keyword">unsigned</span> DTS_29_15            : <span class="number">15</span>; <span class="comment">// DTS</span></span><br><span class="line">        <span class="keyword">unsigned</span> marker_2             : <span class="number">1</span>;  <span class="comment">// 保留位，固定为 1</span></span><br><span class="line">        <span class="keyword">unsigned</span> DTS_14_0             : <span class="number">15</span>; <span class="comment">// DTS</span></span><br><span class="line">        <span class="keyword">unsigned</span> marker_3             : <span class="number">1</span>;  <span class="comment">// 保留位，固定为 1</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> (ESCR_flag) ...</span><br><span class="line">    <span class="keyword">if</span> (ES_rate_flag) ...</span><br><span class="line">    ...</span><br><span class="line">    <span class="keyword">if</span> (PES_extension_flag) ...</span><br><span class="line">    <span class="built_in">vector</span>&lt;<span class="keyword">unsigned</span> <span class="keyword">char</span>&gt; stuffing_bytes;   <span class="comment">// 填充字段，固定为 0xFF，不得超过 32 字节</span></span><br><span class="line">    <span class="built_in">vector</span>&lt;<span class="keyword">unsigned</span> <span class="keyword">char</span>&gt; PES_packet_data_byte <span class="comment">// PES 包的负载数据</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>对比代码和码流数据，发现码流中 <code>PES_packet_length</code> 值为 <code>0</code>，其表示 <code>PES</code> 分组长度要么没有规定要么没有限制。这种情况只允许出现在有效负载包含来源于传输流分组中某个视频基本流的字节的 <code>PES</code> 分组中。</p>
+<p>该段视频流中 <code>PTS_DTS_flags == &#39;10&#39;</code>，故其还有 <code>5</code> 字节的 <code>PTS</code> 信息，我们尝试解析 <code>PTS</code> 信息：</p>
+<ol>
+<li><code>PTS</code> 的 <code>5</code> 字节信息为 <code>21 00 07 E0 0D</code>，对应二进制 <code>00100001 00000000 00000111 11100000 00001101</code></li>
+<li>除去 <code>reserved</code> 和 <code>marker</code> 字段为 <code>000 00000000 0000011 11100000 0000110</code></li>
+<li>整理可得 <code>0 00000000 00000001 11110000 00000110</code>，即 <code>0x001F006</code></li>
+<li>转为十进制为 <code>126982</code>，与工具计算结果一致</li>
+</ol>
+<p><code>PES</code> 包头数据分析完，剩下的数据就是帧视频数据的一部分了。</p>
+<h2 id="音频包解析"><a href="#音频包解析" class="headerlink" title="音频包解析"></a>音频包解析</h2><p>音频包与视频包均使用 <code>PES</code> 格式封装，解析方式基本一致，比如：</p>
+<p><img data-src="https://gitee.com/hezhaojiang/MyPics/raw/master/img/20201128192950.png" alt="音频包"></p>
+<p>音频包中第三部分：<code>TS</code> 包有效载荷 - <code>PES</code></p>
+<pre><code>HEX 00 00 01 C0 09 D3 80 80 05 21 00 07 D8 61 FF
+BIN 00000000 00000000 00000001 11000000 00001001 11010011 10000000 10000000
+    00000101 00100001 00000000 00000111 11011000 01010001 11111111
+</code></pre><p>该段视频流中 <code>PTS_DTS_flags == &#39;10&#39;</code>，故其也有 <code>5</code> 字节的 <code>PTS</code> 信息，我们尝试解析 <code>PTS</code> 信息：</p>
+<ol>
+<li><code>PTS</code> 的 <code>5</code> 字节信息为 <code>21 00 07 D8 61</code>，对应二进制 <code>00100001 00000000 00000111 11011000 01100001</code></li>
+<li>除去 <code>reserved</code> 和 <code>marker</code> 字段为 <code>000 00000000 0000011 11011000 0110000</code></li>
+<li>整理可得 <code>0 00000000 00000001 11101100 00110000</code>，即 <code>0x001EC30</code></li>
+<li>转为十进制为 <code>126000</code>，与工具计算结果一致</li>
+</ol>
+<p><code>PES</code> 包头数据分析完，剩下的数据就音频数据的一部分了。</p>
+<ul>
+<li>[1] <a href="https://cloud.tencent.com/developer/article/1746983">音视频封装：MPTG2-TS 媒体封装实例解析和说明 - 云 + 社区 - 腾讯云</a></li>
+<li>[2] <a href="/post/2020/c6ae0d94/" title="音视频封装 - TS 封装格式">音视频封装 - TS 封装格式</a></li>
+<li>[3] <a href="https://github.com/daniep01/MPEG-2-Transport-Stream-Packet-Analyser">daniep01/MPEG-2-Transport-Stream-Packet-Analyser: MPEG-2 Transport Stream packet analyser…</a></li>
+<li>[4] 文中 <code>TS</code> 码流视频源文件：<a href="/slave/TS/TestVideoTS.7z" title="密码：github.com">点击下载</a></li>
+</ul>
+]]></content>
       <tags>
-        <tag>FFmpeg</tag>
+        <tag>封装格式</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>音视频技术总览</title>
+    <url>/post/2020/8a06ddbd/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><h2 id="音视频技术体系"><a href="#音视频技术体系" class="headerlink" title="音视频技术体系"></a>音视频技术体系</h2><blockquote>
+<p><img data-src="https://gitee.com/hezhaojiang/MyPics/raw/master/img/20200821004823.png" alt="音视频核心技术"><br>图转自微信公众号：智媒黑板报</p>
+</blockquote>
+<a id="more"></a>
+<h3 id="音视频封装技术"><a href="#音视频封装技术" class="headerlink" title="音视频封装技术"></a>音视频封装技术</h3><h4 id="1-MPEG2-PS"><a href="#1-MPEG2-PS" class="headerlink" title="1. MPEG2-PS"></a>1. MPEG2-PS</h4><ul>
+<li><a href="/post/2020/9064839e/" title="音视频封装 - PS 封装格式">音视频封装 - PS 封装格式</a></li>
+<li><a href="/post/2020/f33d2f13/" title="音视频封装 - PES 封装格式">音视频封装 - PES 封装格式</a></li>
+<li><a href="/post/2020/1472cc3/" title="音视频封装 - PS 封装解析示例">音视频封装 - PS 封装解析示例</a>
+</li>
+</ul>
+<h4 id="2-MPEG2-TS"><a href="#2-MPEG2-TS" class="headerlink" title="2. MPEG2-TS"></a>2. MPEG2-TS</h4><ul>
+<li><a href="/post/2020/c6ae0d94/" title="音视频封装 - TS 封装格式">音视频封装 - TS 封装格式</a></li>
+<li><a href="/post/2020/a03a01c2/" title="音视频封装 - TS 封装解析示例">音视频封装 - TS 封装解析示例</a>
+</li>
+</ul>
+<h4 id="3-MP4-FMP4"><a href="#3-MP4-FMP4" class="headerlink" title="3. MP4/FMP4"></a>3. MP4/FMP4</h4><h4 id="4-AVI"><a href="#4-AVI" class="headerlink" title="4. AVI"></a>4. AVI</h4><h4 id="5-FLV"><a href="#5-FLV" class="headerlink" title="5. FLV"></a>5. FLV</h4><ul>
+<li><a href="/post/2020/dff5a5c3/" title="音视频封装 - FLV 封装格式">音视频封装 - FLV 封装格式</a>
+</li>
+</ul>
+<h3 id="音视频传输技术（流媒体传输）"><a href="#音视频传输技术（流媒体传输）" class="headerlink" title="音视频传输技术（流媒体传输）"></a>音视频传输技术（流媒体传输）</h3><h4 id="1-RTSP-RTP-RTCP"><a href="#1-RTSP-RTP-RTCP" class="headerlink" title="1. RTSP/RTP/RTCP"></a>1. RTSP/RTP/RTCP</h4><ul>
+<li><a href="/post/2020/cf84018a/" title="流媒体传输 - RTSP 协议">流媒体传输 - RTSP 协议</a></li>
+<li><a href="/post/2020/c8d9fa71/" title="流媒体传输 - RTSP 协议报文分析">流媒体传输 - RTSP 协议报文分析</a></li>
+<li><a href="/post/2020/faccfa50/" title="流媒体传输 - RTP 协议">流媒体传输 - RTP 协议</a></li>
+<li><a href="/post/2020/634443fb/" title="流媒体传输 - RTCP 协议">流媒体传输 - RTCP 协议</a></li>
+<li><a href="/post/2020/fc237a45/" title="流媒体传输 - RTP 荷载 H264">流媒体传输 - RTP 荷载 H264</a></li>
+<li><a href="/post/2020/8b244ad3/" title="流媒体传输 - RTP 荷载 H265">流媒体传输 - RTP 荷载 H265</a></li>
+<li><a href="/post/2020/65370ad/" title="流媒体传输 - RTSP Over HTTP">流媒体传输 - RTSP Over HTTP</a></li>
+<li><a href="/post/2020/880163e6/" title="流媒体传输 - RTSP Over HTTPS">流媒体传输 - RTSP Over HTTPS</a>
+</li>
+</ul>
+<h4 id="2-SIP-SDP-GB28181"><a href="#2-SIP-SDP-GB28181" class="headerlink" title="2. SIP/SDP/GB28181"></a>2. SIP/SDP/GB28181</h4><ul>
+<li><a href="/post/2020/1fa21384/" title="流媒体传输 - SDP 协议">流媒体传输 - SDP 协议</a></li>
+<li><a href="/post/2020/de00def7/" title="GB28181 - 注册与注销">GB28181 - 注册与注销</a></li>
+<li><a href="#">Post not found: GB28181 - 保活</a></li>
+<li>GB28181 - 目录检索 （未更新）</li>
+<li>GB28181 - 预览（未更新）</li>
+<li>GB28181 - 回放 &amp; 下载 （未更新）</li>
+</ul>
+<h4 id="3-RTMP"><a href="#3-RTMP" class="headerlink" title="3. RTMP"></a>3. RTMP</h4><h4 id="4-HLS"><a href="#4-HLS" class="headerlink" title="4. HLS"></a>4. HLS</h4><h4 id="5-DASH"><a href="#5-DASH" class="headerlink" title="5. DASH"></a>5. DASH</h4><h3 id="音视频编解码技术"><a href="#音视频编解码技术" class="headerlink" title="音视频编解码技术"></a>音视频编解码技术</h3><h4 id="基础知识"><a href="#基础知识" class="headerlink" title="基础知识"></a>基础知识</h4><ul>
+<li><a href="/post/2020/b179cf14/" title="数据压缩技术 - 熵编码原理">数据压缩技术 - 熵编码原理</a></li>
+<li><a href="/post/2020/28999b3b/" title="数据压缩技术 - Huffman 编码">数据压缩技术 - Huffman 编码</a></li>
+<li><a href="/post/2020/814ee4c2/" title="数据压缩技术 - 算术编码">数据压缩技术 - 算术编码</a></li>
+<li><a href="/post/2020/cff0aa33/" title="数据压缩技术 - 游程编码">数据压缩技术 - 游程编码</a>
+</li>
+</ul>
+<h4 id="H264-AVC"><a href="#H264-AVC" class="headerlink" title="H264/AVC"></a>H264/AVC</h4><h5 id="句法与语义"><a href="#句法与语义" class="headerlink" title="句法与语义"></a>句法与语义</h5><ul>
+<li><a href="/post/2020/977d1006/" title="编解码技术：H264 - 基础概念">编解码技术：H264 - 基础概念</a></li>
+<li><a href="/post/2020/f2a4ae37/" title="编解码技术：H264 - NAL Unit">编解码技术：H264 - NAL Unit</a></li>
+<li><a href="/post/2020/5224fbf9/" title="编解码技术：H264 - Profile">编解码技术：H264 - Profile</a></li>
+<li><a href="/post/2020/3552c034/" title="编解码技术：H264 - Level">编解码技术：H264 - Level</a></li>
+<li><a href="/post/2020/4b4fd3b8/" title="编解码技术：H264 - SPS">编解码技术：H264 - SPS</a></li>
+<li><a href="/post/2020/49096de1/" title="编解码技术：H264 - PPS">编解码技术：H264 - PPS</a>
+</li>
+</ul>
+<h5 id="基本编码方式"><a href="#基本编码方式" class="headerlink" title="基本编码方式"></a>基本编码方式</h5><ul>
+<li><a href="/post/2020/6343ec86/" title="编解码技术：H264 - 描述符 &amp; 熵编码">编解码技术：H264 - 描述符 &amp; 熵编码</a></li>
+<li><a href="/post/2020/4f888bde/" title="编解码技术：H264 - CAVLC">编解码技术：H264 - CAVLC</a> （未完成，暂停更新）</li>
+<li><a href="#">Post not found: 编解码技术：H264 - CABAC</a> （未完成，暂停更新）</li>
+</ul>
+<h5 id="帧内预测"><a href="#帧内预测" class="headerlink" title="帧内预测"></a>帧内预测</h5><h5 id="帧间预测"><a href="#帧间预测" class="headerlink" title="帧间预测"></a>帧间预测</h5><h5 id="码率控制"><a href="#码率控制" class="headerlink" title="码率控制"></a>码率控制</h5><h4 id="H265-HEVC"><a href="#H265-HEVC" class="headerlink" title="H265/HEVC"></a>H265/HEVC</h4><h4 id="H266-VVC"><a href="#H266-VVC" class="headerlink" title="H266/VVC"></a>H266/VVC</h4><h4 id="VP8"><a href="#VP8" class="headerlink" title="VP8"></a>VP8</h4><h4 id="VP9"><a href="#VP9" class="headerlink" title="VP9"></a>VP9</h4><h4 id="AV1"><a href="#AV1" class="headerlink" title="AV1"></a>AV1</h4><h3 id="开源项目"><a href="#开源项目" class="headerlink" title="开源项目"></a>开源项目</h3><h4 id="Nginx-rtmp-module"><a href="#Nginx-rtmp-module" class="headerlink" title="Nginx-rtmp-module"></a>Nginx-rtmp-module</h4><ul>
+<li><a href="#">Post not found: Nginx - 介绍</a></li>
+<li><a href="/post/2020/8f761f75/" title="Nginx - 环境搭建">Nginx - 环境搭建</a></li>
+<li><a href="/post/2020/f45df2c9/" title="Nginx - 命令行参数和信号">Nginx - 命令行参数和信号</a></li>
+<li>Nginx - 配置</li>
+<li><a href="/post/2020/71c958c4/" title="NRM - 环境搭建">NRM - 环境搭建</a>
+</li>
+</ul>
+<h4 id="Live555"><a href="#Live555" class="headerlink" title="Live555"></a>Live555</h4><h4 id="x264"><a href="#x264" class="headerlink" title="x264"></a>x264</h4><ul>
+<li><a href="/post/2020/ee0dad8c/" title="编解码技术：x264 - 简介">编解码技术：x264 - 简介</a></li>
+<li><a href="/post/2020/3bc2314a/" title="编解码技术：x264 - 命令行工具">编解码技术：x264 - 命令行工具</a></li>
+<li><a href="/post/2020/e6d88726/" title="编解码技术：x264 - 常用结构体">编解码技术：x264 - 常用结构体</a> （未完成，暂停更新）</li>
+<li><a href="#">Post not found: 编解码技术：x264 - 编码 API</a> （未完成，暂停更新）</li>
+</ul>
+<h4 id="x265"><a href="#x265" class="headerlink" title="x265"></a>x265</h4><h4 id="ffmpeg"><a href="#ffmpeg" class="headerlink" title="ffmpeg"></a>ffmpeg</h4><h4 id="SRS"><a href="#SRS" class="headerlink" title="SRS"></a>SRS</h4><h2 id="其他资料"><a href="#其他资料" class="headerlink" title="其他资料"></a>其他资料</h2><p><a href="https://github.com/ty6815/AvStackDocs">ty6815/AvStackDocs: 音视频基础知识整理和相关协议文档说明</a></p>
+]]></content>
+      <tags>
+        <tag>博客目录</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>音视频日记 - Windows 安装 ffmpeg</title>
+    <url>/post/2021/a1b64acb/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><p>在 <code>Windows</code> 上编译 <code>ffmpeg</code> 没有在 <code>linux</code> 上简单方便，在此记录编译过程</p>
+<a id="more"></a>
+<h2 id="配置-MSVC-编译环境"><a href="#配置-MSVC-编译环境" class="headerlink" title="配置 MSVC 编译环境"></a>配置 MSVC 编译环境</h2><p>配置环境变量如下（VS2019）：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># PATH</span></span><br><span class="line">C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.28.29333\bin\Hostx64\x64\</span><br><span class="line"><span class="comment"># INCLUDE</span></span><br><span class="line">C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.28.29333\include</span><br><span class="line">C:\Program Files (x86)\Windows Kits\10\Include\10.0.18362.0\shared</span><br><span class="line">C:\Program Files (x86)\Windows Kits\10\Include\10.0.18362.0\ucrt</span><br><span class="line">C:\Program Files (x86)\Windows Kits\10\Include\10.0.18362.0\um</span><br><span class="line">C:\Program Files (x86)\Windows Kits\10\Include\10.0.18362.0\winrt</span><br><span class="line"><span class="comment"># LIB</span></span><br><span class="line">C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.28.29333\lib\x64</span><br><span class="line">C:\Program Files (x86)\Windows Kits\10\Lib\10.0.18362.0\um\x64</span><br><span class="line">C:\Program Files (x86)\Windows Kits\10\Lib\10.0.18362.0\ucrt\x64</span><br></pre></td></tr></table></figure>
+<h2 id="MSYS2-的安装与配置"><a href="#MSYS2-的安装与配置" class="headerlink" title="MSYS2 的安装与配置"></a>MSYS2 的安装与配置</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 找到以下内容</span></span><br><span class="line">rem <span class="built_in">set</span> MSYS2_PATH_TYPE=inherit</span><br><span class="line"><span class="comment"># 修改为</span></span><br><span class="line"><span class="built_in">set</span> MSYS2_PATH_TYPE=inherit</span><br></pre></td></tr></table></figure>
+<p>执行 <code>cl</code> 命令查看输出：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># cl</span></span><br><span class="line">用于 x64 的 Microsoft (R) C/C++ 优化编译器 19.28.29335 版</span><br><span class="line">版权所有(C) Microsoft Corporation。保留所有权利。</span><br><span class="line"></span><br><span class="line">用法: cl [ 选项... ] 文件名... [ /link 链接选项... ]</span><br></pre></td></tr></table></figure>
+<p>如果是以上返回则配置成功</p>
+<p>如果提示 <code>bash: cl: 未找到命令</code> 则需要检查是不是上述配置出了问题，或者重启电脑再试一下。</p>
+<h2 id="安装依赖环境"><a href="#安装依赖环境" class="headerlink" title="安装依赖环境"></a>安装依赖环境</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 如果网络连接不上，可以尝试使用代理</span></span><br><span class="line"><span class="built_in">export</span> http_proxy=<span class="string">&quot;127.0.0.1:10809&quot;</span></span><br><span class="line"><span class="built_in">export</span> https_proxy=<span class="string">&quot;127.0.0.1:10809&quot;</span></span><br><span class="line"><span class="comment"># 安装以下依赖</span></span><br><span class="line">pacman -S nasm</span><br><span class="line">pacman -S yasm</span><br><span class="line">pacman -S make cmake</span><br><span class="line">pacman -S diffutils</span><br><span class="line">pacman -S pkg-config</span><br><span class="line">pacman -S git</span><br><span class="line">pacman -S mingw-w64-x86_64-SDL2</span><br></pre></td></tr></table></figure>
+<h2 id="编译-x264"><a href="#编译-x264" class="headerlink" title="编译 x264"></a>编译 x264</h2><h2 id="编译-x265"><a href="#编译-x265" class="headerlink" title="编译 x265"></a>编译 x265</h2><h2 id="编译-ffmpeg"><a href="#编译-ffmpeg" class="headerlink" title="编译 ffmpeg"></a>编译 ffmpeg</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">./configure --<span class="built_in">enable</span>-yasm --<span class="built_in">enable</span>-asm --toolchain=msvc --<span class="built_in">enable</span>-shared --<span class="built_in">enable</span>-static</span><br><span class="line">make -j</span><br><span class="line">make install</span><br></pre></td></tr></table></figure>
+]]></content>
+      <tags>
+        <tag>ffmpeg</tag>
         <tag>音视频</tag>
       </tags>
   </entry>
@@ -9161,10 +9170,134 @@ b 表示在参考块的第二行包含的色度像素样本数
 - 4:2:0 参考块第 1 行包含 2 个色度样本，第 2 行没有包含色度样本。
 </code></pre><h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><ul>
 <li>[1] <a href="https://zhuanlan.zhihu.com/p/85620611">如何理解 YUV ？ - 知乎</a></li>
-<li>[2] [多媒体编程开发之 FFmpeg 基础库]</li>
+<li>[2] 多媒体编程开发之 FFmpeg 基础库</li>
 </ul>
 ]]></content>
       <tags>
+        <tag>音视频</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>音视频日记 - ffmpeg 关键结构体</title>
+    <url>/post/2021/e03178b1/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><ul>
+<li><code>AVFormatContext</code> : 封装格式上下文结构体，也是统领全局的结构体，保存了视频文件封装格式相关信息</li>
+<li><code>AVInputFormat</code> : 每种封装格式（例如 FLV, MKV, MP4, AVI）对应一个该结构体</li>
+<li><code>AVStream</code> : 视频文件中每个视频（音频）流对应一个该结构体</li>
+<li><code>AVCodecContext</code> : 编码器上下文结构体，保存了视频（音频）编解码相关信息</li>
+<li><code>AVCodec</code> : 每种视频（音频）编解码器 (例如 H.264 解码器) 对应一个该结构体</li>
+<li><code>AVPacket</code> : 存储一帧压缩编码数据</li>
+<li><code>AVFrame</code> : 存储一帧解码后像素（采样）数据</li>
+</ul>
+<h2 id="AVFormatContext"><a href="#AVFormatContext" class="headerlink" title="AVFormatContext"></a>AVFormatContext</h2><h3 id="AVFormatContext-相关函数"><a href="#AVFormatContext-相关函数" class="headerlink" title="AVFormatContext 相关函数"></a>AVFormatContext 相关函数</h3><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="comment">/* Allocate an AVFormatContext.</span></span><br><span class="line"><span class="comment"> * avformat_free_context() can be used to free the context and everything</span></span><br><span class="line"><span class="comment"> * allocated by the framework within it. */</span></span><br><span class="line"><span class="function">AVFormatContext *<span class="title">avformat_alloc_context</span><span class="params">(<span class="keyword">void</span>)</span></span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">/* Open an input stream and read the header. The codecs are not opened.</span></span><br><span class="line"><span class="comment"> * The stream must be closed with avformat_close_input().</span></span><br><span class="line"><span class="comment"> * @param ps Pointer to user-supplied AVFormatContext (allocated by avformat_alloc_context).</span></span><br><span class="line"><span class="comment"> *           May be a pointer to NULL, in which case an AVFormatContext is allocated by this</span></span><br><span class="line"><span class="comment"> *           function and written into ps.</span></span><br><span class="line"><span class="comment"> * @param url URL of the stream to open.</span></span><br><span class="line"><span class="comment"> * @return 0 on success, a negative AVERROR on failure. */</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">avformat_open_input</span><span class="params">(AVFormatContext **ps, <span class="keyword">const</span> <span class="keyword">char</span> *url, ff_const59 AVInputFormat *fmt, AVDictionary **options)</span></span>;</span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Read packets of a media file to get stream information.</span></span><br><span class="line"><span class="comment"> * @param ic media file handle</span></span><br><span class="line"><span class="comment"> * @param options  If non-NULL, an ic.nb_streams long array of pointers to</span></span><br><span class="line"><span class="comment"> *                 dictionaries, where i-th member contains options for</span></span><br><span class="line"><span class="comment"> *                 codec corresponding to i-th stream.</span></span><br><span class="line"><span class="comment"> *                 On return each dictionary will be filled with options that were not found.</span></span><br><span class="line"><span class="comment"> * @return &gt;=0 if OK, AVERROR_xxx on error</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">avformat_find_stream_info</span><span class="params">(AVFormatContext *ic, AVDictionary **options)</span></span>;</span><br></pre></td></tr></table></figure>
+<h3 id="AVFormatContext-成员变量"><a href="#AVFormatContext-成员变量" class="headerlink" title="AVFormatContext 成员变量"></a>AVFormatContext 成员变量</h3><ul>
+<li><code>iformat</code> : 输入 / 输出 视频的 <code>AVInputFormat</code></li>
+<li><code>nb_streams</code> : 输入 / 输出 视频的 <code>AVStream</code> 个数</li>
+<li><code>streams</code> : 输入 / 输出 视频的 <code>AVStream[]</code> 数组</li>
+<li><code>duration</code> : 输入 / 输出 视频的时长（以微秒为单位）</li>
+<li><code>bit_rate</code> : 输入 / 输出 视频的码率</li>
+</ul>
+]]></content>
+      <tags>
+        <tag>ffmpeg</tag>
+        <tag>音视频</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>音视频日记 - ffmpeg 命令行</title>
+    <url>/post/2021/4765df61/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><p><code>ffmpeg</code> 是一个基于 <code>ffmpeg</code> 库的经典转码程序，几乎被所有的知名系统、软件工具、服务器后台等静默使用，通过命令行启动转码，这里主要以命令行语法讲解为主。</p>
+<a id="more"></a>
+<h2 id="查看-ffmpeg-帮助命令"><a href="#查看-ffmpeg-帮助命令" class="headerlink" title="查看 ffmpeg 帮助命令"></a>查看 ffmpeg 帮助命令</h2><p>在学习任何一个命令行程序前，首先要知道如何查看对应命令的帮助，在一般情况下，<code>linux</code> 平台下程序的帮助信息是通过 <code>程序名 -h</code> 的方式进行输出，<code>ffmpeg</code> 亦是如此。</p>
+<p>精简帮助命令：<code>ffmpeg –h</code><br>更多帮助命令：<code>ffmpeg –h long</code><br>完整帮助命令：<code>ffmpeg –h full</code></p>
+<h2 id="ffmpeg-的语法格式"><a href="#ffmpeg-的语法格式" class="headerlink" title="ffmpeg 的语法格式"></a>ffmpeg 的语法格式</h2><p>ffmpeg 的语法格式如下所示</p>
+<pre><code>ffmpeg [输入源参数] -i [输入 URL] [输出参数] [输出 URL]
+
+其中 [输入源参数] 和 [输出参数] 的语法格式为：
+[options] [value(可以省略)] ... ...
+</code></pre><p>示例 1：</p>
+<pre><code>ffmpeg -f mpegts -i &quot;http://AVTestFile/AVNormal/52&quot; -vcodec x264Encoder -r 15 -b:v 256000 -vf scale=800:600 -an -copyts -y &quot;51.avi&quot;
+* 输入源使用 mpegts 容器 http 协议的 URL
+* -vcodec x264Encoder 使用 x264Encoder 视频编码器
+* -r 15 视频帧率 15 fps
+* -b:v 256000 视频编码码率 265Kbps
+* -vf scale=800:600 使用视频滤器 scale 进行缩放到 800x600 尺寸
+* -an 禁用音频
+* -copyts 时间戳拷贝
+* -y 覆盖输出文件
+* 输出 URL 默认使用 file 协议，输出到文件 51.avi
+</code></pre><p>示例 2：</p>
+<pre><code>ffmpeg -i BaiCaoYuan.mp4 -ss 00:00:19 -t 00:06:48 -dcodec copy -b:v 4000K -y cut.mp4
+* 输入源使用 file 协议，为 BaiCaoYuan.mp4 文件
+* -dcodec copy 使用与源视频一致的编解码器
+* -b:v 4000K 视频编码码率 4000Kbps
+* -y 覆盖输出文件
+* 输出 URL 默认使用 file 协议，输出到文件 cut.mp4
+</code></pre><h2 id="常用参数"><a href="#常用参数" class="headerlink" title="常用参数"></a>常用参数</h2><div class="table-container">
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>示例</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>-t duration</td>
+<td>-t 00:06:48</td>
+<td>设置处理时间，格式为hh:mm:ss</td>
+</tr>
+<tr>
+<td>-ss position</td>
+<td>-ss 00:00:19</td>
+<td>设置起始时间，格式为hh:mm:ss</td>
+</tr>
+<tr>
+<td>-b:v bitrate</td>
+<td>-b:v 256000</td>
+<td>设置视频码率</td>
+</tr>
+<tr>
+<td>-b:a bitrate</td>
+<td>-b:a 320000</td>
+<td>设置音频码率</td>
+</tr>
+<tr>
+<td>-r fps</td>
+<td>-r 25</td>
+<td>设置帧率</td>
+</tr>
+<tr>
+<td>-s wxh</td>
+<td>-s 800x600</td>
+<td>设置帧大小，格式为WxH</td>
+</tr>
+<tr>
+<td>-c:v codec</td>
+<td>-c:v h264</td>
+<td>设置视频编码器</td>
+</tr>
+<tr>
+<td>-c:a codec</td>
+<td>-c:a aac</td>
+<td>设置音频编码器</td>
+</tr>
+<tr>
+<td>-ar freq</td>
+<td>-ar 44100</td>
+<td>设置音频采样率</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><ul>
+<li>[1] 基于 FFmpeg + SDL 的视频播放器的制作 — 雷霄骅</li>
+<li>[2] 多媒体编程开发之 FFmpeg 基础库</li>
+</ul>
+]]></content>
+      <tags>
+        <tag>ffmpeg</tag>
         <tag>音视频</tag>
       </tags>
   </entry>
