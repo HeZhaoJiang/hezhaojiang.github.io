@@ -221,7 +221,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">112</span>
+          <span class="site-state-item-count">113</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -269,6 +269,113 @@
       
 
       
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://github.hezhaojiang.io/post/2020/50f2e42d/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://gitee.com/hezhaojiang/MyPics/raw/master/img/20200801192913.jpg">
+      <meta itemprop="name" content="何照江">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="何照江的博客">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/post/2020/50f2e42d/" class="post-title-link" itemprop="url">流媒体传输 - RTMP 协议报文分析</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2020-10-12 15:26:42" itemprop="dateCreated datePublished" datetime="2020-10-12T15:26:42+08:00">2020-10-12</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">更新于</span>
+        <time title="修改时间：2020-10-17 15:00:22" itemprop="dateModified" datetime="2020-10-17T15:00:22+08:00">2020-10-17</time>
+      </span>
+
+  
+    <span id="/post/2020/50f2e42d/" class="post-meta-item leancloud_visitors" data-flag-title="流媒体传输 - RTMP 协议报文分析" title="阅读次数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span class="leancloud-visitors-count"></span>
+    </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/post/2020/50f2e42d/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/post/2020/50f2e42d/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>握手之后，连接开始对一个或多个 <code>chunk stream</code> 进行合并。创建的每个块都有一个唯一 <code>id</code> 对其进行关联，这个 <code>id</code> 叫做 <code>chunk stream id</code>。这些块通过网络进行传输。传递时，每个块必须被完全发送才可以发送下一块。在接收端，这些块被根据 <code>chunk stream id</code> 被组装成消息。</p>
+<p>每个块包含一个头和数据体。块头包含三个部分：</p>
+<pre><code>+--------------+----------------+--------------------+--------------+
+| Basic Header | Message Header | Extended Timestamp |  Chunk Data  |
++--------------+----------------+--------------------+--------------+
+|&lt;------------------- Chunk Header -----------------&gt;|
+                            Chunk Format
+</code></pre>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/post/2020/50f2e42d/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
     
 
 
@@ -1147,106 +1254,6 @@
           <!--noindex-->
             <div class="post-button">
               <a class="btn" href="/post/2020/41da3a83/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://github.hezhaojiang.io/post/2020/8ed94cfd/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="https://gitee.com/hezhaojiang/MyPics/raw/master/img/20200801192913.jpg">
-      <meta itemprop="name" content="何照江">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="何照江的博客">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/post/2020/8ed94cfd/" class="post-title-link" itemprop="url">Leetcode 刷题总结 - 动态规划（计数问题）</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-      
-
-      <time title="创建时间：2020-10-05 03:01:19 / 修改时间：12:31:53" itemprop="dateCreated datePublished" datetime="2020-10-05T03:01:19+08:00">2020-10-05</time>
-    </span>
-
-  
-    <span id="/post/2020/8ed94cfd/" class="post-meta-item leancloud_visitors" data-flag-title="Leetcode 刷题总结 - 动态规划（计数问题）" title="阅读次数">
-      <span class="post-meta-item-icon">
-        <i class="far fa-eye"></i>
-      </span>
-      <span class="post-meta-item-text">阅读次数：</span>
-      <span class="leancloud-visitors-count"></span>
-    </span>
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="far fa-comment"></i>
-      </span>
-      <span class="post-meta-item-text">Valine：</span>
-    
-    <a title="valine" href="/post/2020/8ed94cfd/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/post/2020/8ed94cfd/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <div class="note success"><h2 id="转载说明"><a href="#转载说明" class="headerlink" title="转载说明"></a>转载说明</h2><ul>
-<li>作者：力扣 (LeetCode)</li>
-<li>链接：<a target="_blank" rel="noopener" href="https://leetcode-cn.com/leetbook/read/dynamic-programming-2-plus/">https://leetcode-cn.com/leetbook/read/dynamic-programming-2-plus/</a></li>
-<li>来源：力扣（LeetCode）</li>
-<li>著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。</li>
-</ul>
-</div>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/post/2020/8ed94cfd/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
