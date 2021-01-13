@@ -6,7 +6,7 @@
   <link href="http://github.hezhaojiang.io/atom.xml" rel="self"/>
   
   <link href="http://github.hezhaojiang.io/"/>
-  <updated>2021-01-13T14:12:59.867Z</updated>
+  <updated>2021-01-13T16:09:30.943Z</updated>
   <id>http://github.hezhaojiang.io/</id>
   
   <author>
@@ -21,7 +21,7 @@
     <link href="http://github.hezhaojiang.io/post/2021/ce615ee4/"/>
     <id>http://github.hezhaojiang.io/post/2021/ce615ee4/</id>
     <published>2021-01-13T05:11:40.000Z</published>
-    <updated>2021-01-13T14:12:59.867Z</updated>
+    <updated>2021-01-13T16:09:30.943Z</updated>
     
     <content type="html"><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script>]]></content>
     
@@ -33,6 +33,10 @@
     
     
     
+    <category term="音视频日记" scheme="http://github.hezhaojiang.io/categories/%E9%9F%B3%E8%A7%86%E9%A2%91%E6%97%A5%E8%AE%B0/"/>
+    
+    
+    <category term="ffmpeg" scheme="http://github.hezhaojiang.io/tags/ffmpeg/"/>
     
   </entry>
   
