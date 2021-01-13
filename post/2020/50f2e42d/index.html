@@ -31,9 +31,8 @@
 <meta property="og:description" content="握手之后，连接开始对一个或多个 chunk stream 进行合并。创建的每个块都有一个唯一 id 对其进行关联，这个 id 叫做 chunk stream id。这些块通过网络进行传输。传递时，每个块必须被完全发送才可以发送下一块。在接收端，这些块被根据 chunk stream id 被组装成消息。 每个块包含一个头和数据体。块头包含三个部分： +--------------+--------">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2020-10-12T07:26:42.000Z">
-<meta property="article:modified_time" content="2020-10-17T07:00:22.372Z">
+<meta property="article:modified_time" content="2021-01-13T13:57:20.785Z">
 <meta property="article:author" content="何照江">
-<meta property="article:tag" content="流媒体">
 <meta property="article:tag" content="RTMP">
 <meta name="twitter:card" content="summary">
 
@@ -146,6 +145,11 @@
     <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
 
   </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
         <li class="menu-item menu-item-archives">
 
     <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
@@ -228,14 +232,20 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">113</span>
+          <span class="site-state-item-count">112</span>
           <span class="site-state-item-name">日志</span>
         </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">12</span>
+        <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">31</span>
+        <span class="site-state-item-count">42</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -316,8 +326,17 @@
           <i class="far fa-calendar-check"></i>
         </span>
         <span class="post-meta-item-text">更新于</span>
-        <time title="修改时间：2020-10-17 15:00:22" itemprop="dateModified" datetime="2020-10-17T15:00:22+08:00">2020-10-17</time>
+        <time title="修改时间：2021-01-13 21:57:20" itemprop="dateModified" datetime="2021-01-13T21:57:20+08:00">2021-01-13</time>
       </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E6%B5%81%E5%AA%92%E4%BD%93%E4%BC%A0%E8%BE%93/" itemprop="url" rel="index"><span itemprop="name">流媒体传输</span></a>
+        </span>
+    </span>
 
   
     <span id="/post/2020/50f2e42d/" class="post-meta-item leancloud_visitors" data-flag-title="流媒体传输 - RTMP 协议报文分析" title="阅读次数">
@@ -927,18 +946,6 @@
     <li class="popular-posts-item">
       <div class="popular-posts-title"><a href="\post\2020\ccfdbe65\" rel="bookmark">流媒体传输 - RTMP 协议</a></div>
     </li>
-    <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="\post\2020\5e447d67\" rel="bookmark">SDP 协议解析</a></div>
-    </li>
-    <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="\post\2020\f5bbcc60\" rel="bookmark">流媒体传输 - HLS 协议</a></div>
-    </li>
-    <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="\post\2020\634443fb\" rel="bookmark">流媒体传输 - RTCP 协议</a></div>
-    </li>
-    <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="\post\2020\faccfa50\" rel="bookmark">流媒体传输 - RTP 协议</a></div>
-    </li>
   </ul>
 
 
@@ -962,7 +969,6 @@
 </div>
 
           <div class="post-tags">
-              <a href="/tags/%E6%B5%81%E5%AA%92%E4%BD%93/" rel="tag"># 流媒体</a>
               <a href="/tags/RTMP/" rel="tag"># RTMP</a>
           </div>
 
@@ -975,8 +981,8 @@
                 </a>
             </div>
             <div class="post-nav-item">
-                <a href="/post/2020/4689dd6d/" rel="next" title="Markdown 学习笔记 - Mermaid">
-                  Markdown 学习笔记 - Mermaid <i class="fa fa-chevron-right"></i>
+                <a href="/post/2020/4689dd6d/" rel="next" title="善用佳软 - Markdown 工具之 Mermaid">
+                  善用佳软 - Markdown 工具之 Mermaid <i class="fa fa-chevron-right"></i>
                 </a>
             </div>
           </div>
@@ -1156,7 +1162,7 @@ NexT.utils.loadComments('#valine-comments', () => {
 });
 </script>
 
-    </div>
-<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"jsonPath":"/live2dw/assets/koharu.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":true},"log":false});</script><!-- hexo-inject:begin --><!-- hexo-inject:end --></body>
+    </div><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"jsonPath":"/live2dw/assets/koharu.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":true},"log":false});</script></body>
 </html>
 <script type="text/javascript" src="/js/click_magic.js"></script>

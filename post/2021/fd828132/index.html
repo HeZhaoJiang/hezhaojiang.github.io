@@ -32,9 +32,9 @@
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://gitee.com/hezhaojiang/MyPics/raw/master/img/20210112230616.png">
 <meta property="article:published_time" content="2021-01-12T06:40:43.000Z">
-<meta property="article:modified_time" content="2021-01-12T16:12:28.307Z">
+<meta property="article:modified_time" content="2021-01-13T14:12:07.148Z">
 <meta property="article:author" content="何照江">
-<meta property="article:tag" content="Leetcode">
+<meta property="article:tag" content="图论">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://gitee.com/hezhaojiang/MyPics/raw/master/img/20210112230616.png">
 
@@ -147,6 +147,11 @@
     <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
 
   </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
         <li class="menu-item menu-item-archives">
 
     <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
@@ -213,7 +218,7 @@
 
       <!--noindex-->
       <section class="post-toc-wrap sidebar-panel">
-          <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%8B%93%E6%89%91%E6%8E%92%E5%BA%8F%E7%AE%80%E4%BB%8B"><span class="nav-number">1.</span> <span class="nav-text">拓扑排序简介</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BB%83%E4%B9%A0"><span class="nav-number">2.</span> <span class="nav-text">练习</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%82%E8%80%83%E8%B5%84%E6%96%99"><span class="nav-number">3.</span> <span class="nav-text">参考资料</span></a></li></ol></div>
+          <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%8B%93%E6%89%91%E6%8E%92%E5%BA%8F%E7%AE%80%E4%BB%8B"><span class="nav-number">1.</span> <span class="nav-text">拓扑排序简介</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%8B%93%E6%89%91%E6%8E%92%E5%BA%8F%E7%9A%84%E5%AE%9E%E7%8E%B0"><span class="nav-number">2.</span> <span class="nav-text">拓扑排序的实现</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B9%BF%E5%BA%A6%E4%BC%98%E5%85%88%E7%AE%97%E6%B3%95%E5%AE%9E%E7%8E%B0%E6%8B%93%E6%89%91%E6%8E%92%E5%BA%8F"><span class="nav-number">2.1.</span> <span class="nav-text">广度优先算法实现拓扑排序</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%8B%93%E6%89%91%E6%8E%92%E5%BA%8F%E9%A2%98%E7%9B%AE%E8%A7%A3%E6%9E%90"><span class="nav-number">3.</span> <span class="nav-text">拓扑排序题目解析</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#207-%E8%AF%BE%E7%A8%8B%E8%A1%A8"><span class="nav-number">3.1.</span> <span class="nav-text">207. 课程表</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BB%83%E4%B9%A0"><span class="nav-number">4.</span> <span class="nav-text">练习</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%82%E8%80%83%E8%B5%84%E6%96%99"><span class="nav-number">5.</span> <span class="nav-text">参考资料</span></a></li></ol></div>
       </section>
       <!--/noindex-->
 
@@ -229,14 +234,20 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">113</span>
+          <span class="site-state-item-count">112</span>
           <span class="site-state-item-name">日志</span>
         </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">12</span>
+        <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">31</span>
+        <span class="site-state-item-count">42</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -317,8 +328,17 @@
           <i class="far fa-calendar-check"></i>
         </span>
         <span class="post-meta-item-text">更新于</span>
-        <time title="修改时间：2021-01-13 00:12:28" itemprop="dateModified" datetime="2021-01-13T00:12:28+08:00">2021-01-13</time>
+        <time title="修改时间：2021-01-13 22:12:07" itemprop="dateModified" datetime="2021-01-13T22:12:07+08:00">2021-01-13</time>
       </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Leetcode/" itemprop="url" rel="index"><span itemprop="name">Leetcode</span></a>
+        </span>
+    </span>
 
   
     <span id="/post/2021/fd828132/" class="post-meta-item leancloud_visitors" data-flag-title="Leetcode 刷题总结 - 拓扑排序" title="阅读次数">
@@ -370,7 +390,27 @@
 深度优先搜索中的发现和完成时间都在每个顶点的旁边示出
 图 b 为 经过拓扑排序后的同一图形
 图中的各个顶点按照完成时间的递降顺序从左向右排列，注意所有的有向边都是从左指向右的
-</code></pre><h2 id="练习"><a href="#练习" class="headerlink" title="练习"></a>练习</h2><ul>
+</code></pre><h2 id="拓扑排序的实现"><a href="#拓扑排序的实现" class="headerlink" title="拓扑排序的实现"></a>拓扑排序的实现</h2><p>为了说明如何得到一个有向无环图的拓扑排序，我们首先需要了解有向图节点的入度（indegree）和出度（outdegree）的概念：</p>
+<ul>
+<li>入度：设有向图中有一节点 $v$，其入度即为当前所有从其他节点出发，终点为 $v$ 的的边的数目。也就是所有指向 $v$ 的有向边的数目。</li>
+<li>出度：设有向图中有一节点 $v$，其出度即为当前所有起点为 $v$，指向其他节点的边的数目。也就是所有由 $v$ 发出的边的数目。</li>
+</ul>
+<p>在了解了入度和出度的概念之后，再根据拓扑排序的定义，我们自然就能够得出结论：要想完成拓扑排序，我们每次都应当从入度为 0 的节点开始遍历。因为只有入度为 0 的节点才能够成为拓扑排序的起点。否则根据拓扑排序的定义，只要一个节点 $v$ 的入度不为 0，则至少有一条边起始于其他节点而指向 $v$，那么这条边的起点在拓扑排序的顺序中应当位于 $v$ 之前，则 $v$ 不能成为当前遍历的起点。</p>
+<p>由此我们可以进一步得出一个改进的深度优先遍历或广度优先遍历算法来完成拓扑排序。</p>
+<h3 id="广度优先算法实现拓扑排序"><a href="#广度优先算法实现拓扑排序" class="headerlink" title="广度优先算法实现拓扑排序"></a>广度优先算法实现拓扑排序</h3><p>广度优先算法实现拓扑排序需要多保存每一个节点对应的入度（普通遍历算法只需要保存节点之间的关系），并在遍历的每一层选取入度为 0 的节点开始遍历（普通遍历算法则可以从该吃呢个任意一个节点开始遍历）。这个算法描述如下：</p>
+<ol>
+<li>保存每一个节点与其他节点之间的关系，可以使用邻接表或者哈希表</li>
+<li>计算并保存每一个节点的入度，可以使用数组</li>
+<li>遍历选取入度为 0 的节点，并将该节点加入队列</li>
+<li>取队列中的节点，加入排序结果列表，并将该节点的子节点的入度减 1</li>
+<li>重复步骤 5，直到队列为空</li>
+<li>如果排序结果列表和节点总数相同，代表遍历完了所有节点，否则说明有节点没有遍历到<ul>
+<li>如果遍历完所有的节点，则排序结果列表即为当前图的拓扑排序</li>
+<li>如果无法遍历完所有的节点，则意味着当前图不是有向无环图，不存在拓扑排序</li>
+</ul>
+</li>
+</ol>
+<h2 id="拓扑排序题目解析"><a href="#拓扑排序题目解析" class="headerlink" title="拓扑排序题目解析"></a>拓扑排序题目解析</h2><h3 id="207-课程表"><a href="#207-课程表" class="headerlink" title="207. 课程表"></a>207. 课程表</h3><h2 id="练习"><a href="#练习" class="headerlink" title="练习"></a>练习</h2><ul>
 <li>「力扣」第 207 题：课程表（中等）</li>
 <li>「力扣」第 210 题：课程表 II（中等）</li>
 <li>「力扣」第 301 题：最小高度树（中等）</li>
@@ -385,6 +425,7 @@
 </ul>
 <h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><ul>
 <li>[1] <a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/course-schedule/solution/ke-cheng-biao-by-leetcode-solution/">课程表 - 课程表 - 力扣（LeetCode）</a></li>
+<li>[2] <a target="_blank" rel="noopener" href="https://www.jianshu.com/p/3347f54a3187">深入理解拓扑排序（Topological sort) - 简书</a></li>
 </ul>
 
     </div>
@@ -399,16 +440,10 @@
       <div class="popular-posts-title"><a href="\post\2020\7fbaabf9\" rel="bookmark">Leetcode 刷题总结 - Code546 移除盒子</a></div>
     </li>
     <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="\post\2020\42349ee0\" rel="bookmark">Leetcode 刷题总结 - 二叉搜索树</a></div>
+      <div class="popular-posts-title"><a href="\post\2020\4fe8298f\" rel="bookmark">Leetcode 刷题总结 - 并查集</a></div>
     </li>
     <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="\post\2020\1c1a3b62\" rel="bookmark">Leetcode 刷题总结 - 二叉树的遍历</a></div>
-    </li>
-    <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="\post\2020\9158b835\" rel="bookmark">Leetcode 刷题总结 - 动态规划（前缀和）</a></div>
-    </li>
-    <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="\post\2020\cb02a3b0\" rel="bookmark">Leetcode 刷题总结 - 动态规划（区间动态规划）</a></div>
+      <div class="popular-posts-title"><a href="\post\2020\a98e5da5\" rel="bookmark">Leetcode 刷题总结 - 欧拉回路 & 通路</a></div>
     </li>
   </ul>
 
@@ -433,7 +468,7 @@
 </div>
 
           <div class="post-tags">
-              <a href="/tags/Leetcode/" rel="tag"># Leetcode</a>
+              <a href="/tags/%E5%9B%BE%E8%AE%BA/" rel="tag"># 图论</a>
           </div>
 
         
@@ -445,6 +480,9 @@
                 </a>
             </div>
             <div class="post-nav-item">
+                <a href="/post/2021/ce615ee4/" rel="next" title="音视频日记 - ffmpeg 之 IO 架构分析">
+                  音视频日记 - ffmpeg 之 IO 架构分析 <i class="fa fa-chevron-right"></i>
+                </a>
             </div>
           </div>
     </footer>
@@ -623,7 +661,7 @@ NexT.utils.loadComments('#valine-comments', () => {
 });
 </script>
 
-    </div>
-<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"jsonPath":"/live2dw/assets/koharu.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":true},"log":false});</script><!-- hexo-inject:begin --><!-- hexo-inject:end --></body>
+    </div><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"jsonPath":"/live2dw/assets/koharu.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":true},"log":false});</script></body>
 </html>
 <script type="text/javascript" src="/js/click_magic.js"></script>

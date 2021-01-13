@@ -31,9 +31,9 @@
 <meta property="og:description" content="之前的小节讲了很多 libevent 的基础构件，现在以一个实际例子来初步探究 libevent 的基本工作流程。">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2020-11-08T20:36:32.000Z">
-<meta property="article:modified_time" content="2021-01-01T17:23:26.605Z">
+<meta property="article:modified_time" content="2021-01-13T13:54:37.661Z">
 <meta property="article:author" content="何照江">
-<meta property="article:tag" content="源码">
+<meta property="article:tag" content="libevent">
 <meta name="twitter:card" content="summary">
 
 
@@ -145,6 +145,11 @@
     <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
 
   </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
         <li class="menu-item menu-item-archives">
 
     <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
@@ -227,14 +232,20 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">113</span>
+          <span class="site-state-item-count">112</span>
           <span class="site-state-item-name">日志</span>
         </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">12</span>
+        <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">31</span>
+        <span class="site-state-item-count">42</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -315,8 +326,17 @@
           <i class="far fa-calendar-check"></i>
         </span>
         <span class="post-meta-item-text">更新于</span>
-        <time title="修改时间：2021-01-02 01:23:26" itemprop="dateModified" datetime="2021-01-02T01:23:26+08:00">2021-01-02</time>
+        <time title="修改时间：2021-01-13 21:54:37" itemprop="dateModified" datetime="2021-01-13T21:54:37+08:00">2021-01-13</time>
       </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E6%BA%90%E7%A0%81%E9%98%85%E8%AF%BB/" itemprop="url" rel="index"><span itemprop="name">源码阅读</span></a>
+        </span>
+    </span>
 
   
     <span id="/post/2020/dd5b304b/" class="post-meta-item leancloud_visitors" data-flag-title="源码阅读 libevent - 工作流程分析" title="阅读次数">
@@ -420,9 +440,6 @@
   <div class="popular-posts-header">相关文章</div>
   <ul class="popular-posts">
     <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="\post\2020\e7a6677c\" rel="bookmark">源码阅读 RTMPDump - main 函数解析</a></div>
-    </li>
-    <li class="popular-posts-item">
       <div class="popular-posts-title"><a href="\post\2020\27de5435\" rel="bookmark">源码阅读 libevent - 优先级管理</a></div>
     </li>
     <li class="popular-posts-item">
@@ -430,6 +447,9 @@
     </li>
     <li class="popular-posts-item">
       <div class="popular-posts-title"><a href="\post\2020\1a2a4fe3\" rel="bookmark">源码阅读 libevent - 创建 event_base</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\post\2020\a867e274\" rel="bookmark">源码阅读 libevent - 初识 Hello World</a></div>
     </li>
     <li class="popular-posts-item">
       <div class="popular-posts-title"><a href="\post\2020\a26c1bab\" rel="bookmark">源码阅读 libevent - 多线程：调试锁</a></div>
@@ -457,7 +477,7 @@
 </div>
 
           <div class="post-tags">
-              <a href="/tags/%E6%BA%90%E7%A0%81/" rel="tag"># 源码</a>
+              <a href="/tags/libevent/" rel="tag"># libevent</a>
           </div>
 
         
@@ -650,7 +670,7 @@ NexT.utils.loadComments('#valine-comments', () => {
 });
 </script>
 
-    </div>
-<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"jsonPath":"/live2dw/assets/koharu.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":true},"log":false});</script><!-- hexo-inject:begin --><!-- hexo-inject:end --></body>
+    </div><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"jsonPath":"/live2dw/assets/koharu.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":true},"log":false});</script></body>
 </html>
 <script type="text/javascript" src="/js/click_magic.js"></script>

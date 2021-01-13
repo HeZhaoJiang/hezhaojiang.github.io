@@ -140,6 +140,11 @@
     <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
 
   </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
         <li class="menu-item menu-item-archives">
 
     <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
@@ -221,14 +226,20 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">113</span>
+          <span class="site-state-item-count">112</span>
           <span class="site-state-item-name">日志</span>
         </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">12</span>
+        <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">31</span>
+        <span class="site-state-item-count">42</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -277,6 +288,124 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://github.hezhaojiang.io/post/2020/ee7292d/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://gitee.com/hezhaojiang/MyPics/raw/master/img/20200801192913.jpg">
+      <meta itemprop="name" content="何照江">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="何照江的博客">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/post/2020/ee7292d/" class="post-title-link" itemprop="url">源码阅读 libevent - 数据结构：双向链表</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2020-10-25 08:27:29" itemprop="dateCreated datePublished" datetime="2020-10-25T08:27:29+08:00">2020-10-25</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">更新于</span>
+        <time title="修改时间：2021-01-13 21:54:33" itemprop="dateModified" datetime="2021-01-13T21:54:33+08:00">2021-01-13</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E6%BA%90%E7%A0%81%E9%98%85%E8%AF%BB/" itemprop="url" rel="index"><span itemprop="name">源码阅读</span></a>
+        </span>
+    </span>
+
+  
+    <span id="/post/2020/ee7292d/" class="post-meta-item leancloud_visitors" data-flag-title="源码阅读 libevent - 数据结构：双向链表" title="阅读次数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span class="leancloud-visitors-count"></span>
+    </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/post/2020/ee7292d/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/post/2020/ee7292d/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p><code>libevent</code> 源码中有一个 <code>queue.h</code> 文件，该文件里面定义了 5 种数据结构：</p>
+<ul>
+<li><code>SLIST</code> - 单向链表</li>
+<li><code>LIST</code> - 双向链表</li>
+<li><code>SIMPLEQ</code> - 简单队列</li>
+<li><code>TAILQ</code> - 尾队列</li>
+<li><code>CIRCLEQ</code> - 环形队列</li>
+</ul>
+<p>其中 <code>SLIST</code>/<code>SIMPLEQ</code>/<code>CIRCLEQ</code> 在 <code>libevent</code> 源码中没有被使用，所以本系列文章针对 <code>LIST</code>/<code>TAILQ</code> 进行一下分析。</p>
+<p>本文分析的数据结构为 <code>LIST</code> 双向链表。</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/post/2020/ee7292d/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="http://github.hezhaojiang.io/post/2020/a26c1bab/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -301,9 +430,24 @@
         <i class="far fa-calendar"></i>
       </span>
       <span class="post-meta-item-text">发表于</span>
-      
 
-      <time title="创建时间：2020-10-25 04:53:10 / 修改时间：16:07:41" itemprop="dateCreated datePublished" datetime="2020-10-25T04:53:10+08:00">2020-10-25</time>
+      <time title="创建时间：2020-10-25 04:53:10" itemprop="dateCreated datePublished" datetime="2020-10-25T04:53:10+08:00">2020-10-25</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">更新于</span>
+        <time title="修改时间：2021-01-13 21:54:39" itemprop="dateModified" datetime="2021-01-13T21:54:39+08:00">2021-01-13</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E6%BA%90%E7%A0%81%E9%98%85%E8%AF%BB/" itemprop="url" rel="index"><span itemprop="name">源码阅读</span></a>
+        </span>
     </span>
 
   
@@ -403,8 +547,17 @@
           <i class="far fa-calendar-check"></i>
         </span>
         <span class="post-meta-item-text">更新于</span>
-        <time title="修改时间：2020-10-25 13:11:51" itemprop="dateModified" datetime="2020-10-25T13:11:51+08:00">2020-10-25</time>
+        <time title="修改时间：2021-01-13 21:54:35" itemprop="dateModified" datetime="2021-01-13T21:54:35+08:00">2021-01-13</time>
       </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E6%BA%90%E7%A0%81%E9%98%85%E8%AF%BB/" itemprop="url" rel="index"><span itemprop="name">源码阅读</span></a>
+        </span>
+    </span>
 
   
     <span id="/post/2020/52b3bda8/" class="post-meta-item leancloud_visitors" data-flag-title="源码阅读 libevent - 多线程：锁和条件变量" title="阅读次数">
@@ -508,8 +661,17 @@
           <i class="far fa-calendar-check"></i>
         </span>
         <span class="post-meta-item-text">更新于</span>
-        <time title="修改时间：2020-11-29 19:45:17" itemprop="dateModified" datetime="2020-11-29T19:45:17+08:00">2020-11-29</time>
+        <time title="修改时间：2021-01-13 21:54:49" itemprop="dateModified" datetime="2021-01-13T21:54:49+08:00">2021-01-13</time>
       </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E6%BA%90%E7%A0%81%E9%98%85%E8%AF%BB/" itemprop="url" rel="index"><span itemprop="name">源码阅读</span></a>
+        </span>
+    </span>
 
   
     <span id="/post/2020/58deb66e/" class="post-meta-item leancloud_visitors" data-flag-title="源码阅读 libevent - 内存管理" title="阅读次数">
@@ -610,8 +772,17 @@
           <i class="far fa-calendar-check"></i>
         </span>
         <span class="post-meta-item-text">更新于</span>
-        <time title="修改时间：2020-10-21 23:38:32" itemprop="dateModified" datetime="2020-10-21T23:38:32+08:00">2020-10-21</time>
+        <time title="修改时间：2021-01-13 21:54:27" itemprop="dateModified" datetime="2021-01-13T21:54:27+08:00">2021-01-13</time>
       </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E6%BA%90%E7%A0%81%E9%98%85%E8%AF%BB/" itemprop="url" rel="index"><span itemprop="name">源码阅读</span></a>
+        </span>
+    </span>
 
   
     <span id="/post/2020/5f35962e/" class="post-meta-item leancloud_visitors" data-flag-title="源码阅读 libevent - 日志模块" title="阅读次数">
@@ -694,7 +865,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/post/2020/e7a6677c/" class="post-title-link" itemprop="url">源码阅读 RTMPDump - main 函数解析</a>
+            <a href="/post/2020/e7a6677c/" class="post-title-link" itemprop="url">源码阅读 rtmpdump - 主函数解析</a>
         </h2>
 
         <div class="post-meta-container">
@@ -712,11 +883,20 @@
           <i class="far fa-calendar-check"></i>
         </span>
         <span class="post-meta-item-text">更新于</span>
-        <time title="修改时间：2020-10-20 00:32:16" itemprop="dateModified" datetime="2020-10-20T00:32:16+08:00">2020-10-20</time>
+        <time title="修改时间：2021-01-13 21:55:48" itemprop="dateModified" datetime="2021-01-13T21:55:48+08:00">2021-01-13</time>
       </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E6%BA%90%E7%A0%81%E9%98%85%E8%AF%BB/" itemprop="url" rel="index"><span itemprop="name">源码阅读</span></a>
+        </span>
+    </span>
 
   
-    <span id="/post/2020/e7a6677c/" class="post-meta-item leancloud_visitors" data-flag-title="源码阅读 RTMPDump - main 函数解析" title="阅读次数">
+    <span id="/post/2020/e7a6677c/" class="post-meta-item leancloud_visitors" data-flag-title="源码阅读 rtmpdump - 主函数解析" title="阅读次数">
       <span class="post-meta-item-icon">
         <i class="far fa-eye"></i>
       </span>
@@ -794,7 +974,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/post/2020/5ff634f/" class="post-title-link" itemprop="url">树莓派日记 - 安装 RTMPDump</a>
+            <a href="/post/2020/5ff634f/" class="post-title-link" itemprop="url">树莓派日记 - 安装 rtmpdump</a>
         </h2>
 
         <div class="post-meta-container">
@@ -804,13 +984,28 @@
         <i class="far fa-calendar"></i>
       </span>
       <span class="post-meta-item-text">发表于</span>
-      
 
-      <time title="创建时间：2020-10-19 14:17:30 / 修改时间：23:26:18" itemprop="dateCreated datePublished" datetime="2020-10-19T14:17:30+08:00">2020-10-19</time>
+      <time title="创建时间：2020-10-19 14:17:30" itemprop="dateCreated datePublished" datetime="2020-10-19T14:17:30+08:00">2020-10-19</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">更新于</span>
+        <time title="修改时间：2021-01-13 21:59:58" itemprop="dateModified" datetime="2021-01-13T21:59:58+08:00">2021-01-13</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E6%A0%91%E8%8E%93%E6%B4%BE%E6%97%A5%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">树莓派日记</span></a>
+        </span>
     </span>
 
   
-    <span id="/post/2020/5ff634f/" class="post-meta-item leancloud_visitors" data-flag-title="树莓派日记 - 安装 RTMPDump" title="阅读次数">
+    <span id="/post/2020/5ff634f/" class="post-meta-item leancloud_visitors" data-flag-title="树莓派日记 - 安装 rtmpdump" title="阅读次数">
       <span class="post-meta-item-icon">
         <i class="far fa-eye"></i>
       </span>
@@ -840,8 +1035,8 @@
     
     
     <div class="post-body" itemprop="articleBody">
-          <p><code>RTMPDump</code> 是一个 <code>C++</code> 的开源工程，也可以说是一个用来处理 <code>RTMP</code> 流媒体的工具包，支持 <code>rtmp://</code>, <code>rtmpt://</code>, <code>rtmpe://</code>, <code>rtmpte://</code>, 和 <code>rtmps://</code> 等。我们可以通过对 <code>RTMPDump</code> 的学习来学习 <code>RTMP</code> 协议。</p>
-<p>首先可以了解一下其使用方法：<code>RTMPDump</code> 使用说明：</p>
+          <p><code>rtmpdump</code> 是一个 <code>C++</code> 的开源工程，也可以说是一个用来处理 <code>RTMP</code> 流媒体的工具包，支持 <code>rtmp://</code>, <code>rtmpt://</code>, <code>rtmpe://</code>, <code>rtmpte://</code>, 和 <code>rtmps://</code> 等。我们可以通过对 <code>rtmpdump</code> 的学习来学习 <code>RTMP</code> 协议。</p>
+<p>首先可以了解一下其使用方法：<code>rtmpdump</code> 使用说明：</p>
 <p>官网：<a target="_blank" rel="noopener" href="http://rtmpdump.mplayerhq.hu/">http://rtmpdump.mplayerhq.hu/</a></p>
           <!--noindex-->
             <div class="post-button">
@@ -908,8 +1103,17 @@
           <i class="far fa-calendar-check"></i>
         </span>
         <span class="post-meta-item-text">更新于</span>
-        <time title="修改时间：2020-10-19 00:27:40" itemprop="dateModified" datetime="2020-10-19T00:27:40+08:00">2020-10-19</time>
+        <time title="修改时间：2021-01-13 22:00:05" itemprop="dateModified" datetime="2021-01-13T22:00:05+08:00">2021-01-13</time>
       </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E6%A0%91%E8%8E%93%E6%B4%BE%E6%97%A5%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">树莓派日记</span></a>
+        </span>
+    </span>
 
   
     <span id="/post/2020/4fd2fc4f/" class="post-meta-item leancloud_visitors" data-flag-title="树莓派日记 - 系统备份" title="阅读次数">
@@ -1008,8 +1212,17 @@
           <i class="far fa-calendar-check"></i>
         </span>
         <span class="post-meta-item-text">更新于</span>
-        <time title="修改时间：2021-01-09 01:07:19" itemprop="dateModified" datetime="2021-01-09T01:07:19+08:00">2021-01-09</time>
+        <time title="修改时间：2021-01-13 21:58:51" itemprop="dateModified" datetime="2021-01-13T21:58:51+08:00">2021-01-13</time>
       </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E6%A0%91%E8%8E%93%E6%B4%BE%E6%97%A5%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">树莓派日记</span></a>
+        </span>
+    </span>
 
   
     <span id="/post/2020/f3c9706d/" class="post-meta-item leancloud_visitors" data-flag-title="树莓派日记 - 安装 SRS" title="阅读次数">
@@ -1108,8 +1321,17 @@
           <i class="far fa-calendar-check"></i>
         </span>
         <span class="post-meta-item-text">更新于</span>
-        <time title="修改时间：2020-10-16 00:09:27" itemprop="dateModified" datetime="2020-10-16T00:09:27+08:00">2020-10-16</time>
+        <time title="修改时间：2021-01-13 21:56:18" itemprop="dateModified" datetime="2021-01-13T21:56:18+08:00">2021-01-13</time>
       </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E6%B5%81%E5%AA%92%E4%BD%93%E4%BC%A0%E8%BE%93/" itemprop="url" rel="index"><span itemprop="name">流媒体传输</span></a>
+        </span>
+    </span>
 
   
     <span id="/post/2020/dc673a79/" class="post-meta-item leancloud_visitors" data-flag-title="流媒体传输 - RTSP 协议认证过程" title="阅读次数">
@@ -1149,108 +1371,6 @@
           <!--noindex-->
             <div class="post-button">
               <a class="btn" href="/post/2020/dc673a79/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://github.hezhaojiang.io/post/2020/4689dd6d/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="https://gitee.com/hezhaojiang/MyPics/raw/master/img/20200801192913.jpg">
-      <meta itemprop="name" content="何照江">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="何照江的博客">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/post/2020/4689dd6d/" class="post-title-link" itemprop="url">Markdown 学习笔记 - Mermaid</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2020-10-14 15:11:00" itemprop="dateCreated datePublished" datetime="2020-10-14T15:11:00+08:00">2020-10-14</time>
-    </span>
-      <span class="post-meta-item">
-        <span class="post-meta-item-icon">
-          <i class="far fa-calendar-check"></i>
-        </span>
-        <span class="post-meta-item-text">更新于</span>
-        <time title="修改时间：2020-10-15 00:40:15" itemprop="dateModified" datetime="2020-10-15T00:40:15+08:00">2020-10-15</time>
-      </span>
-
-  
-    <span id="/post/2020/4689dd6d/" class="post-meta-item leancloud_visitors" data-flag-title="Markdown 学习笔记 - Mermaid" title="阅读次数">
-      <span class="post-meta-item-icon">
-        <i class="far fa-eye"></i>
-      </span>
-      <span class="post-meta-item-text">阅读次数：</span>
-      <span class="leancloud-visitors-count"></span>
-    </span>
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="far fa-comment"></i>
-      </span>
-      <span class="post-meta-item-text">Valine：</span>
-    
-    <a title="valine" href="/post/2020/4689dd6d/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/post/2020/4689dd6d/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p><code>Mermaid</code> 是一个用于画流程图、状态图、时序图、甘特图的库，使用 <code>JS</code> 进行本地渲染，广泛集成于许多 Markdown 编辑器中。</p>
-<p><code>Mermaid</code> 作为一个使用 <code>JS</code> 渲染的库，生成的不是一张图片，而是一段 <code>HTML</code> 代码，因此安全许多。</p>
-<p>官网：<a target="_blank" rel="noopener" href="https://mermaidjs.github.io/">https://mermaidjs.github.io/</a><br>Github 项目地址：<a target="_blank" rel="noopener" href="https://github.com/knsv/mermaid">https://github.com/knsv/mermaid</a></p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/post/2020/4689dd6d/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -1437,7 +1557,7 @@ NexT.utils.loadComments('#valine-comments', () => {
 });
 </script>
 
-    </div>
-<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"jsonPath":"/live2dw/assets/koharu.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":true},"log":false});</script><!-- hexo-inject:begin --><!-- hexo-inject:end --></body>
+    </div><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"jsonPath":"/live2dw/assets/koharu.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":true},"log":false});</script></body>
 </html>
 <script type="text/javascript" src="/js/click_magic.js"></script>
