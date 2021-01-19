@@ -226,7 +226,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">112</span>
+          <span class="site-state-item-count">114</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -288,6 +288,237 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://github.hezhaojiang.io/post/2020/4b4fd3b8/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://gitee.com/hezhaojiang/MyPics/raw/master/img/20200801192913.jpg">
+      <meta itemprop="name" content="何照江">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="何照江的博客">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/post/2020/4b4fd3b8/" class="post-title-link" itemprop="url">编解码技术：H264 - SPS</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2020-08-04 13:59:51" itemprop="dateCreated datePublished" datetime="2020-08-04T13:59:51+08:00">2020-08-04</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">更新于</span>
+        <time title="修改时间：2021-01-13 21:53:37" itemprop="dateModified" datetime="2021-01-13T21:53:37+08:00">2021-01-13</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E7%BC%96%E8%A7%A3%E7%A0%81%E6%8A%80%E6%9C%AF/" itemprop="url" rel="index"><span itemprop="name">编解码技术</span></a>
+        </span>
+    </span>
+
+  
+    <span id="/post/2020/4b4fd3b8/" class="post-meta-item leancloud_visitors" data-flag-title="编解码技术：H264 - SPS" title="阅读次数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span class="leancloud-visitors-count"></span>
+    </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/post/2020/4b4fd3b8/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/post/2020/4b4fd3b8/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h2 id="SPS-简介"><a href="#SPS-简介" class="headerlink" title="SPS 简介"></a>SPS 简介</h2><p>在 H.264 标准协议中规定了多种不同的 NAL Unit 类型，其中类型 7 表示该 NAL Unit 内保存的数据为 Sequence Paramater Set（序列参数集）。</p>
+<p>在 H.264 的各种语法元素中，SPS 中的信息至关重要。如果其中的数据丢失或出现错误，那么解码过程很可能会失败。</p>
+<p>SPS 即 Sequence Paramater Set，又称作序列参数集。SPS 中保存了一组编码视频序列 (Coded<br>videosequence) 的全局参数。所谓的编码视频序列即原始视频的一帧一帧的像素数据经过编码之后的结构组成的序列。而每一帧的编码后数据所依赖的参数保存于图像参数集中。一般情况 SPS 和 PPS 的 NAL Unit 通常位于整个码流的起始位置。但在某些特殊情况下，在码流中间也可能出现这两种结构，主要原因可能为：</p>
+<ul>
+<li>解码器需要在码流中间开始解码</li>
+<li>编码器在编码的过程中改变了码流的参数（如图像分辨率等）</li>
+</ul>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/post/2020/4b4fd3b8/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://github.hezhaojiang.io/post/2020/eb0de708/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://gitee.com/hezhaojiang/MyPics/raw/master/img/20200801192913.jpg">
+      <meta itemprop="name" content="何照江">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="何照江的博客">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/post/2020/eb0de708/" class="post-title-link" itemprop="url">源码阅读 x264 - 编码 API (1)</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2020-08-03 13:34:58" itemprop="dateCreated datePublished" datetime="2020-08-03T13:34:58+08:00">2020-08-03</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">更新于</span>
+        <time title="修改时间：2021-01-20 00:59:38" itemprop="dateModified" datetime="2021-01-20T00:59:38+08:00">2021-01-20</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E6%BA%90%E7%A0%81%E9%98%85%E8%AF%BB/" itemprop="url" rel="index"><span itemprop="name">源码阅读</span></a>
+        </span>
+    </span>
+
+  
+    <span id="/post/2020/eb0de708/" class="post-meta-item leancloud_visitors" data-flag-title="源码阅读 x264 - 编码 API (1)" title="阅读次数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span class="leancloud-visitors-count"></span>
+    </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/post/2020/eb0de708/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/post/2020/eb0de708/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>在 <a href="/post/2020/3bc2314a/" title="源码阅读 x264 - 命令行工具">源码阅读 x264 - 命令行工具</a> 中我们分析到 e<code>ncode()</code> 的流程中涉及到 <code>libx264</code> 的几个关键的 API，这些函数有：</p>
+<ul>
+<li><code>x264_encoder_open()</code>：打开 H.264 编码器。</li>
+<li><code>x264_encoder_headers()</code>：输出 SPS/PPS/SEI。</li>
+<li><code>x264_encoder_encode()</code>：编码一帧数据。</li>
+<li><code>x264_encoder_close()</code>：关闭 H.264 编码器。</li>
+</ul>
+<p>本篇介绍 <code>x264_encoder_open()</code> 中的主要函数。</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/post/2020/eb0de708/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="http://github.hezhaojiang.io/post/2020/e6d88726/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -302,7 +533,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/post/2020/e6d88726/" class="post-title-link" itemprop="url">编解码技术：x264 - 常用结构体</a>
+            <a href="/post/2020/e6d88726/" class="post-title-link" itemprop="url">源码阅读 x264 - 常用结构体</a>
         </h2>
 
         <div class="post-meta-container">
@@ -320,7 +551,7 @@
           <i class="far fa-calendar-check"></i>
         </span>
         <span class="post-meta-item-text">更新于</span>
-        <time title="修改时间：2021-01-13 21:52:23" itemprop="dateModified" datetime="2021-01-13T21:52:23+08:00">2021-01-13</time>
+        <time title="修改时间：2021-01-19 22:05:18" itemprop="dateModified" datetime="2021-01-19T22:05:18+08:00">2021-01-19</time>
       </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -328,12 +559,12 @@
       </span>
       <span class="post-meta-item-text">分类于</span>
         <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E7%BC%96%E8%A7%A3%E7%A0%81%E6%8A%80%E6%9C%AF/" itemprop="url" rel="index"><span itemprop="name">编解码技术</span></a>
+          <a href="/categories/%E6%BA%90%E7%A0%81%E9%98%85%E8%AF%BB/" itemprop="url" rel="index"><span itemprop="name">源码阅读</span></a>
         </span>
     </span>
 
   
-    <span id="/post/2020/e6d88726/" class="post-meta-item leancloud_visitors" data-flag-title="编解码技术：x264 - 常用结构体" title="阅读次数">
+    <span id="/post/2020/e6d88726/" class="post-meta-item leancloud_visitors" data-flag-title="源码阅读 x264 - 常用结构体" title="阅读次数">
       <span class="post-meta-item-icon">
         <i class="far fa-eye"></i>
       </span>
@@ -416,7 +647,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/post/2020/3bc2314a/" class="post-title-link" itemprop="url">编解码技术：x264 - 命令行工具</a>
+            <a href="/post/2020/3bc2314a/" class="post-title-link" itemprop="url">源码阅读 x264 - 命令行工具</a>
         </h2>
 
         <div class="post-meta-container">
@@ -434,7 +665,7 @@
           <i class="far fa-calendar-check"></i>
         </span>
         <span class="post-meta-item-text">更新于</span>
-        <time title="修改时间：2021-01-13 21:53:15" itemprop="dateModified" datetime="2021-01-13T21:53:15+08:00">2021-01-13</time>
+        <time title="修改时间：2021-01-19 22:14:48" itemprop="dateModified" datetime="2021-01-19T22:14:48+08:00">2021-01-19</time>
       </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -442,12 +673,12 @@
       </span>
       <span class="post-meta-item-text">分类于</span>
         <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E7%BC%96%E8%A7%A3%E7%A0%81%E6%8A%80%E6%9C%AF/" itemprop="url" rel="index"><span itemprop="name">编解码技术</span></a>
+          <a href="/categories/%E6%BA%90%E7%A0%81%E9%98%85%E8%AF%BB/" itemprop="url" rel="index"><span itemprop="name">源码阅读</span></a>
         </span>
     </span>
 
   
-    <span id="/post/2020/3bc2314a/" class="post-meta-item leancloud_visitors" data-flag-title="编解码技术：x264 - 命令行工具" title="阅读次数">
+    <span id="/post/2020/3bc2314a/" class="post-meta-item leancloud_visitors" data-flag-title="源码阅读 x264 - 命令行工具" title="阅读次数">
       <span class="post-meta-item-icon">
         <i class="far fa-eye"></i>
       </span>
@@ -544,7 +775,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/post/2020/ee0dad8c/" class="post-title-link" itemprop="url">编解码技术：x264 - 简介</a>
+            <a href="/post/2020/ee0dad8c/" class="post-title-link" itemprop="url">源码阅读 x264 - 简介</a>
         </h2>
 
         <div class="post-meta-container">
@@ -562,7 +793,7 @@
           <i class="far fa-calendar-check"></i>
         </span>
         <span class="post-meta-item-text">更新于</span>
-        <time title="修改时间：2021-01-13 21:52:20" itemprop="dateModified" datetime="2021-01-13T21:52:20+08:00">2021-01-13</time>
+        <time title="修改时间：2021-01-19 22:05:24" itemprop="dateModified" datetime="2021-01-19T22:05:24+08:00">2021-01-19</time>
       </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -570,12 +801,12 @@
       </span>
       <span class="post-meta-item-text">分类于</span>
         <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E7%BC%96%E8%A7%A3%E7%A0%81%E6%8A%80%E6%9C%AF/" itemprop="url" rel="index"><span itemprop="name">编解码技术</span></a>
+          <a href="/categories/%E6%BA%90%E7%A0%81%E9%98%85%E8%AF%BB/" itemprop="url" rel="index"><span itemprop="name">源码阅读</span></a>
         </span>
     </span>
 
   
-    <span id="/post/2020/ee0dad8c/" class="post-meta-item leancloud_visitors" data-flag-title="编解码技术：x264 - 简介" title="阅读次数">
+    <span id="/post/2020/ee0dad8c/" class="post-meta-item leancloud_visitors" data-flag-title="源码阅读 x264 - 简介" title="阅读次数">
       <span class="post-meta-item-icon">
         <i class="far fa-eye"></i>
       </span>
@@ -1214,222 +1445,6 @@ block  +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
             </div>
           <!--/noindex-->
         
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://github.hezhaojiang.io/post/2020/c30ccf98/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="https://gitee.com/hezhaojiang/MyPics/raw/master/img/20200801192913.jpg">
-      <meta itemprop="name" content="何照江">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="何照江的博客">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/post/2020/c30ccf98/" class="post-title-link" itemprop="url">树莓派日记 - 安装 ffmpeg</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2020-07-25 14:49:01" itemprop="dateCreated datePublished" datetime="2020-07-25T14:49:01+08:00">2020-07-25</time>
-    </span>
-      <span class="post-meta-item">
-        <span class="post-meta-item-icon">
-          <i class="far fa-calendar-check"></i>
-        </span>
-        <span class="post-meta-item-text">更新于</span>
-        <time title="修改时间：2021-01-13 21:58:21" itemprop="dateModified" datetime="2021-01-13T21:58:21+08:00">2021-01-13</time>
-      </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E6%A0%91%E8%8E%93%E6%B4%BE%E6%97%A5%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">树莓派日记</span></a>
-        </span>
-    </span>
-
-  
-    <span id="/post/2020/c30ccf98/" class="post-meta-item leancloud_visitors" data-flag-title="树莓派日记 - 安装 ffmpeg" title="阅读次数">
-      <span class="post-meta-item-icon">
-        <i class="far fa-eye"></i>
-      </span>
-      <span class="post-meta-item-text">阅读次数：</span>
-      <span class="leancloud-visitors-count"></span>
-    </span>
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="far fa-comment"></i>
-      </span>
-      <span class="post-meta-item-text">Valine：</span>
-    
-    <a title="valine" href="/post/2020/c30ccf98/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/post/2020/c30ccf98/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h2 id="环境准备"><a href="#环境准备" class="headerlink" title="环境准备"></a>环境准备</h2><ul>
-<li>Ubuntu Server 20.04 LTS</li>
-</ul>
-<blockquote>
-<p>安装过程详见：<a href="/post/2020/2e43eec/" title="树莓派日记 - 安装 Ubuntu 20.04">树莓派日记 - 安装 Ubuntu 20.04</a></p>
-</blockquote>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/post/2020/c30ccf98/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://github.hezhaojiang.io/post/2020/e2bb409/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="https://gitee.com/hezhaojiang/MyPics/raw/master/img/20200801192913.jpg">
-      <meta itemprop="name" content="何照江">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="何照江的博客">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/post/2020/e2bb409/" class="post-title-link" itemprop="url">善用佳软 - Astyle 安装与使用</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2020-07-23 15:12:40" itemprop="dateCreated datePublished" datetime="2020-07-23T15:12:40+08:00">2020-07-23</time>
-    </span>
-      <span class="post-meta-item">
-        <span class="post-meta-item-icon">
-          <i class="far fa-calendar-check"></i>
-        </span>
-        <span class="post-meta-item-text">更新于</span>
-        <time title="修改时间：2021-01-13 22:02:32" itemprop="dateModified" datetime="2021-01-13T22:02:32+08:00">2021-01-13</time>
-      </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E5%B7%A5%E5%85%B7%E8%BD%AF%E4%BB%B6/" itemprop="url" rel="index"><span itemprop="name">工具软件</span></a>
-        </span>
-    </span>
-
-  
-    <span id="/post/2020/e2bb409/" class="post-meta-item leancloud_visitors" data-flag-title="善用佳软 - Astyle 安装与使用" title="阅读次数">
-      <span class="post-meta-item-icon">
-        <i class="far fa-eye"></i>
-      </span>
-      <span class="post-meta-item-text">阅读次数：</span>
-      <span class="leancloud-visitors-count"></span>
-    </span>
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="far fa-comment"></i>
-      </span>
-      <span class="post-meta-item-text">Valine：</span>
-    
-    <a title="valine" href="/post/2020/e2bb409/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/post/2020/e2bb409/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">$ Astyle --style=ansi --indent=spaces=4 -L -xC100 -V -f -z2 -H -p -U --suffix=none --quiet</span><br><span class="line"><span class="comment"># --style=ansi</span></span><br><span class="line"><span class="comment"># --indent=spaces=4 更改缩进 4 个空格</span></span><br><span class="line"><span class="comment"># -L 缩进label，让 label 比当前的内容先前一个缩进距离，而不是通通靠左</span></span><br><span class="line"><span class="comment"># -xC100 最长80个字符</span></span><br><span class="line"><span class="comment"># -V 将tab转换为空格</span></span><br><span class="line"><span class="comment"># -f 在两行不相关的代码之间插入空行</span></span><br><span class="line"><span class="comment"># -H 在if for等关键字后面，加一个空格</span></span><br><span class="line"><span class="comment"># -p 在操作符两边加空格</span></span><br><span class="line"><span class="comment"># -U 去掉()内部不必要的空格</span></span><br><span class="line"><span class="comment"># --suffix=none 不备份原始文件</span></span><br></pre></td></tr></table></figure>
-
       
     </div>
 
