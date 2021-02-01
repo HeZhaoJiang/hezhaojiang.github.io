@@ -31,7 +31,7 @@
 <meta property="og:description" content="x264 中 x264_quant_init 函数中初始化了量化有关的函数，本文分析部分量化函数的实现">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2021-01-28T07:50:47.000Z">
-<meta property="article:modified_time" content="2021-01-30T13:00:23.707Z">
+<meta property="article:modified_time" content="2021-02-01T13:12:56.626Z">
 <meta property="article:author" content="何照江">
 <meta property="article:tag" content="x264">
 <meta name="twitter:card" content="summary">
@@ -232,7 +232,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">121</span>
+          <span class="site-state-item-count">123</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -245,7 +245,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">43</span>
+        <span class="site-state-item-count">44</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -326,7 +326,7 @@
           <i class="far fa-calendar-check"></i>
         </span>
         <span class="post-meta-item-text">更新于</span>
-        <time title="修改时间：2021-01-30 21:00:23" itemprop="dateModified" datetime="2021-01-30T21:00:23+08:00">2021-01-30</time>
+        <time title="修改时间：2021-02-01 21:12:56" itemprop="dateModified" datetime="2021-02-01T21:12:56+08:00">2021-02-01</time>
       </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -387,7 +387,7 @@
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* 功能：quant_4x4() 用于对 4x4 的 DCT 残差矩阵进行量化 */</span></span><br><span class="line"><span class="comment">// 输入输出都是 dct[16]</span></span><br><span class="line"><span class="function"><span class="keyword">static</span> <span class="keyword">int</span> <span class="title">quant_4x4</span><span class="params">(dctcoef dct[<span class="number">16</span>], udctcoef mf[<span class="number">16</span>], udctcoef bias[<span class="number">16</span>] )</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> nz = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">16</span>; i++)</span><br><span class="line">        QUANT_ONE(dct[i], mf[i], bias[i] );</span><br><span class="line">    <span class="keyword">return</span> !!nz;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/* 其中 QUANT_ONE 定义如下 */</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> QUANT_ONE(coef, mf, f) &#123; \</span></span><br><span class="line">    <span class="keyword">if</span>((coef) &gt; <span class="number">0</span> ) (coef) = (f + (coef)) * (mf) &gt;&gt; <span class="number">16</span>; \</span><br><span class="line">    <span class="keyword">else</span> (coef) = - ((f - (coef)) * (mf) &gt;&gt; <span class="number">16</span>); \</span><br><span class="line">    nz |= (coef); \</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>其中，<code>QUANT_ONE()</code> 完成了一个 <code>DCT</code> 系数的量化工作，从 <code>QUANT_ONE()</code> 的定义可以看出，它实现了上文提到的 <code>H.264</code> 标准中的量化公式：</p>
 <script type="math/tex; mode=display">\left | Z_{ij}\right | = (\left | W_{ij}\right | \cdot MF + f) >> qbits</script><p>可以看出 <code>quant_4x4()</code> 循环 <code>16</code> 次调用了 <code>QUANT_ONE()</code> 完成了量化工作。并且将 <code>DCT</code> 系数值，<code>MF</code> 值，<code>bias</code> 偏移值直接传递给了该宏。</p>
-<h2 id="quant-4x4x4"><a href="#quant-4x4x4" class="headerlink" title="quant_4x4x4"></a>quant_4x4x4</h2><p>quant_4x4x4() 用于对 4 个 4x4 的 DCT 残差矩阵进行量化。该函数的定义位于 common\quant.c，从 quant_4x4x4() 的定义可以看出，该函数相当于调用了 4 次 quant_4x4() 函数。对应的代码分析如下：</p>
+<h2 id="quant-4x4x4"><a href="#quant-4x4x4" class="headerlink" title="quant_4x4x4"></a>quant_4x4x4</h2><p><code>quant_4x4x4()</code> 用于对 4 个 4x4 的 DCT 残差矩阵进行量化。该函数的定义位于 <code>common/quant.c</code>，从 <code>quant_4x4x4()</code> 的定义可以看出，该函数相当于调用了 4 次 <code>quant_4x4()</code> 函数。对应的代码分析如下：</p>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* 对 4 个 4x4 的 DCT 残差矩阵进行量化, 从 quant_4x4x4() 的定义可以看出，该函数相当于调用了 4 次 quant_4x4() 函数 */</span></span><br><span class="line"><span class="function"><span class="keyword">static</span> <span class="keyword">int</span> <span class="title">quant_4x4x4</span><span class="params">(dctcoef dct[<span class="number">4</span>][<span class="number">16</span>], udctcoef mf[<span class="number">16</span>], udctcoef bias[<span class="number">16</span>] )</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> nza = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> j = <span class="number">0</span>; j &lt; <span class="number">4</span>; j++) &#123;</span><br><span class="line">        <span class="keyword">int</span> nz = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">16</span>; i++)</span><br><span class="line">            QUANT_ONE(dct[j][i], mf[i], bias[i] );</span><br><span class="line">        nza |= (!!nz)&lt;&lt;j;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> nza;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <h2 id="quant-8x8"><a href="#quant-8x8" class="headerlink" title="quant_8x8"></a>quant_8x8</h2><p><code>quant_8x8()</code> 函数的定义位于 <code>common/quant.c</code> 中，定义如下：</p>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">static</span> <span class="keyword">int</span> <span class="title">quant_8x8</span><span class="params">(dctcoef dct[<span class="number">64</span>], udctcoef mf[<span class="number">64</span>], udctcoef bias[<span class="number">64</span>] )</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> nz = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">64</span>; i++)</span><br><span class="line">        QUANT_ONE(dct[i], mf[i], bias[i] );</span><br><span class="line">    <span class="keyword">return</span> !!nz;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
@@ -410,13 +410,13 @@
       <div class="popular-posts-title"><a href="\post\2021\ae3a0f38\" rel="bookmark">源码阅读 x264 - 代价计算</a></div>
     </li>
     <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\post\2021\10604d20\" rel="bookmark">源码阅读 x264 - 去块效应滤波</a></div>
+    </li>
+    <li class="popular-posts-item">
       <div class="popular-posts-title"><a href="\post\2020\3bc2314a\" rel="bookmark">源码阅读 x264 - 命令行工具</a></div>
     </li>
     <li class="popular-posts-item">
       <div class="popular-posts-title"><a href="\post\2021\f0753f9a\" rel="bookmark">源码阅读 x264 - 离散余弦变换</a></div>
-    </li>
-    <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="\post\2020\ee0dad8c\" rel="bookmark">源码阅读 x264 - 简介</a></div>
     </li>
   </ul>
 
