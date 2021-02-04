@@ -30,13 +30,13 @@
 <meta property="og:site_name" content="何照江的博客">
 <meta property="og:description" content="在 Post not found: 源码阅读 libevent - event_io_map 和 Post not found: 源码阅读 libevent - event_signal_map 中，无论是哈希表还是普通数组，都是将一个 fd 或者 sig 映射到了一个双向链表的表头上： 12345LIST_HEAD (event_dlist, event);&#x2F;* 以上宏定义展开后结果为如下所示">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://gitee.com/hezhaojiang/MyPics/raw/master/img/20201128204050.png">
+<meta property="og:image" content="https://hezzero-1259666657.cos.ap-beijing.myqcloud.com/20201128204050.png">
 <meta property="article:published_time" content="2020-11-01T05:54:26.000Z">
-<meta property="article:modified_time" content="2021-01-30T12:55:55.530Z">
+<meta property="article:modified_time" content="2021-02-04T04:47:35.940Z">
 <meta property="article:author" content="何照江">
 <meta property="article:tag" content="libevent">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://gitee.com/hezhaojiang/MyPics/raw/master/img/20201128204050.png">
+<meta name="twitter:image" content="https://hezzero-1259666657.cos.ap-beijing.myqcloud.com/20201128204050.png">
 
 
 <link rel="canonical" href="http://github.hezhaojiang.io/post/2020/afa6fb2f/">
@@ -328,7 +328,7 @@
           <i class="far fa-calendar-check"></i>
         </span>
         <span class="post-meta-item-text">更新于</span>
-        <time title="修改时间：2021-01-30 20:55:55" itemprop="dateModified" datetime="2021-01-30T20:55:55+08:00">2021-01-30</time>
+        <time title="修改时间：2021-02-04 12:47:35" itemprop="dateModified" datetime="2021-02-04T12:47:35+08:00">2021-02-04</time>
       </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -444,7 +444,7 @@
 <p><code>ev_timeout</code>：与前面的 <code>ev_io</code> 中的 <code>ev_timeout</code> 不同，<code>ev_io</code> 中的 <code>ev_timeout</code> 保存的是相对超时时长，而这里的 <code>ev_timeout</code> 保存的是绝对超时时间。比如说现在 <code>8:00</code>，设置 <code>event</code> 的超时时长为 <code>3</code> 分钟中，那么这个 <code>3</code> 分钟实际上是相对于现在来说的 <code>3</code> 分钟，也就是相对超时时长，而 <code>event</code> 最终会在 <code>8:03</code> 时超时，这个 <code>8:03</code> 就是绝对超时时间。<code>libevent</code> 中绝对超时时间是相对于 <code>1970</code> 年 <code>1</code> 月 <code>1</code> 日 <code>0</code> 时来说的。</p>
 <p><code>ev_res</code>：<code>event</code> 的激活类型，由 <code>libevent</code> 内部设置。比如说 <code>event</code> 可以设置为 <code>EV_READ|EV_WRITE</code> 来监听读和写事件，如果最终 <code>event</code> 被读事件激活，那么 <code>ev_res</code> 就是 <code>EV_READ</code>。</p>
 <h2 id="event-的生命周期"><a href="#event-的生命周期" class="headerlink" title="event 的生命周期"></a>event 的生命周期</h2><p>前面提到的中文翻译的文档里，有一张图完美的诠释了 <code>event</code> 的生命周期，带箭头实线表示函数调用，实线矩形表示 <code>event</code> 的状态，虚线矩形表示用来检测事件状态的函数：</p>
-<p><img data-src="https://gitee.com/hezhaojiang/MyPics/raw/master/img/20201128204050.png" alt="event 的生命周期"></p>
+<p><img data-src="https://hezzero-1259666657.cos.ap-beijing.myqcloud.com/20201128204050.png" alt="event 的生命周期"></p>
 <p>由于 <code>event</code> 结构体是 <code>libevent</code> 事件处理的核心，涉及问题较多，本文先对图中上半部分进行解析。</p>
 <h2 id="创建-event"><a href="#创建-event" class="headerlink" title="创建 event"></a>创建 event</h2><p>通过前面 <code>event</code> 的结构可以知道，<code>event</code> 结构体成员分为两类：一类是 <code>event</code> 本身的属性，另一类则是用于描述 <code>event</code> 在某些 <code>event</code> 集合中的位置。前者既然是属性，那么就应当在 <code>event</code> 创建时就制定好，而后者则应该是当 <code>event</code> 被添加到 <code>event_base</code> 之后才进行设置的。那么现在就来看看 <code>event</code> 的创建。</p>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">event</span> *</span></span><br><span class="line"><span class="class"><span class="title">event_new</span>(<span class="title">struct</span> <span class="title">event_base</span> *<span class="title">base</span>, <span class="title">evutil_socket_t</span> <span class="title">fd</span>, <span class="title">short</span> <span class="title">events</span>, <span class="title">void</span> (*<span class="title">cb</span>)(<span class="title">evutil_socket_t</span>, <span class="title">short</span>, <span class="title">void</span> *), <span class="title">void</span> *<span class="title">arg</span>)</span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">event</span> *<span class="title">ev</span>;</span></span><br><span class="line">    ev = mm_malloc(<span class="keyword">sizeof</span>(struct event));</span><br><span class="line">    <span class="keyword">if</span> (ev == <span class="literal">NULL</span>) <span class="keyword">return</span> (<span class="literal">NULL</span>);</span><br><span class="line">    <span class="keyword">if</span> (event_assign(ev, base, fd, events, cb, arg) &lt; <span class="number">0</span>) &#123;</span><br><span class="line">        mm_free(ev);</span><br><span class="line">        <span class="keyword">return</span> (<span class="literal">NULL</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> (ev);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>

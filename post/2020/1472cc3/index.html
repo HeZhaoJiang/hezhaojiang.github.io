@@ -30,36 +30,36 @@
 <meta property="og:site_name" content="何照江的博客">
 <meta property="og:description" content="文章 音视频封装 - PS 封装格式 中分析了 PS 流的结构，但文章中中涉及到的元素过多，难以理解，故通过一段真实的码流的分析来加强对 PS 流结构的理解。  注 1：本文中的 PS 码流 A 截取自一段经 ffmpeg 转码的网络视频，码流 B 截取自海康摄像机的 GB28181 码流。注 2：本文中的数字一般为十进制表示，如果是其他进制数据，会在数字后携带 (2) 代表二进制，在数字前添加">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://gitee.com/hezhaojiang/MyPics/raw/master/img/20201117214228.png">
-<meta property="og:image" content="https://gitee.com/hezhaojiang/MyPics/raw/master/img/20201117215716.png">
-<meta property="og:image" content="https://gitee.com/hezhaojiang/MyPics/raw/master/img/20201117220401.png">
-<meta property="og:image" content="https://gitee.com/hezhaojiang/MyPics/raw/master/img/20201117220711.png">
-<meta property="og:image" content="https://gitee.com/hezhaojiang/MyPics/raw/master/img/20201117221430.png">
-<meta property="og:image" content="https://gitee.com/hezhaojiang/MyPics/raw/master/img/20201117221746.png">
-<meta property="og:image" content="https://gitee.com/hezhaojiang/MyPics/raw/master/img/20201117234659.png">
-<meta property="og:image" content="https://gitee.com/hezhaojiang/MyPics/raw/master/img/20201117235040.png">
-<meta property="og:image" content="https://gitee.com/hezhaojiang/MyPics/raw/master/img/20201117235708.png">
-<meta property="og:image" content="https://gitee.com/hezhaojiang/MyPics/raw/master/img/20201117220016.png">
-<meta property="og:image" content="https://gitee.com/hezhaojiang/MyPics/raw/master/img/20201117223419.png">
-<meta property="og:image" content="https://gitee.com/hezhaojiang/MyPics/raw/master/img/20201117223519.png">
-<meta property="og:image" content="https://gitee.com/hezhaojiang/MyPics/raw/master/img/20201117223909.png">
-<meta property="og:image" content="https://gitee.com/hezhaojiang/MyPics/raw/master/img/20201117230813.png">
-<meta property="og:image" content="https://gitee.com/hezhaojiang/MyPics/raw/master/img/20201117231212.png">
-<meta property="og:image" content="https://gitee.com/hezhaojiang/MyPics/raw/master/img/20201117232429.png">
-<meta property="og:image" content="https://gitee.com/hezhaojiang/MyPics/raw/master/img/20201117232540.png">
-<meta property="og:image" content="https://gitee.com/hezhaojiang/MyPics/raw/master/img/20201117232848.png">
-<meta property="og:image" content="https://gitee.com/hezhaojiang/MyPics/raw/master/img/20201117233803.png">
-<meta property="og:image" content="https://gitee.com/hezhaojiang/MyPics/raw/master/img/20201118211141.png">
-<meta property="og:image" content="https://gitee.com/hezhaojiang/MyPics/raw/master/img/20201118212717.png">
-<meta property="og:image" content="https://gitee.com/hezhaojiang/MyPics/raw/master/img/20201118213841.png">
-<meta property="og:image" content="https://gitee.com/hezhaojiang/MyPics/raw/master/img/20201118214049.png">
-<meta property="og:image" content="https://gitee.com/hezhaojiang/MyPics/raw/master/img/20201118212109.png">
+<meta property="og:image" content="https://hezzero-1259666657.cos.ap-beijing.myqcloud.com/20201117214228.png">
+<meta property="og:image" content="https://hezzero-1259666657.cos.ap-beijing.myqcloud.com/20201117215716.png">
+<meta property="og:image" content="https://hezzero-1259666657.cos.ap-beijing.myqcloud.com/20201117220401.png">
+<meta property="og:image" content="https://hezzero-1259666657.cos.ap-beijing.myqcloud.com/20201117220711.png">
+<meta property="og:image" content="https://hezzero-1259666657.cos.ap-beijing.myqcloud.com/20201117221430.png">
+<meta property="og:image" content="https://hezzero-1259666657.cos.ap-beijing.myqcloud.com/20201117221746.png">
+<meta property="og:image" content="https://hezzero-1259666657.cos.ap-beijing.myqcloud.com/20201117234659.png">
+<meta property="og:image" content="https://hezzero-1259666657.cos.ap-beijing.myqcloud.com/20201117235040.png">
+<meta property="og:image" content="https://hezzero-1259666657.cos.ap-beijing.myqcloud.com/20201117235708.png">
+<meta property="og:image" content="https://hezzero-1259666657.cos.ap-beijing.myqcloud.com/20201117220016.png">
+<meta property="og:image" content="https://hezzero-1259666657.cos.ap-beijing.myqcloud.com/20201117223419.png">
+<meta property="og:image" content="https://hezzero-1259666657.cos.ap-beijing.myqcloud.com/20201117223519.png">
+<meta property="og:image" content="https://hezzero-1259666657.cos.ap-beijing.myqcloud.com/20201117223909.png">
+<meta property="og:image" content="https://hezzero-1259666657.cos.ap-beijing.myqcloud.com/20201117230813.png">
+<meta property="og:image" content="https://hezzero-1259666657.cos.ap-beijing.myqcloud.com/20201117231212.png">
+<meta property="og:image" content="https://hezzero-1259666657.cos.ap-beijing.myqcloud.com/20201117232429.png">
+<meta property="og:image" content="https://hezzero-1259666657.cos.ap-beijing.myqcloud.com/20201117232540.png">
+<meta property="og:image" content="https://hezzero-1259666657.cos.ap-beijing.myqcloud.com/20201117232848.png">
+<meta property="og:image" content="https://hezzero-1259666657.cos.ap-beijing.myqcloud.com/20201117233803.png">
+<meta property="og:image" content="https://hezzero-1259666657.cos.ap-beijing.myqcloud.com/20201118211141.png">
+<meta property="og:image" content="https://hezzero-1259666657.cos.ap-beijing.myqcloud.com/20201118212717.png">
+<meta property="og:image" content="https://hezzero-1259666657.cos.ap-beijing.myqcloud.com/20201118213841.png">
+<meta property="og:image" content="https://hezzero-1259666657.cos.ap-beijing.myqcloud.com/20201118214049.png">
+<meta property="og:image" content="https://hezzero-1259666657.cos.ap-beijing.myqcloud.com/20201118212109.png">
 <meta property="article:published_time" content="2020-11-17T05:03:07.000Z">
-<meta property="article:modified_time" content="2021-01-13T13:50:49.982Z">
+<meta property="article:modified_time" content="2021-02-04T04:47:35.940Z">
 <meta property="article:author" content="何照江">
 <meta property="article:tag" content="MPEG2-PS">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://gitee.com/hezhaojiang/MyPics/raw/master/img/20201117214228.png">
+<meta name="twitter:image" content="https://hezzero-1259666657.cos.ap-beijing.myqcloud.com/20201117214228.png">
 
 
 <link rel="canonical" href="http://github.hezhaojiang.io/post/2020/1472cc3/">
@@ -351,7 +351,7 @@
           <i class="far fa-calendar-check"></i>
         </span>
         <span class="post-meta-item-text">更新于</span>
-        <time title="修改时间：2021-01-13 21:50:49" itemprop="dateModified" datetime="2021-01-13T21:50:49+08:00">2021-01-13</time>
+        <time title="修改时间：2021-02-04 12:47:35" itemprop="dateModified" datetime="2021-02-04T12:47:35+08:00">2021-02-04</time>
       </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -400,53 +400,53 @@
 </blockquote>
 <a id="more"></a>
 <h2 id="PS-Stream-A"><a href="#PS-Stream-A" class="headerlink" title="PS Stream A"></a>PS Stream A</h2><h3 id="PS-Header"><a href="#PS-Header" class="headerlink" title="PS Header"></a>PS Header</h3><p><code>PS</code> 码流由多个 <code>PS Pack</code> 组成，而 <code>PS Pack</code> 的起始符为 <code>0x00 00 01 ba</code>。</p>
-<p><img data-src="https://gitee.com/hezhaojiang/MyPics/raw/master/img/20201117214228.png" alt="PS Header"></p>
+<p><img data-src="https://hezzero-1259666657.cos.ap-beijing.myqcloud.com/20201117214228.png" alt="PS Header"></p>
 <p>接下来跳过 <code>9</code> 个字节，看第 <code>10</code> 个字节，其最后三位数字代表拓展内容的长度，此包中该位置后三位为 <code>0</code>，代表无拓展内容。</p>
 <blockquote>
 <p>如果该位置后三位非 0，参见 <a href="#PS-Header-Extern">PS Header Extern</a></p>
 </blockquote>
-<p><img data-src="https://gitee.com/hezhaojiang/MyPics/raw/master/img/20201117215716.png" alt="拓展内容"></p>
+<p><img data-src="https://hezzero-1259666657.cos.ap-beijing.myqcloud.com/20201117215716.png" alt="拓展内容"></p>
 <p>继续读取数据，如果遇到了 <code>0x00 00 01 bb</code>，就代表到了码流中 <code>PS System Header</code> 部分。</p>
 <blockquote>
 <p>码流中有可能会读取到 <code>0x00 00 01 bc</code>，参见 <a href="#Program-Stream-Map">Program Stream Map</a></p>
 </blockquote>
 <h3 id="PS-System-Header"><a href="#PS-System-Header" class="headerlink" title="PS System Header"></a>PS System Header</h3><p><code>System Header</code> 当且仅当数据包为第一个数据包时才存在，以 <code>0x00 00 01 bb</code> 的开始。</p>
-<p><img data-src="https://gitee.com/hezhaojiang/MyPics/raw/master/img/20201117220401.png" alt="PS System Header"></p>
+<p><img data-src="https://hezzero-1259666657.cos.ap-beijing.myqcloud.com/20201117220401.png" alt="PS System Header"></p>
 <p>之后紧跟着的 <code>0x00 0c</code> 两个字节表示 <code>System Header</code> 的长度，换算为十进制，即为 <code>12</code> 个字节。</p>
-<p><img data-src="https://gitee.com/hezhaojiang/MyPics/raw/master/img/20201117220711.png" alt="PS System Header Length"></p>
+<p><img data-src="https://hezzero-1259666657.cos.ap-beijing.myqcloud.com/20201117220711.png" alt="PS System Header Length"></p>
 <p>之后跳过 <code>6</code> 字节数据，之后如果 <code>nextbit == 1</code>，则该位置为一个 <code>stream_id</code>，<code>stream_id</code> 为 <code>0xe0</code>，指示该 <code>PS</code> 码流中包含视频流。</p>
-<p><img data-src="https://gitee.com/hezhaojiang/MyPics/raw/master/img/20201117221430.png" alt="Stream id e0"></p>
+<p><img data-src="https://hezzero-1259666657.cos.ap-beijing.myqcloud.com/20201117221430.png" alt="Stream id e0"></p>
 <p>该部分内容 <code>3</code> 字节一个循环，下一个循环中 <code>nextbit == 1</code>，则该位置也为一个 <code>stream_id</code>，<code>stream_id</code> 为 <code>0xc0</code>，指示该 <code>PS</code> 码流中包含音频流。</p>
-<p><img data-src="https://gitee.com/hezhaojiang/MyPics/raw/master/img/20201117221746.png" alt="Stream id c0"></p>
+<p><img data-src="https://hezzero-1259666657.cos.ap-beijing.myqcloud.com/20201117221746.png" alt="Stream id c0"></p>
 <p>至此 <code>nextbit == 0</code>，说明该循环结束，读取的长度也与上述 <code>PS System Header</code> 的长度值 <code>12</code> 一致。</p>
 <p>继续读取数据，遇到了 <code>0x00 00 01</code>，<code>PS</code> 流中这三个字符可视为不同数据的分隔符，而其下一位数据指示了后续数据的类型。</p>
 <h3 id="PES-Pack"><a href="#PES-Pack" class="headerlink" title="PES Pack"></a>PES Pack</h3><p>如果读取 PS 流中遇到了 <code>0x00 00 01 e0</code> 或 <code>0x00 00 01 c0</code>，就代表读取到了 <code>PES Pack</code>。</p>
 <p><code>PES Pack</code> 分为两个部分，一部分是 <code>Header</code>，一部分是 <code>Payload</code>，<code>Header</code> 用于存储一些描述信息，而 <code>Payload</code> 部分为其存储的原始数据，<code>PES</code> 可能有多个。</p>
-<p><img data-src="https://gitee.com/hezhaojiang/MyPics/raw/master/img/20201117234659.png" alt="PES Pack"></p>
+<p><img data-src="https://hezzero-1259666657.cos.ap-beijing.myqcloud.com/20201117234659.png" alt="PES Pack"></p>
 <p><code>0x00 00 01 e0</code> 代表遇到的是一个 <code>PES Video Pack</code>，如果是 <code>0x00 00 01 c0</code>，代表遇到的是一个 <code>PES Audio Pack</code>。</p>
 <p>再之后的 <code>0x07 dc</code> 表示长度，即其后的 <code>2012</code> 字节为数据内容长度。</p>
-<p><img data-src="https://gitee.com/hezhaojiang/MyPics/raw/master/img/20201117235040.png" alt="PES Pack Length"></p>
+<p><img data-src="https://hezzero-1259666657.cos.ap-beijing.myqcloud.com/20201117235040.png" alt="PES Pack Length"></p>
 <p>之后参考 <code>PES Pack</code> 结构来解析数据，可参见 <a href="/post/2020/f33d2f13/" title="音视频封装 - PES 封装格式">音视频封装 - PES 封装格式</a>。</p>
 <p>跳过 1 字节字段后，下一个字段为 <code>PTS_DTS_flags</code> 字段，占位 2bits。</p>
 <blockquote>
 <p><code>PTS_DTS_flags</code>：<code>PTS</code> 和 <code>DTS</code> 标志位，占位 2bit；<code>10(2)</code> 表示首部有 <code>PTS</code> 字段，<code>11(2)</code> 表示有 <code>PTS</code> 和 <code>DTS</code> 字段，<code>00(2)</code> 表示都没有，<code>01(2)</code> 被禁止。<br><code>PTS</code> - 显示时间戳（Presentation Time Stamp），用来表示显示单元出现在系统目标解码器的时间。<br><code>DTS</code> - 解码时间戳（Decoding Time Stamp），用来表示将存取单元全部字节从解码缓存取走的时间。<br>如果 <code>PTS_DTS_flags</code> 不是 <code>00(2)</code>，就代表存在 <code>PTS</code> 或 <code>DTS</code> 参见 <a href="#PTS_DTS_flags">PTS_DTS_flags</a></p>
 </blockquote>
 <p>故该 <code>PES Pack</code> 中无 <code>PTS</code> 和 <code>DTS</code> 字段</p>
-<p><img data-src="https://gitee.com/hezhaojiang/MyPics/raw/master/img/20201117235708.png" alt="PTS_DTS_flags"></p>
+<p><img data-src="https://hezzero-1259666657.cos.ap-beijing.myqcloud.com/20201117235708.png" alt="PTS_DTS_flags"></p>
 <p>后面 6bits 也是 <code>PES</code> 包中可选字段的 <code>Flag</code> 参数，由上图可知，该 <code>PES Pack</code> 无这些可选字段。</p>
 <p>继续读取数据，下一个字段就为 <code>PES_header_data_length</code>，代表 <code>PES Header</code> 中可选字段和填充字段的长度，占位 <code>8bit</code>，该 <code>PES Pack</code> 中该值为 <code>03</code>，即该 <code>PES Pack</code> 中，该字段之后 <code>3</code> 个字节为 <code>PES Header</code> 字段，剩余数据均为数据 <code>Payload</code>。</p>
 <h2 id="PS-Stream-B"><a href="#PS-Stream-B" class="headerlink" title="PS Stream B"></a>PS Stream B</h2><h3 id="PS-Header-Extern"><a href="#PS-Header-Extern" class="headerlink" title="PS Header Extern"></a>PS Header Extern</h3><p>如果 <code>PS Pack</code> 第 <code>10</code> 字节后三位不是 <code>000(2)</code>，则代表其后有相应长度的拓展内容，比如下图码流中就有 <code>6</code> 字节拓展内容：</p>
-<p><img data-src="https://gitee.com/hezhaojiang/MyPics/raw/master/img/20201117220016.png" alt="拓展内容 2"></p>
+<p><img data-src="https://hezzero-1259666657.cos.ap-beijing.myqcloud.com/20201117220016.png" alt="拓展内容 2"></p>
 <h3 id="Program-Stream-Map"><a href="#Program-Stream-Map" class="headerlink" title="Program Stream Map"></a>Program Stream Map</h3><p>如果码流中遇到了 <code>0x00 00 01 bc</code>，则之后的数据为 <code>Program Stream Map</code> 数据。</p>
-<p><img data-src="https://gitee.com/hezhaojiang/MyPics/raw/master/img/20201117223419.png" alt="Program Stream Map"></p>
+<p><img data-src="https://hezzero-1259666657.cos.ap-beijing.myqcloud.com/20201117223419.png" alt="Program Stream Map"></p>
 <p><code>Program Stream Map</code>，即 <code>PSM</code>，其格式如下图所示：</p>
-<p><img data-src="https://gitee.com/hezhaojiang/MyPics/raw/master/img/20201117223519.png" alt="Program Stream Map 格式"></p>
+<p><img data-src="https://hezzero-1259666657.cos.ap-beijing.myqcloud.com/20201117223519.png" alt="Program Stream Map 格式"></p>
 <p>可以看出，<code>0x00 00 01 bc</code> 后两位代表该部分数据长度，该 <code>PSM</code> 数据长度为 <code>0x62</code>，转化为十进制，即 <code>98</code> 字节。</p>
-<p><img data-src="https://gitee.com/hezhaojiang/MyPics/raw/master/img/20201117223909.png" alt="Program Stream Map length"></p>
+<p><img data-src="https://hezzero-1259666657.cos.ap-beijing.myqcloud.com/20201117223909.png" alt="Program Stream Map length"></p>
 <p>结合上边的 <code>PSM</code> 结构，自 <code>0x00 62</code> 后，跳过两个字节的固定内容，就到了两个字节的 <code>program_stream_info_length</code>，其值为 <code>0x00 2c</code>，说明其后跟着的 <code>descriptor</code> 共占 <code>44</code> 字节。</p>
-<p><img data-src="https://gitee.com/hezhaojiang/MyPics/raw/master/img/20201117230813.png" alt="descriptor"></p>
+<p><img data-src="https://hezzero-1259666657.cos.ap-beijing.myqcloud.com/20201117230813.png" alt="descriptor"></p>
 <p>跳过该长度信息和 <code>44</code> 字节后，接下来的值 <code>0x00 2c</code> 为 <code>element_stream_map_length</code>（基本流映射长度），也就是 <code>44</code> 字节，它表示接下来的 <code>44</code> 字节都是用来描述原始流信息的。</p>
-<p><img data-src="https://gitee.com/hezhaojiang/MyPics/raw/master/img/20201117231212.png" alt="c"></p>
+<p><img data-src="https://hezzero-1259666657.cos.ap-beijing.myqcloud.com/20201117231212.png" alt="c"></p>
 <p>接下来进入了原始流描述的第一次循环，第一个字节 <code>stream_type</code> 值为 <code>0x24</code>，根据《GB/T 28181-2016 修改补充文件》可知其为 <code>H.265</code> 码流。</p>
 <pre><code>    a)  MPEG-4  视频流：    0x10
     b)  H.264   视频流：    0x1B
@@ -459,24 +459,24 @@
     i)  G.729   音频流：    0x99
     j)  SVAC    音频流：    0x9B
 </code></pre><p>之后的 <code>0xe0</code> 表示其为视频流。</p>
-<p><img data-src="https://gitee.com/hezhaojiang/MyPics/raw/master/img/20201117232429.png" alt="stream_type"></p>
+<p><img data-src="https://hezzero-1259666657.cos.ap-beijing.myqcloud.com/20201117232429.png" alt="stream_type"></p>
 <p>之后的 <code>0x00 10</code> 代表该视频流描述 <code>element_stream_info_length</code> 占 <code>16</code> 字节。</p>
-<p><img data-src="https://gitee.com/hezhaojiang/MyPics/raw/master/img/20201117232540.png" alt="element_stream_info_length"></p>
+<p><img data-src="https://hezzero-1259666657.cos.ap-beijing.myqcloud.com/20201117232540.png" alt="element_stream_info_length"></p>
 <p>同理，接着循环下去，接下来的字段 <code>0x91</code> 和 <code>0xc0</code>，代表着其为 <code>G.711U</code> 编码的音频流，并携带有 <code>0x0c</code> 即 <code>12</code> 字节的描述信息。</p>
-<p><img data-src="https://gitee.com/hezhaojiang/MyPics/raw/master/img/20201117232848.png" alt="stream_type Audio"></p>
+<p><img data-src="https://hezzero-1259666657.cos.ap-beijing.myqcloud.com/20201117232848.png" alt="stream_type Audio"></p>
 <p>继续循环，接下来的字段 <code>0xbd bd</code>，是海康的私有数据，携带有 <code>0</code> 字节的描述信息。</p>
 <p>继续循环，接下来的字段 <code>0xbf bf</code>，也是海康的私有数据，携带有 <code>0</code> 字节的描述信息。</p>
-<p><img data-src="https://gitee.com/hezhaojiang/MyPics/raw/master/img/20201117233803.png" alt="私有数据 PSM"></p>
+<p><img data-src="https://hezzero-1259666657.cos.ap-beijing.myqcloud.com/20201117233803.png" alt="私有数据 PSM"></p>
 <p>以上四次循环后，他们占用的字节数已经等于 <code>44</code>，跟 <code>element_stream_map_length</code> 值相等。</p>
 <p>接下来的内容就是 <code>CRC_32</code>，<code>4bits</code>，从以下码流中可以看出，海康 IPC 中没有对这些字节进行计算。</p>
-<p><img data-src="https://gitee.com/hezhaojiang/MyPics/raw/master/img/20201118211141.png" alt="CRC_32"></p>
+<p><img data-src="https://hezzero-1259666657.cos.ap-beijing.myqcloud.com/20201118211141.png" alt="CRC_32"></p>
 <h3 id="PTS-DTS-flags"><a href="#PTS-DTS-flags" class="headerlink" title="PTS_DTS_flags"></a>PTS_DTS_flags</h3><p>在很多码流中，都会存在 <code>PTS</code> 或 <code>DTS</code> 字段，此时 <code>PTS_DTS_flags</code> 字段就会置位，比如以下码流中，<code>PTS_DTS_flags</code> 为 <code>00(2)</code></p>
-<p><img data-src="https://gitee.com/hezhaojiang/MyPics/raw/master/img/20201118212717.png" alt="PTS_DTS_flags"></p>
+<p><img data-src="https://hezzero-1259666657.cos.ap-beijing.myqcloud.com/20201118212717.png" alt="PTS_DTS_flags"></p>
 <p>对比 <a href="/post/2020/f33d2f13/" title="音视频封装 - PES 封装格式">音视频封装 - PES 封装格式</a> 中 <code>PES</code> 码流结构可知，之后由 <code>5</code> 字节的 <code>PTS</code> 数据</p>
-<p><img data-src="https://gitee.com/hezhaojiang/MyPics/raw/master/img/20201118213841.png" alt="PES Struct"></p>
-<p><img data-src="https://gitee.com/hezhaojiang/MyPics/raw/master/img/20201118214049.png" alt="PTS Data"></p>
+<p><img data-src="https://hezzero-1259666657.cos.ap-beijing.myqcloud.com/20201118213841.png" alt="PES Struct"></p>
+<p><img data-src="https://hezzero-1259666657.cos.ap-beijing.myqcloud.com/20201118214049.png" alt="PTS Data"></p>
 <h3 id="ES-Stream"><a href="#ES-Stream" class="headerlink" title="ES Stream"></a>ES Stream</h3><p>经过以上步骤分析出 <code>PS</code> 的各层封装后，就能将封装中的 <code>ES</code> 码流提取出来：</p>
-<p><img data-src="https://gitee.com/hezhaojiang/MyPics/raw/master/img/20201118212109.png" alt="ES"></p>
+<p><img data-src="https://hezzero-1259666657.cos.ap-beijing.myqcloud.com/20201118212109.png" alt="ES"></p>
 <h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><ul>
 <li>[1] 文中 <code>PS</code> 码流 <code>A</code> 视频源文件：<a href="/slave/PS/TestVideoA.7z" title="密码：github.com">点击下载</a></li>
 <li>[2] 文中 <code>PS</code> 码流 <code>B</code> 视频源文件：<a href="/slave/PS/TestVideoB.7z" title="密码：github.com">点击下载</a></li>

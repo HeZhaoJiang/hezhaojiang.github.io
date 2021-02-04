@@ -30,15 +30,15 @@
 <meta property="og:site_name" content="何照江的博客">
 <meta property="og:description" content="在 H264 编码预测时，选择哪种预测方式是一个永远躲避不了的一个问题，我们希望找到一个最优的预测方式，即预测的亮度 &#x2F; 色度值与真实的亮度 &#x2F; 色度值最为接近。这就需要有一种计算方法来评价各种预测方式的效果，我们称这种计算方法为代价计算。">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://gitee.com/hezhaojiang/MyPics/raw/master/img/20210121232312.png">
-<meta property="og:image" content="https://gitee.com/hezhaojiang/MyPics/raw/master/img/20200910003000.png">
-<meta property="og:image" content="https://gitee.com/hezhaojiang/MyPics/raw/master/img/20200910003018.png">
+<meta property="og:image" content="https://hezzero-1259666657.cos.ap-beijing.myqcloud.com/20210121232312.png">
+<meta property="og:image" content="https://hezzero-1259666657.cos.ap-beijing.myqcloud.com/20200910003000.png">
+<meta property="og:image" content="https://hezzero-1259666657.cos.ap-beijing.myqcloud.com/20200910003018.png">
 <meta property="article:published_time" content="2020-09-09T07:59:08.000Z">
-<meta property="article:modified_time" content="2021-01-30T12:55:23.132Z">
+<meta property="article:modified_time" content="2021-02-04T04:47:35.940Z">
 <meta property="article:author" content="何照江">
 <meta property="article:tag" content="H.264">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://gitee.com/hezhaojiang/MyPics/raw/master/img/20210121232312.png">
+<meta name="twitter:image" content="https://hezzero-1259666657.cos.ap-beijing.myqcloud.com/20210121232312.png">
 
 
 <link rel="canonical" href="http://github.hezhaojiang.io/post/2020/65d41c1f/">
@@ -330,7 +330,7 @@
           <i class="far fa-calendar-check"></i>
         </span>
         <span class="post-meta-item-text">更新于</span>
-        <time title="修改时间：2021-01-30 20:55:23" itemprop="dateModified" datetime="2021-01-30T20:55:23+08:00">2021-01-30</time>
+        <time title="修改时间：2021-02-04 12:47:35" itemprop="dateModified" datetime="2021-02-04T12:47:35+08:00">2021-02-04</time>
       </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -380,7 +380,7 @@
 <h3 id="SATD"><a href="#SATD" class="headerlink" title="SATD"></a>SATD</h3><p><code>SATD(Sum of Absolute Transformed Difference)</code> 即 <code>Hadamard</code> 变换后再绝对值求和。它和 <code>SAD</code> 的区别在于多了一个变换。</p>
 <h4 id="Hadamard-变换"><a href="#Hadamard-变换" class="headerlink" title="Hadamard 变换"></a>Hadamard 变换</h4><p>阿达马变换（<code>Hadamard transform</code>），是一种广义傅立叶变换，作为变换编码的一种在影片编码当中使用有很久的历史。在近来的影片编码标准中，阿达马变换多被用来计算 <code>SATD</code></p>
 <h5 id="变换矩阵"><a href="#变换矩阵" class="headerlink" title="变换矩阵"></a>变换矩阵</h5><p>在 <code>H.264</code> 中使用了 <code>4</code> 阶和 <code>8</code> 阶的阿达马变换来计算 <code>SATD</code>，其变换矩阵为：</p>
-<p><img data-src="https://gitee.com/hezhaojiang/MyPics/raw/master/img/20210121232312.png" alt="4 阶和 8 阶 Hadamard 矩阵"></p>
+<p><img data-src="https://hezzero-1259666657.cos.ap-beijing.myqcloud.com/20210121232312.png" alt="4 阶和 8 阶 Hadamard 矩阵"></p>
 <h5 id="SATD-计算方法"><a href="#SATD-计算方法" class="headerlink" title="SATD 计算方法"></a>SATD 计算方法</h5><p>当计算 4x4 块 $\begin{bmatrix}L_4\end{bmatrix}$ 的 <code>SATD</code> 时，先使用下面的方法进行二维的 <code>Hadamard</code> 变换</p>
 <script type="math/tex; mode=display">\begin{bmatrix}L_4'\end{bmatrix} = \begin{bmatrix}H_4\end{bmatrix} \times \begin{bmatrix}L_4\end{bmatrix}  \times \begin{bmatrix}H_4\end{bmatrix}</script><p>然后计算 $\begin{bmatrix}L_4’\end{bmatrix}$ 所有系数绝对值之和并归一化。</p>
 <p>类似的，当计算 8x8 块 $\begin{bmatrix}L_8\end{bmatrix}$ 的 <code>SATD</code> 时，先使用下面的方法进行二维的 <code>Hadamard</code> 变换：</p>
@@ -390,8 +390,8 @@
 <p>为什么使用 <code>SATD</code> 而不使用 <code>SAD</code> 呢？关键原因在于编码之后码流的大小是和图像块 <code>DCT</code> 变换后频域信息紧密相关的，而和变换前的时域信息关联性小一些。SAD 只能反应时域信息；SATD 却可以反映频域信息，而且计算复杂度也低于 <code>DCT</code> 变换，因此是比较合适的模式选择的依据。</p>
 </blockquote>
 <p>使用 <code>SAD</code> 进行模式选择的示例如下所示。下面这张图代表了一个普通的 <code>Intra16x16</code> 的宏块的像素。它的下方包含了使用 <code>Vertical</code>，<code>Horizontal</code>，<code>DC</code> 和 <code>Plane</code> 四种帧内预测模式预测的像素。通过计算可以得到这几种预测像素和原始像素之间的 <code>SAD(SAE)</code> 分别为 <code>3985</code>，<code>5097</code>，<code>4991</code>，<code>2539</code>。由于 <code>Plane</code> 模式的 <code>SAD</code> 取值最小，由此可以断定 <code>Plane</code> 模式对于这个宏块来说是最好的帧内预测模式。</p>
-<p><img data-src="https://gitee.com/hezhaojiang/MyPics/raw/master/img/20200910003000.png" alt="原始图像"></p>
-<p><img data-src="https://gitee.com/hezhaojiang/MyPics/raw/master/img/20200910003018.png" alt="不同方式的帧内预测后图像以及 `SAD` 值"></p>
+<p><img data-src="https://hezzero-1259666657.cos.ap-beijing.myqcloud.com/20200910003000.png" alt="原始图像"></p>
+<p><img data-src="https://hezzero-1259666657.cos.ap-beijing.myqcloud.com/20200910003018.png" alt="不同方式的帧内预测后图像以及 `SAD` 值"></p>
 
     </div>
 
