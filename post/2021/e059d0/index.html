@@ -30,15 +30,15 @@
 <meta property="og:site_name" content="何照江的博客">
 <meta property="og:description" content="我们知道现在的主流编码器都是使用基于块的混合编码框架，以编码块为单位进行预测、变换、量化。 这就导致不同的编码块会使用不同的编码参数，进而不同编码重建块之间的存在一定的差异，尤其在编码块边界处较为明显。编码块边界处不连续的现象就是块效应，产生这种效应的原因主要有两个：  预测时出现不准的地方称为残量（Residual），残量会利用离散余弦变换（Discrete Cosine Transform,">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://hezzero-1259666657.cos.ap-beijing.myqcloud.com/20210201230151.png">
-<meta property="og:image" content="https://hezzero-1259666657.cos.ap-beijing.myqcloud.com/20210201231001.png">
-<meta property="og:image" content="https://hezzero-1259666657.cos.ap-beijing.myqcloud.com/20210201221354.png">
+<meta property="og:image" content="https://gitee.com/hezhaojiang/MyPics/raw/master/img/20210201230151.png">
+<meta property="og:image" content="https://gitee.com/hezhaojiang/MyPics/raw/master/img/20210201231001.png">
+<meta property="og:image" content="https://gitee.com/hezhaojiang/MyPics/raw/master/img/20210201221354.png">
 <meta property="article:published_time" content="2021-02-01T05:32:12.000Z">
-<meta property="article:modified_time" content="2021-02-04T04:47:35.940Z">
+<meta property="article:modified_time" content="2021-02-04T16:46:01.923Z">
 <meta property="article:author" content="何照江">
 <meta property="article:tag" content="H.264">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://hezzero-1259666657.cos.ap-beijing.myqcloud.com/20210201230151.png">
+<meta name="twitter:image" content="https://gitee.com/hezhaojiang/MyPics/raw/master/img/20210201230151.png">
 
 
 <link rel="canonical" href="http://github.hezhaojiang.io/post/2021/e059d0/">
@@ -236,20 +236,20 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">123</span>
+          <span class="site-state-item-count">124</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">12</span>
+        <span class="site-state-item-count">13</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">44</span>
+        <span class="site-state-item-count">47</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -330,7 +330,7 @@
           <i class="far fa-calendar-check"></i>
         </span>
         <span class="post-meta-item-text">更新于</span>
-        <time title="修改时间：2021-02-04 12:47:35" itemprop="dateModified" datetime="2021-02-04T12:47:35+08:00">2021-02-04</time>
+        <time title="修改时间：2021-02-05 00:46:01" itemprop="dateModified" datetime="2021-02-05T00:46:01+08:00">2021-02-05</time>
       </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -389,7 +389,7 @@
 <li>滤波器的应用：做完前面两个工作可以决定边界强度以及判断是否真的为人造边界，这个工作主要对人造边界依造对应的边界强度选择该应用的滤波器。</li>
 </ol>
 <h2 id="边界强度"><a href="#边界强度" class="headerlink" title="边界强度"></a>边界强度</h2><p>每一个 4x4 的亮度区块中需要做滤波的区块都会计算出一个边界强度。色度区块的边界强度是对亮度区块已经求得的边界强度做取样，如图所示：</p>
-<p><img data-src="https://hezzero-1259666657.cos.ap-beijing.myqcloud.com/20210201230151.png" alt="色度区块的边界强度与亮度区块边界强度的关系"></p>
+<p><img data-src="https://gitee.com/hezhaojiang/MyPics/raw/master/img/20210201230151.png" alt="色度区块的边界强度与亮度区块边界强度的关系"></p>
 <p><code>H.264</code> 的边界强度 <code>Bs</code> 的判定方式如下：</p>
 <div class="table-container">
 <table>
@@ -427,10 +427,10 @@
 <p>《ITU-T Rec. H.264-200305》 8.7.2.1 亮度的依赖内容的边界滤波强度的推导过程</p>
 </blockquote>
 <p>从上表得出边界强度的判断流程如图所示：</p>
-<p><img data-src="https://hezzero-1259666657.cos.ap-beijing.myqcloud.com/20210201231001.png" alt="边界强度的判断流程"></p>
+<p><img data-src="https://gitee.com/hezhaojiang/MyPics/raw/master/img/20210201231001.png" alt="边界强度的判断流程"></p>
 <h2 id="边界分析"><a href="#边界分析" class="headerlink" title="边界分析"></a>边界分析</h2><p>并不是所有的块的边界处都需要环路滤波。例如画面中物体的边界正好和块的边界重合的话，就不能进行滤波，否则会使画面中物体的边界变模糊。因此需要区别开物体边界和块效应边界。一般情况下，物体边界两边的像素值差别很大，而块效应边界两边像素值差别比较小。</p>
 <p>边界强度如果大于 0 则对这个边界进行分析，判断是否为人造边界。下图是利用水平滤波器对垂直边界做滤波的示意图，一行有八个点 p3、p2、p1、p0、q0、q1、q2 以及 q3，p0 及 q0 之间为两区块的边界。H.264 标准定义了 2 个变量 <code>α</code> 和 <code>β</code> 来判决边界是否需要进行环路滤波。只有满足下面条件的时候才能进行环路滤波：：</p>
-<p><img data-src="https://hezzero-1259666657.cos.ap-beijing.myqcloud.com/20210201221354.png" alt="描述一个 4x4 块横向或者纵向边界的样点的惯例"></p>
+<p><img data-src="https://gitee.com/hezhaojiang/MyPics/raw/master/img/20210201221354.png" alt="描述一个 4x4 块横向或者纵向边界的样点的惯例"></p>
 <pre><code> Bs != 0
 |p0 - q0| &lt;α (IndexA)
 |p1 - p0| &lt;β (IndexA)
@@ -453,10 +453,10 @@ IndexB = Min（Max(0,QP + OffsetB）, 51)
       <div class="popular-posts-title"><a href="\post\2020\4f888bde\" rel="bookmark">编解码技术：H264 - CAVLC</a></div>
     </li>
     <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="\post\2020\3552c034\" rel="bookmark">编解码技术：H264 - Level</a></div>
+      <div class="popular-posts-title"><a href="\post\2020\f2a4ae37\" rel="bookmark">编解码技术：H264 - NAL Unit</a></div>
     </li>
     <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="\post\2020\f2a4ae37\" rel="bookmark">编解码技术：H264 - NAL Unit</a></div>
+      <div class="popular-posts-title"><a href="\post\2020\3552c034\" rel="bookmark">编解码技术：H264 - Level</a></div>
     </li>
     <li class="popular-posts-item">
       <div class="popular-posts-title"><a href="\post\2020\49096de1\" rel="bookmark">编解码技术：H264 - PPS</a></div>
@@ -499,6 +499,9 @@ IndexB = Min（Max(0,QP + OffsetB）, 51)
                 </a>
             </div>
             <div class="post-nav-item">
+                <a href="/post/2021/70c4ac0c/" rel="next" title="力扣刷题总结 - 泛洪填充算法">
+                  力扣刷题总结 - 泛洪填充算法 <i class="fa fa-chevron-right"></i>
+                </a>
             </div>
           </div>
     </footer>

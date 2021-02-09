@@ -30,15 +30,15 @@
 <meta property="og:site_name" content="何照江的博客">
 <meta property="og:description" content="Slice一个 Slice 包含一帧图像的部分或全部数据，换言之，一帧视频图像可以编码为一个或若干个 Slice。一个 Slice 最少包含一个宏块，最多包含整帧图像的数据。在不同的编码实现中，同一帧图像中所构成的 Slice 数目不一定相同。 在 H.264 中设计 Slice 的目的主要在于防止误码的扩散。因为不同的 slice 之间，其解码操作是独立的。某一个 slice 的解码过程所参考的">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://hezzero-1259666657.cos.ap-beijing.myqcloud.com/20200811225155.png">
-<meta property="og:image" content="https://hezzero-1259666657.cos.ap-beijing.myqcloud.com/20200811230024.jpg">
-<meta property="og:image" content="https://hezzero-1259666657.cos.ap-beijing.myqcloud.com/20200811230957.jpg">
+<meta property="og:image" content="https://gitee.com/hezhaojiang/MyPics/raw/master/img/20200811225155.png">
+<meta property="og:image" content="https://gitee.com/hezhaojiang/MyPics/raw/master/img/20200811230024.jpg">
+<meta property="og:image" content="https://gitee.com/hezhaojiang/MyPics/raw/master/img/20200811230957.jpg">
 <meta property="article:published_time" content="2020-08-10T07:24:02.000Z">
-<meta property="article:modified_time" content="2021-02-04T04:47:35.940Z">
+<meta property="article:modified_time" content="2021-02-04T16:46:01.923Z">
 <meta property="article:author" content="何照江">
 <meta property="article:tag" content="H.264">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://hezzero-1259666657.cos.ap-beijing.myqcloud.com/20200811225155.png">
+<meta name="twitter:image" content="https://gitee.com/hezhaojiang/MyPics/raw/master/img/20200811225155.png">
 
 
 <link rel="canonical" href="http://github.hezhaojiang.io/post/2020/92167482/">
@@ -236,20 +236,20 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">123</span>
+          <span class="site-state-item-count">124</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">12</span>
+        <span class="site-state-item-count">13</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">44</span>
+        <span class="site-state-item-count">47</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -330,7 +330,7 @@
           <i class="far fa-calendar-check"></i>
         </span>
         <span class="post-meta-item-text">更新于</span>
-        <time title="修改时间：2021-02-04 12:47:35" itemprop="dateModified" datetime="2021-02-04T12:47:35+08:00">2021-02-04</time>
+        <time title="修改时间：2021-02-05 00:46:01" itemprop="dateModified" datetime="2021-02-05T00:46:01+08:00">2021-02-05</time>
       </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -386,9 +386,9 @@
 </ul>
 <p>在 I slice 中只包含 I 宏块，不能包含 P 或 B 宏块；在 P 和 B slice 中，除了相应的 P 和 B 类型宏块之外，还可以包含 I 类型宏块。</p>
 <h3 id="Slice-的组成"><a href="#Slice-的组成" class="headerlink" title="Slice 的组成"></a>Slice 的组成</h3><p>每一个 Slice 总体来看都由两部分组成，一部分作为 Slice header，用于保存 Slice 的总体信息（如当前 Slice 的类型等），另一部分为 Slice body，通常是一组连续的宏块结构（或者宏块跳过信息），如下图所示：</p>
-<p><img data-src="https://hezzero-1259666657.cos.ap-beijing.myqcloud.com/20200811225155.png" alt="Slice 的组成"></p>
+<p><img data-src="https://gitee.com/hezhaojiang/MyPics/raw/master/img/20200811225155.png" alt="Slice 的组成"></p>
 <h3 id="Slice-Header-结构"><a href="#Slice-Header-结构" class="headerlink" title="Slice Header 结构"></a>Slice Header 结构</h3><p>Slice header 中主要保存了当前 slice 的一些全局的信息，slice body 中的宏块在进行解码时需依赖这些信息。Slice Header 结构如下图所示：</p>
-<p><img data-src="https://hezzero-1259666657.cos.ap-beijing.myqcloud.com/20200811230024.jpg" alt="Slice Header 结构"></p>
+<p><img data-src="https://gitee.com/hezhaojiang/MyPics/raw/master/img/20200811230024.jpg" alt="Slice Header 结构"></p>
 <h3 id="Slice-Header-语义"><a href="#Slice-Header-语义" class="headerlink" title="Slice Header 语义"></a>Slice Header 语义</h3><ul>
 <li><p>first_mb_in_slice 表示在条带中第一个宏块的地址。</p>
 <p>  当如附件 A 中规定的那样不允许任意的条带顺序时，本条带的 first_mb_in_slice 的值应不小于当前图像的任何在该条带之前（按解码顺序）的其他条带的 first_mb_in_slice 的值。<br>  条带中第一个宏块的地址按如下方式得到：</p>
@@ -398,7 +398,7 @@
 </ul>
 </li>
 <li><p>slice_type 表示条带的编码类型：</p>
-<p>  <img data-src="https://hezzero-1259666657.cos.ap-beijing.myqcloud.com/20200811230957.jpg" alt="Name association to slice_type"></p>
+<p>  <img data-src="https://gitee.com/hezhaojiang/MyPics/raw/master/img/20200811230957.jpg" alt="Name association to slice_type"></p>
 <p>  slice_type 的值在 5 到 9 范围内表示，除了当前条带的编码类型，所有当前编码图像的其他条带的 slice_type 值应与当前条带的 slice_type 值 一样，或者等于当前条带的 slice_type 值减 5。<br>  当 nal_unit_type 等于 5（IDR 图片）时，slice_type 应等于 2、4、7 或 9。<br>  当 max_num_ref_frames 等于 0 时，slice_type 应等于 2、4、7 或 9。</p>
 </li>
 <li><p>pic_parameter_set_id 指定使用的图像参数集。</p>
@@ -470,10 +470,10 @@
       <div class="popular-posts-title"><a href="\post\2020\4f888bde\" rel="bookmark">编解码技术：H264 - CAVLC</a></div>
     </li>
     <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="\post\2020\3552c034\" rel="bookmark">编解码技术：H264 - Level</a></div>
+      <div class="popular-posts-title"><a href="\post\2020\f2a4ae37\" rel="bookmark">编解码技术：H264 - NAL Unit</a></div>
     </li>
     <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="\post\2020\f2a4ae37\" rel="bookmark">编解码技术：H264 - NAL Unit</a></div>
+      <div class="popular-posts-title"><a href="\post\2020\3552c034\" rel="bookmark">编解码技术：H264 - Level</a></div>
     </li>
     <li class="popular-posts-item">
       <div class="popular-posts-title"><a href="\post\2020\49096de1\" rel="bookmark">编解码技术：H264 - PPS</a></div>
