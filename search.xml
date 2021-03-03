@@ -184,6 +184,59 @@
       </tags>
   </entry>
   <entry>
+    <title>NRM - 环境搭建</title>
+    <url>/post/2020/71c958c4/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><p>NRM(Nginx-rtmp-module) 的出现，使得很多非专业的流媒体开发工程师也可以简单、迅速地搭建流媒体服务器。</p>
+<p>在 NRM 安装之前，首先要确保完成了 <a href="/post/2020/8f761f75/" title="Nginx - 环境搭建">Nginx - 环境搭建</a> 中的内容，然后再进行后续操作。</p>
+<a id="more"></a>
+<h2 id="NRM-介绍"><a href="#NRM-介绍" class="headerlink" title="NRM 介绍"></a>NRM 介绍</h2><h2 id="安装前的准备"><a href="#安装前的准备" class="headerlink" title="安装前的准备"></a>安装前的准备</h2><h3 id="下载-NRM"><a href="#下载-NRM" class="headerlink" title="下载 NRM"></a>下载 NRM</h3><p>可以在 Github 中的 nginx-rtmp-module 项目仓库：<a href="https://github.com/arut/nginx-rtmp-module/releases">https://github.com/arut/nginx-rtmp-module/releases</a> 获取 nginx-rtmp-module 源码包。</p>
+<p>至本文编写时，最新的 nginx-rtmp-module 稳定版本为 <code>nginx-rtmp-module-1.2.1</code>，下文也是用该版本的源码包 <code>nginx-rtmp-module-1.2.1.tar.gz</code> 进行安装。</p>
+<p>将下载好的源码包 <code>nginx-rtmp-module-1.2.1.tar.gz</code> 放到准备好的 <code>Nginx</code> 源码目录（比如我的目录为 <code>/root/nginx/</code>）中，通过命令解压：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># git clone https://github.com/arut/nginx-rtmp-module</span></span><br><span class="line">$ tar xzvf nginx-rtmp-module-1.2.1.tar.gz</span><br><span class="line">$ mv nginx-rtmp-module-1.2.1 rtmp-module</span><br></pre></td></tr></table></figure>
+<h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><p>进入 <code>Nginx</code> 源码目录（比如我的目录为 <code>/root/nginx/nginx-1.18.0/</code>），执行以下命令：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ ./configure --add-module=/path/src/rtmp-module/</span><br><span class="line"><span class="comment"># My configure option</span></span><br><span class="line">$ ./configure --add-module=/root/nginx/rtmp-module/ --prefix=/usr/<span class="built_in">local</span>/nginx --with-http_ssl_module --pid-path=/var/run/nginx.pid --with-debug</span><br><span class="line">$ make &amp;&amp; sudo make install</span><br></pre></td></tr></table></figure>
+<h2 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h2><h3 id="修改配置文件"><a href="#修改配置文件" class="headerlink" title="修改配置文件"></a>修改配置文件</h3><ol>
+<li><p>从原配置文件中拷贝一份作为新配置文件的模板：</p>
+ <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ <span class="built_in">cd</span> /usr/<span class="built_in">local</span>/nginx/conf/</span><br><span class="line">$ cp nginx.conf live.conf</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>在新配置文件末尾加入以下内容：</p>
+ <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">rtmp &#123;</span><br><span class="line">    server &#123;</span><br><span class="line">        listen 1935;</span><br><span class="line">        application mylive &#123;</span><br><span class="line">            live on;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>启用新配置文件：</p>
+<p> ==1. Systemctl 工具配置（推荐）==</p>
+<ul>
+<li><p>修改系统服务脚本（<code>sudo vim /lib/systemd/system/nginx.service</code>）：</p>
+  <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># 找到如下行</span><br><span class="line">ExecStart&#x3D;&#x2F;usr&#x2F;local&#x2F;nginx&#x2F;sbin&#x2F;nginx -c &#x2F;usr&#x2F;local&#x2F;nginx&#x2F;conf&#x2F;nginx.conf</span><br><span class="line"># 修改为</span><br><span class="line">ExecStart&#x3D;&#x2F;usr&#x2F;local&#x2F;nginx&#x2F;sbin&#x2F;nginx -c &#x2F;usr&#x2F;local&#x2F;nginx&#x2F;conf&#x2F;live.conf</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>重启 Nginx 服务使新配置生效：</p>
+  <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@VM_0_6_centos conf]<span class="comment"># sudo systemctl restart nginx</span></span><br></pre></td></tr></table></figure>
+<p>==Service 工具配置==</p>
+</li>
+<li><p>修改系统服务脚本（<code>vim /etc/init.d/nginx</code>）：</p>
+  <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># 找到如下行</span><br><span class="line">NGINX_CONF_FILE&#x3D;&quot;&#x2F;usr&#x2F;local&#x2F;nginx&#x2F;conf&#x2F;nginx.conf&quot;</span><br><span class="line"># 修改为</span><br><span class="line">NGINX_CONF_FILE&#x3D;&quot;&#x2F;usr&#x2F;local&#x2F;nginx&#x2F;conf&#x2F;live.conf&quot;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>检查配置文件正确性：</p>
+  <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@VM_0_6_centos conf]<span class="comment"># service nginx configtest</span></span><br><span class="line">nginx: the configuration file /usr/<span class="built_in">local</span>/nginx/conf/live.conf syntax is ok</span><br><span class="line">nginx: configuration file /usr/<span class="built_in">local</span>/nginx/conf/live.conf <span class="built_in">test</span> is successful</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>重启 Nginx 服务使新配置生效：</p>
+  <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@VM_0_6_centos conf]<span class="comment"># service nginx restart</span></span><br><span class="line">Restarting nginx (via systemctl):                          [  OK  ]</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+</ol>
+<h2 id="测试"><a href="#测试" class="headerlink" title="测试"></a>测试</h2><h3 id="使用-ffmpeg-推流"><a href="#使用-ffmpeg-推流" class="headerlink" title="使用 ffmpeg 推流"></a>使用 ffmpeg 推流</h3><p>在服务器上使用 ffmpeg 向 Nginx-rtmp-module 服务进行推流：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ffmpeg -re -i xxx.flv -r 25 -b 1M -f flv rtmp://127.0.0.1:1935/url</span><br><span class="line"><span class="comment"># 示例：</span></span><br><span class="line">ffmpeg -re -i Read_Book_852x480.flv -ar 22050 -f flv rtmp://127.0.0.1:1935/mylive/1</span><br><span class="line">ffmpeg -re -stream_loop -1 -i Read_Book_1280x720.flv -vcodec libx264 -f flv rtmp://127.0.0.1:1935/mylive/1</span><br></pre></td></tr></table></figure>
+<h3 id="使用-VLC-拉流"><a href="#使用-VLC-拉流" class="headerlink" title="使用 VLC 拉流"></a>使用 VLC 拉流</h3><p>使用可以连接到服务器的计算机打开 <code>VLC</code> 播放器进行拉流：</p>
+<p><img data-src="https://gitee.com/hezhaojiang/MyPics/raw/master/img/20201007225859.png" alt="VLC 拉流测试"></p>
+<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><ul>
+<li>[1] 中国工信出版集团 《直播系统开发 基于 Nginx 与 Nginx-rtmp-module》</li>
+</ul>
+]]></content>
+      <tags>
+        <tag>NRM</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Nginx - 命令行参数和信号</title>
     <url>/post/2020/f45df2c9/</url>
     <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><h2 id="nginx-命令行参数"><a href="#nginx-命令行参数" class="headerlink" title="nginx 命令行参数"></a>nginx 命令行参数</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">[root@VM_0_6_centos ~]# nginx -?</span><br><span class="line">nginx version: nginx&#x2F;1.18.0</span><br><span class="line">Usage: nginx [-?hvVtTq] [-s signal] [-c filename] [-p prefix] [-g directives]</span><br><span class="line"></span><br><span class="line">Options:</span><br><span class="line">  -?,-h         : this help</span><br><span class="line">  -v            : show version and exit</span><br><span class="line">  -V            : show version and configure options then exit</span><br><span class="line">  -t            : test configuration and exit</span><br><span class="line">  -T            : test configuration, dump it and exit</span><br><span class="line">  -q            : suppress non-error messages during configuration testing</span><br><span class="line">  -s signal     : send signal to a master process: stop, quit, reopen, reload</span><br><span class="line">  -p prefix     : set prefix path (default: &#x2F;usr&#x2F;local&#x2F;nginx&#x2F;)</span><br><span class="line">  -c filename   : set configuration file (default: conf&#x2F;nginx.conf)</span><br><span class="line">  -g directives : set global directives out of configuration file</span><br></pre></td></tr></table></figure>
@@ -238,59 +291,6 @@
 ]]></content>
       <tags>
         <tag>Nginx</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>NRM - 环境搭建</title>
-    <url>/post/2020/71c958c4/</url>
-    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><p>NRM(Nginx-rtmp-module) 的出现，使得很多非专业的流媒体开发工程师也可以简单、迅速地搭建流媒体服务器。</p>
-<p>在 NRM 安装之前，首先要确保完成了 <a href="/post/2020/8f761f75/" title="Nginx - 环境搭建">Nginx - 环境搭建</a> 中的内容，然后再进行后续操作。</p>
-<a id="more"></a>
-<h2 id="NRM-介绍"><a href="#NRM-介绍" class="headerlink" title="NRM 介绍"></a>NRM 介绍</h2><h2 id="安装前的准备"><a href="#安装前的准备" class="headerlink" title="安装前的准备"></a>安装前的准备</h2><h3 id="下载-NRM"><a href="#下载-NRM" class="headerlink" title="下载 NRM"></a>下载 NRM</h3><p>可以在 Github 中的 nginx-rtmp-module 项目仓库：<a href="https://github.com/arut/nginx-rtmp-module/releases">https://github.com/arut/nginx-rtmp-module/releases</a> 获取 nginx-rtmp-module 源码包。</p>
-<p>至本文编写时，最新的 nginx-rtmp-module 稳定版本为 <code>nginx-rtmp-module-1.2.1</code>，下文也是用该版本的源码包 <code>nginx-rtmp-module-1.2.1.tar.gz</code> 进行安装。</p>
-<p>将下载好的源码包 <code>nginx-rtmp-module-1.2.1.tar.gz</code> 放到准备好的 <code>Nginx</code> 源码目录（比如我的目录为 <code>/root/nginx/</code>）中，通过命令解压：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># git clone https://github.com/arut/nginx-rtmp-module</span></span><br><span class="line">$ tar xzvf nginx-rtmp-module-1.2.1.tar.gz</span><br><span class="line">$ mv nginx-rtmp-module-1.2.1 rtmp-module</span><br></pre></td></tr></table></figure>
-<h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><p>进入 <code>Nginx</code> 源码目录（比如我的目录为 <code>/root/nginx/nginx-1.18.0/</code>），执行以下命令：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ ./configure --add-module=/path/src/rtmp-module/</span><br><span class="line"><span class="comment"># My configure option</span></span><br><span class="line">$ ./configure --add-module=/root/nginx/rtmp-module/ --prefix=/usr/<span class="built_in">local</span>/nginx --with-http_ssl_module --pid-path=/var/run/nginx.pid --with-debug</span><br><span class="line">$ make &amp;&amp; sudo make install</span><br></pre></td></tr></table></figure>
-<h2 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h2><h3 id="修改配置文件"><a href="#修改配置文件" class="headerlink" title="修改配置文件"></a>修改配置文件</h3><ol>
-<li><p>从原配置文件中拷贝一份作为新配置文件的模板：</p>
- <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ <span class="built_in">cd</span> /usr/<span class="built_in">local</span>/nginx/conf/</span><br><span class="line">$ cp nginx.conf live.conf</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>在新配置文件末尾加入以下内容：</p>
- <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">rtmp &#123;</span><br><span class="line">    server &#123;</span><br><span class="line">        listen 1935;</span><br><span class="line">        application mylive &#123;</span><br><span class="line">            live on;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>启用新配置文件：</p>
-<p> ==1. Systemctl 工具配置（推荐）==</p>
-<ul>
-<li><p>修改系统服务脚本（<code>sudo vim /lib/systemd/system/nginx.service</code>）：</p>
-  <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># 找到如下行</span><br><span class="line">ExecStart&#x3D;&#x2F;usr&#x2F;local&#x2F;nginx&#x2F;sbin&#x2F;nginx -c &#x2F;usr&#x2F;local&#x2F;nginx&#x2F;conf&#x2F;nginx.conf</span><br><span class="line"># 修改为</span><br><span class="line">ExecStart&#x3D;&#x2F;usr&#x2F;local&#x2F;nginx&#x2F;sbin&#x2F;nginx -c &#x2F;usr&#x2F;local&#x2F;nginx&#x2F;conf&#x2F;live.conf</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>重启 Nginx 服务使新配置生效：</p>
-  <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@VM_0_6_centos conf]<span class="comment"># sudo systemctl restart nginx</span></span><br></pre></td></tr></table></figure>
-<p>==Service 工具配置==</p>
-</li>
-<li><p>修改系统服务脚本（<code>vim /etc/init.d/nginx</code>）：</p>
-  <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># 找到如下行</span><br><span class="line">NGINX_CONF_FILE&#x3D;&quot;&#x2F;usr&#x2F;local&#x2F;nginx&#x2F;conf&#x2F;nginx.conf&quot;</span><br><span class="line"># 修改为</span><br><span class="line">NGINX_CONF_FILE&#x3D;&quot;&#x2F;usr&#x2F;local&#x2F;nginx&#x2F;conf&#x2F;live.conf&quot;</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>检查配置文件正确性：</p>
-  <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@VM_0_6_centos conf]<span class="comment"># service nginx configtest</span></span><br><span class="line">nginx: the configuration file /usr/<span class="built_in">local</span>/nginx/conf/live.conf syntax is ok</span><br><span class="line">nginx: configuration file /usr/<span class="built_in">local</span>/nginx/conf/live.conf <span class="built_in">test</span> is successful</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>重启 Nginx 服务使新配置生效：</p>
-  <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@VM_0_6_centos conf]<span class="comment"># service nginx restart</span></span><br><span class="line">Restarting nginx (via systemctl):                          [  OK  ]</span><br></pre></td></tr></table></figure>
-</li>
-</ul>
-</li>
-</ol>
-<h2 id="测试"><a href="#测试" class="headerlink" title="测试"></a>测试</h2><h3 id="使用-ffmpeg-推流"><a href="#使用-ffmpeg-推流" class="headerlink" title="使用 ffmpeg 推流"></a>使用 ffmpeg 推流</h3><p>在服务器上使用 ffmpeg 向 Nginx-rtmp-module 服务进行推流：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ffmpeg -re -i xxx.flv -r 25 -b 1M -f flv rtmp://127.0.0.1:1935/url</span><br><span class="line"><span class="comment"># 示例：</span></span><br><span class="line">ffmpeg -re -i Read_Book_852x480.flv -ar 22050 -f flv rtmp://127.0.0.1:1935/mylive/1</span><br><span class="line">ffmpeg -re -stream_loop -1 -i Read_Book_1280x720.flv -vcodec libx264 -f flv rtmp://127.0.0.1:1935/mylive/1</span><br></pre></td></tr></table></figure>
-<h3 id="使用-VLC-拉流"><a href="#使用-VLC-拉流" class="headerlink" title="使用 VLC 拉流"></a>使用 VLC 拉流</h3><p>使用可以连接到服务器的计算机打开 <code>VLC</code> 播放器进行拉流：</p>
-<p><img data-src="https://gitee.com/hezhaojiang/MyPics/raw/master/img/20201007225859.png" alt="VLC 拉流测试"></p>
-<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><ul>
-<li>[1] 中国工信出版集团 《直播系统开发 基于 Nginx 与 Nginx-rtmp-module》</li>
-</ul>
-]]></content>
-      <tags>
-        <tag>NRM</tag>
       </tags>
   </entry>
   <entry>
@@ -457,159 +457,6 @@
       </tags>
   </entry>
   <entry>
-    <title>力扣刷题总结 - Code546 移除盒子</title>
-    <url>/post/2020/7fbaabf9/</url>
-    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><h2 id="题目描述"><a href="#题目描述" class="headerlink" title="题目描述"></a>题目描述</h2><p>给出一些不同颜色的盒子，盒子的颜色由数字表示，即不同的数字表示不同的颜色。</p>
-<p>你将经过若干轮操作去去掉盒子，直到所有的盒子都去掉为止。每一轮你可以移除具有相同颜色的连续 k 个盒子（k &gt;= 1），这样一轮之后你将得到 k*k 个积分。</p>
-<p>当你将所有盒子都去掉之后，求你能获得的最大积分和。</p>
-<blockquote>
-<p>详见：<a href="https://leetcode-cn.com/problems/two-sum-ii-input-array-is-sorted/">https://leetcode-cn.com/problems/two-sum-ii-input-array-is-sorted/</a></p>
-</blockquote>
-<p>这道题是我刷 Leetcode 以来，每日一题中难度最高的一道题，所以在此记录下解题方法。</p>
-<a id="more"></a>
-<h2 id="解法一：深度优先搜索"><a href="#解法一：深度优先搜索" class="headerlink" title="解法一：深度优先搜索"></a>解法一：深度优先搜索</h2><blockquote>
-<p>整理自：<a href="https://leetcode-cn.com/problems/remove-boxes/solution/liang-chong-jie-fa-by-jason-2-53/">https://www.showsql.com/2019/12/10/leetcode546-remove-boxes/</a></p>
-</blockquote>
-<p>数字 A[i] 在数组 A 中多个位置处出现。将相邻的 A[i] 连起来，这样 A[i] 在数组中，就形成了一个个连续的块。</p>
-<p>例如：[1, 3, 3, 2, 2, 3, 3, 3, 4, 3, 1] 中数字 3，构成了 3 个块。[3,3]，[3,3,3]，[3].</p>
-<p>那么，处理数字 3，可有如下的方法。</p>
-<ol>
-<li>处理 [3,3]<ul>
-<li>移除 [3,3]，然后对 [2, 2, 3, 3, 3, 4, 3, 1] 处理。</li>
-<li>保留 [3,3]，移除 [2,2]，使得 [3,3] 与 [3,3,3,4,3,1] 相邻。</li>
-</ul>
-</li>
-<li>处理 [3,3,3]<ul>
-<li>移除 [3,3,3]，然后对 [4, 3, 1] 处理。</li>
-<li>保留 [3,3,3]，移除 [4]，使得 [3,3,3] 与 [3,1] 相邻。</li>
-</ul>
-</li>
-<li>处理 [3]<ul>
-<li>移除 [3], 然后处理 [1]。</li>
-</ul>
-</li>
-</ol>
-<p>从上面粗略的思路中，可总结出相同数字块的处理方法。数字块之间有其它不同的数字填充。</p>
-<p>对块 0 来说，可直接将其移除算分，块 0 之后的区域递归计算</p>
-<p>或者，保留块 0。先将块 0 与块 1 之间区域递归计算后，块 0 与块 1 就连起来了。再递归计算块 1 和块 1 之后的区域。</p>
-<p>对中间的块 j 来说，类似，要么与前面的块 j-1 拼接爆掉，要么保留到下个块 j+1.</p>
-<p>同样，从最后一个块向前考虑，也能用同样的方法。</p>
-<h3 id="暴力算法"><a href="#暴力算法" class="headerlink" title="暴力算法"></a>暴力算法</h3><p>如此能形成递归算法：</p>
-<p>计算区间 [x,y] 的分数，取与 A[x] 相同的数字，组成上述的块。同时要记录区间 [x,y] 左边，与 A[x] 相同的数字个数。用 a 表示。</p>
-<p>代码实现如下：</p>
-<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;vector&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;algorithm&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">removeBoxes</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; &amp;boxes)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> ans = <span class="number">0</span>;</span><br><span class="line">        ans = dfs(boxes, <span class="number">0</span>, boxes.<span class="built_in">size</span>() - <span class="number">1</span>, <span class="number">0</span>);</span><br><span class="line">        <span class="keyword">return</span> ans;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">dfs</span><span class="params">(<span class="keyword">const</span> <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; &amp;A, <span class="keyword">int</span> x, <span class="keyword">int</span> y, <span class="keyword">int</span> a)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (x &gt; y) <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">int</span> ans = <span class="number">0</span>, e = <span class="number">0</span>, f = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">        <span class="comment">/* 求出 A[x] 数据块 A[x..e-1] */</span></span><br><span class="line">        <span class="keyword">for</span> (e = x + <span class="number">1</span>; e &lt;= y; ++e) &#123;</span><br><span class="line">            <span class="keyword">if</span> (A[e] != A[x]) <span class="keyword">break</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment">/* 直接消除 A[x..e] 位的数据块 + 消除 A[e..y] 的剩余数据 */</span></span><br><span class="line">        ans = (a + e - x) * (a + e - x) + dfs(A, e, y, <span class="number">0</span>);</span><br><span class="line"></span><br><span class="line">        <span class="comment">/* 遍历每一块与 A[x] 值相等的数据块，A[f..] */</span></span><br><span class="line">        <span class="keyword">for</span> (f = e; f &lt;= y; ++f) &#123;</span><br><span class="line">            <span class="keyword">if</span> (A[f] == A[x] &amp;&amp; A[f - <span class="number">1</span>] != A[x]) &#123;</span><br><span class="line">                <span class="comment">/* 消除 A[e..f-1] + 消除 A[x..e-1,f..y] */</span></span><br><span class="line">                ans = <span class="built_in">max</span>(ans, dfs(A, e, f - <span class="number">1</span>, <span class="number">0</span>) + dfs(A, f, y, e - x + a));</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> ans;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h3 id="暴力算法的优化"><a href="#暴力算法的优化" class="headerlink" title="暴力算法的优化"></a>暴力算法的优化</h3><p>在上面算法中，一定有不少重复计算。用记忆化存储去重。</p>
-<p>用 index[x][y][a] 表示 dfs(x,y,a)。初始 index[x][y][a] = -1，其它不变。</p>
-<p>代码实现如下：</p>
-<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;vector&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;algorithm&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">    <span class="built_in">vector</span>&lt;<span class="built_in">vector</span>&lt;<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&gt;&gt; index; <span class="comment">/* 保存索引 */</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">removeBoxes</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; &amp;boxes)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> ans = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">int</span> N = boxes.<span class="built_in">size</span>();</span><br><span class="line">        index.resize(N, <span class="built_in">vector</span>&lt;<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&gt;(N, <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;(N, <span class="number">-1</span>)));</span><br><span class="line">        ans = dfs(boxes, <span class="number">0</span>, boxes.<span class="built_in">size</span>() - <span class="number">1</span>, <span class="number">0</span>);</span><br><span class="line">        <span class="keyword">return</span> ans;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">dfs</span><span class="params">(<span class="keyword">const</span> <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; &amp;A, <span class="keyword">int</span> x, <span class="keyword">int</span> y, <span class="keyword">int</span> a)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (x &gt; y) <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">if</span>(index[x][y][a] != <span class="number">-1</span>) <span class="keyword">return</span> index[x][y][a]; <span class="comment">/* 检查索引 */</span></span><br><span class="line"></span><br><span class="line">        <span class="keyword">int</span> ans = index[x][y][a], e = <span class="number">0</span>, f = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">        <span class="comment">/* 求出 A[x] 所在数据块 A[x-a..e-1] */</span></span><br><span class="line">        <span class="keyword">for</span> (e = x + <span class="number">1</span>; e &lt;= y; ++e) &#123;</span><br><span class="line">            <span class="keyword">if</span> (A[e] != A[x]) <span class="keyword">break</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment">/* 直接消除 A[x-a..e-1] 位的数据块 + 消除 A[e..y] 的剩余数据 */</span></span><br><span class="line">        ans = (a + e - x) * (a + e - x) + dfs(A, e, y, <span class="number">0</span>);</span><br><span class="line"></span><br><span class="line">        <span class="comment">/* 遍历每一块与 A[x] 值相等的数据块，A[f..] */</span></span><br><span class="line">        <span class="keyword">for</span> (f; f &lt;= y; ++f) &#123;</span><br><span class="line">            <span class="keyword">if</span> (A[f] == A[x] &amp;&amp; A[f - <span class="number">1</span>] != A[x])</span><br><span class="line">                <span class="comment">/* 消除 A[e..f-1] + 消除 A[x-a..e-1,f..y] */</span></span><br><span class="line">                ans = <span class="built_in">max</span>(ans, dfs(A, e, f - <span class="number">1</span>, <span class="number">0</span>) + dfs(A, f, y, e - x + a));</span><br><span class="line">        &#125;</span><br><span class="line">        index[x][y][a] = ans; <span class="comment">/* 保存索引 */</span></span><br><span class="line">        <span class="keyword">return</span> ans;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-<h2 id="解法二-动态规划"><a href="#解法二-动态规划" class="headerlink" title="解法二 动态规划"></a>解法二 动态规划</h2><p>将上面记忆化存储的递归算法，改为递推算法。</p>
-<p>上面递归算法的特点是，区间长度从长到短，直到长度为 0.</p>
-<p>那么，递归算法区间长度应该从短到长。枚举长度为 1，2，3，4，…，的区间。</p>
-<p>对确定的区间 [x,y]，关键是要知道 a，即 [x,y] 之前有多少个数字与 A[x] 相同。</p>
-<p>容易知道 a 的范围是 [0,x]，最多 A[x] 之前的数字都与 A[x] 相同。</p>
-<p>代码实现如下：</p>
-<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;vector&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;algorithm&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">    <span class="built_in">vector</span>&lt;<span class="built_in">vector</span>&lt;<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&gt;&gt; index;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">removeBoxes</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; &amp;boxes)</span></span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (boxes.empty()) <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">const</span> <span class="keyword">int</span> N = boxes.<span class="built_in">size</span>() + <span class="number">1</span>;</span><br><span class="line">        index.resize(N, <span class="built_in">vector</span>&lt;<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&gt;(N, <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;(N, <span class="number">0</span>)));</span><br><span class="line"></span><br><span class="line">        <span class="comment">/* 遍历求得所有 index[x][y][a] 的值 */</span></span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> len = <span class="number">1</span>; len &lt;= boxes.<span class="built_in">size</span>(); ++len) &#123;</span><br><span class="line">            <span class="keyword">for</span> (<span class="keyword">int</span> x = <span class="number">0</span>; x + len &lt;= boxes.<span class="built_in">size</span>(); ++x) &#123;</span><br><span class="line">                <span class="keyword">const</span> <span class="keyword">int</span> y = x + len - <span class="number">1</span>;</span><br><span class="line">                <span class="keyword">for</span> (<span class="keyword">int</span> a = <span class="number">0</span>; a &lt;= x; ++a) &#123; <span class="comment">/* 只需求 a &lt;= x 部分 */</span></span><br><span class="line">                    <span class="keyword">int</span> &amp;ans = index[x][y][a], e = <span class="number">0</span>, f = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">                    <span class="comment">/* 求出 A[x] 所在数据块 A[x-a..e-1] */</span></span><br><span class="line">                    <span class="keyword">for</span> (e = x + <span class="number">1</span>; e &lt;= y; ++e) &#123;</span><br><span class="line">                        <span class="keyword">if</span> (boxes[e] != boxes[x]) <span class="keyword">break</span>;</span><br><span class="line">                    &#125;</span><br><span class="line"></span><br><span class="line">                    <span class="comment">/* 直接消除 A[x-a..e-1] 位的数据块 + 消除 A[e..y] 的剩余数据 */</span></span><br><span class="line">                    ans = <span class="built_in">max</span>(ans, (a + e - x) * (a + e - x) + index[e][y][<span class="number">0</span>]);</span><br><span class="line"></span><br><span class="line">                    <span class="comment">/* 遍历每一块与 A[x] 值相等的数据块，A[f..] */</span></span><br><span class="line">                    <span class="keyword">for</span> (f = e; f &lt;= y; ++f) &#123;</span><br><span class="line">                        <span class="keyword">if</span> (boxes[f] == boxes[x] &amp;&amp; boxes[f - <span class="number">1</span>] != boxes[x]) &#123;</span><br><span class="line">                            <span class="comment">/* 消除 A[e..f-1] + 消除 A[x-a..e-1,f..y] */</span></span><br><span class="line">                            ans = <span class="built_in">max</span>(ans, index[e][f - <span class="number">1</span>][<span class="number">0</span>] + index[f][y][e - x + a]);</span><br><span class="line">                        &#125;</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> index[<span class="number">0</span>][boxes.<span class="built_in">size</span>() - <span class="number">1</span>][<span class="number">0</span>];</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-<h2 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h2><ul>
-<li>[1] 感谢 LeetCode 中贡献题解的各位大神：<a href="https://leetcode-cn.com/problems/remove-boxes/solution/">https://leetcode-cn.com/problems/remove-boxes/solution/</a></li>
-</ul>
-]]></content>
-      <categories>
-        <category>力扣刷题总结</category>
-      </categories>
-      <tags>
-        <tag>图论</tag>
-        <tag>动态规划</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>力扣刷题总结 - 泛洪填充算法</title>
-    <url>/post/2021/70c4ac0c/</url>
-    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><p>泛洪填充算法 (Flood Fill Algorithm) 泛洪填充算法又称洪水填充算法是在很多图形绘制软件中常用的填充算法，最熟悉不过就是 windows paint 的油漆桶功能。算法的原理很简单，就是从一个点开始附近像素点，填充成新的颜色，直到封闭区域内的所有像素点都被填充新颜色为止。泛红填充实现最常见有四邻域像素填充法，八邻域像素填充法，基于扫描线的像素填充方法。根据实现又可以分为递归与非递归方法，递归方法一般通过深度优先搜索进行实现，非递归方法一般通过广度优先搜索或并查集实现。</p>
-<a id="more"></a>
-<h2 id="泛洪填充题目解析"><a href="#泛洪填充题目解析" class="headerlink" title="泛洪填充题目解析"></a>泛洪填充题目解析</h2><h3 id="深度优先搜索"><a href="#深度优先搜索" class="headerlink" title="深度优先搜索"></a>深度优先搜索</h3><h4 id="200-岛屿数量"><a href="#200-岛屿数量" class="headerlink" title="200. 岛屿数量"></a>200. 岛屿数量</h4><p>题目描述：</p>
-<pre><code>给你一个由 &#39;1&#39;（陆地）和 &#39;0&#39;（水）组成的的二维网格，请你计算网格中岛屿的数量。
-岛屿总是被水包围，并且每座岛屿只能由水平方向和/或竖直方向上相邻的陆地连接形成。
-此外，你可以假设该网格的四条边均被水包围。
-
-示例 1：
-
-    输入：grid = [
-        [&quot;1&quot;,&quot;1&quot;,&quot;1&quot;,&quot;1&quot;,&quot;0&quot;],
-        [&quot;1&quot;,&quot;1&quot;,&quot;0&quot;,&quot;1&quot;,&quot;0&quot;],
-        [&quot;1&quot;,&quot;1&quot;,&quot;0&quot;,&quot;0&quot;,&quot;0&quot;],
-        [&quot;0&quot;,&quot;0&quot;,&quot;0&quot;,&quot;0&quot;,&quot;0&quot;]
-    ]
-    输出：1
-</code></pre><p>深度优先搜索解法：</p>
-<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">    <span class="keyword">int</span> M, N;</span><br><span class="line">    <span class="keyword">const</span> <span class="built_in">vector</span>&lt;<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&gt; dis&#123;&#123;<span class="number">1</span>,<span class="number">0</span>&#125;,&#123;<span class="number">-1</span>,<span class="number">0</span>&#125;,&#123;<span class="number">0</span>,<span class="number">1</span>&#125;,&#123;<span class="number">0</span>,<span class="number">-1</span>&#125;&#125;;</span><br><span class="line">    <span class="function"><span class="keyword">bool</span> <span class="title">isvalid</span><span class="params">(<span class="keyword">int</span> i, <span class="keyword">int</span> j)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> i &gt;= <span class="number">0</span> &amp;&amp; j &gt;= <span class="number">0</span> &amp;&amp; i &lt; M &amp;&amp; j &lt; N;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">markIand</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="built_in">vector</span>&lt;<span class="keyword">char</span>&gt;&gt;&amp; grid, <span class="keyword">int</span> i, <span class="keyword">int</span> j)</span> </span>&#123;</span><br><span class="line">        grid[i][j] = <span class="string">&#x27;0&#x27;</span>;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">auto</span> &amp;d : dis) &#123;</span><br><span class="line">            <span class="keyword">int</span> x = i + d[<span class="number">0</span>], y = j + d[<span class="number">1</span>];</span><br><span class="line">            <span class="keyword">if</span> (isvalid(x, y) &amp;&amp; grid[x][y] == <span class="string">&#x27;1&#x27;</span>) markIand(grid, x, y);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">numIslands</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="built_in">vector</span>&lt;<span class="keyword">char</span>&gt;&gt;&amp; grid)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> num = <span class="number">0</span>;</span><br><span class="line">        M = grid.<span class="built_in">size</span>();</span><br><span class="line">        N = grid[<span class="number">0</span>].<span class="built_in">size</span>();</span><br><span class="line">        <span class="comment">/* 寻找未发现的岛屿 */</span></span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; M; i++) <span class="keyword">for</span>(<span class="keyword">int</span> j = <span class="number">0</span>; j &lt; N; j++) &#123;</span><br><span class="line">            <span class="keyword">if</span> (grid[i][j] == <span class="string">&#x27;1&#x27;</span>) &#123; <span class="comment">/* 找到新岛屿 进行标记 */</span></span><br><span class="line">                markIand(grid, i, j);</span><br><span class="line">                num++;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> num;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-<h3 id="广度优先搜索"><a href="#广度优先搜索" class="headerlink" title="广度优先搜索"></a>广度优先搜索</h3><h4 id="733-图像渲染"><a href="#733-图像渲染" class="headerlink" title="733. 图像渲染"></a>733. 图像渲染</h4><p>题目描述：</p>
-<pre><code>有一幅以二维整数数组表示的图画，每一个整数表示该图画的像素值大小，数值在 0 到 65535 之间。
-给你一个坐标 (sr, sc) 表示图像渲染开始的像素值（行 ，列）和一个新的颜色值 newColor，让你重新上色这幅图像。
-
-为了完成上色工作，从初始坐标开始，记录初始坐标的上下左右四个方向上像素值与初始坐标相同的相连像素点，
-接着再记录这四个方向上符合条件的像素点与他们对应四个方向上像素值与初始坐标相同的相连像素点，……，
-重复该过程。将所有有记录的像素点的颜色值改为新的颜色值。
-
-最后返回经过上色渲染后的图像。
-
-示例 1:
-
-    输入: image = [[1,1,1],[1,1,0],[1,0,1]], sr = 1, sc = 1, newColor = 2
-    输出: [[2,2,2],[2,2,0],[2,0,1]]
-    解析: 在图像的正中间，(坐标(sr,sc)=(1,1)),
-          在路径上所有符合条件的像素点的颜色都被更改成2。
-          注意，右下角的像素没有更改为2，
-          因为它不是在上下左右四个方向上与初始点相连的像素点。
-</code></pre><p>广度优先搜索解法：</p>
-<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">    <span class="keyword">int</span> M, N;</span><br><span class="line">    <span class="keyword">const</span> <span class="built_in">vector</span>&lt;<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&gt; dis&#123;&#123;<span class="number">1</span>,<span class="number">0</span>&#125;,&#123;<span class="number">-1</span>,<span class="number">0</span>&#125;,&#123;<span class="number">0</span>,<span class="number">1</span>&#125;,&#123;<span class="number">0</span>,<span class="number">-1</span>&#125;&#125;;</span><br><span class="line">    <span class="function"><span class="keyword">bool</span> <span class="title">isvalid</span><span class="params">(<span class="keyword">int</span> i, <span class="keyword">int</span> j)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> i &gt;= <span class="number">0</span> &amp;&amp; j &gt;= <span class="number">0</span> &amp;&amp; i &lt; M &amp;&amp; j &lt; N;</span><br><span class="line">    &#125;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="built_in">vector</span>&lt;<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&gt; <span class="title">floodFill</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&gt;&amp; <span class="built_in">image</span>, <span class="keyword">int</span> sr, <span class="keyword">int</span> sc, <span class="keyword">int</span> newColor)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> preColor = <span class="built_in">image</span>[sr][sc];</span><br><span class="line">        <span class="keyword">if</span> (preColor == newColor) <span class="keyword">return</span> <span class="built_in">image</span>;</span><br><span class="line">        M = <span class="built_in">image</span>.<span class="built_in">size</span>();</span><br><span class="line">        N = <span class="built_in">image</span>[<span class="number">0</span>].<span class="built_in">size</span>();</span><br><span class="line">        <span class="built_in">deque</span>&lt;<span class="built_in">pair</span>&lt;<span class="keyword">int</span>, <span class="keyword">int</span>&gt;&gt; q;</span><br><span class="line">        q.emplace_back(sr, sc);</span><br><span class="line">        <span class="built_in">image</span>[sr][sc] = newColor;</span><br><span class="line">        <span class="keyword">while</span> (!q.empty()) &#123;</span><br><span class="line">            <span class="keyword">int</span> i = q.front().first, j = q.front().second;</span><br><span class="line">            q.pop_front();</span><br><span class="line">            <span class="keyword">for</span> (<span class="keyword">auto</span> &amp; d : dis) &#123;</span><br><span class="line">                <span class="keyword">int</span> x = i + d[<span class="number">0</span>], y = j + d[<span class="number">1</span>];</span><br><span class="line">                <span class="keyword">if</span> (isvalid(x, y) &amp;&amp; <span class="built_in">image</span>[x][y] == preColor) &#123;</span><br><span class="line">                    q.emplace_back(x, y);</span><br><span class="line">                    <span class="built_in">image</span>[x][y] = newColor;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">image</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-<h3 id="并查集"><a href="#并查集" class="headerlink" title="并查集"></a>并查集</h3><h4 id="1020-飞地的数量"><a href="#1020-飞地的数量" class="headerlink" title="1020. 飞地的数量"></a>1020. 飞地的数量</h4><p>题目描述：</p>
-<pre><code>给出一个二维数组 A，每个单元格为 0（代表海）或 1（代表陆地）。
-移动是指在陆地上从一个地方走到另一个地方（朝四个方向之一）或离开网格的边界。
-返回网格中无法在任意次数的移动中离开网格边界的陆地单元格的数量。
-
-示例 1：
-
-    输入：[[0,0,0,0],[1,0,1,0],[0,1,1,0],[0,0,0,0]]
-    输出：3
-    解释：有三个 1 被 0 包围。一个 1 没有被包围，因为它在边界上。
-
-示例 2：
-
-    输入：[[0,1,1,0],[0,0,1,0],[0,0,1,0],[0,0,0,0]]
-    输出：0
-    解释：所有 1 都在边界上或可以到达边界。
-</code></pre><p>并查集解法：</p>
-<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">UnionFind</span> &#123;</span></span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">    <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; parent;</span><br><span class="line">    <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; rank;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    UnionFind(<span class="keyword">int</span> n) &#123;</span><br><span class="line">        parent.resize(n);</span><br><span class="line">        rank.resize(n, <span class="number">0</span>);</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; n; i++) parent[i] = i;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">Find</span><span class="params">(<span class="keyword">int</span> n)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> n == parent[n] ? n : parent[n] = Find(parent[n]);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">Union</span><span class="params">(<span class="keyword">int</span> a, <span class="keyword">int</span> b)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> rootA = Find(a), rootB = Find(b);</span><br><span class="line">        <span class="keyword">if</span> (rootA != rootB) &#123;</span><br><span class="line">            <span class="keyword">if</span> (rank[rootA] &gt; rank[rootB]) swap(rootA, rootB);</span><br><span class="line">            parent[rootA] = rootB;</span><br><span class="line">            rank[rootB] += rank[rootA] + <span class="number">1</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">Rank</span><span class="params">(<span class="keyword">int</span> a)</span> </span>&#123; <span class="keyword">return</span> rank[Find(a)]; &#125;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">numEnclaves</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&gt;&amp; A)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> M = A.<span class="built_in">size</span>();</span><br><span class="line">        <span class="keyword">int</span> N = A[<span class="number">0</span>].<span class="built_in">size</span>();</span><br><span class="line">        <span class="keyword">int</span> landCount = <span class="number">0</span>;</span><br><span class="line">        <span class="function">UnionFind <span class="title">uf</span><span class="params">(N * M + <span class="number">1</span>)</span></span>;</span><br><span class="line"><span class="meta">#       <span class="meta-keyword">define</span> INDEX(i,j) ((i) * N + (j))</span></span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; M; i++) <span class="keyword">for</span> (<span class="keyword">int</span> j = <span class="number">0</span>; j &lt; N; j++) &#123;</span><br><span class="line">            <span class="keyword">if</span> (A[i][j] != <span class="number">1</span>) <span class="keyword">continue</span>;</span><br><span class="line">            landCount++;</span><br><span class="line">            <span class="keyword">if</span> (i == <span class="number">0</span> || i == M - <span class="number">1</span> || j == <span class="number">0</span> || j == N - <span class="number">1</span>) uf.Union(M * N, INDEX(i,j)); <span class="comment">// 边界</span></span><br><span class="line">            <span class="keyword">if</span> (i != <span class="number">0</span> &amp;&amp; A[i - <span class="number">1</span>][j] == <span class="number">1</span>) uf.Union(INDEX(i - <span class="number">1</span>,j), INDEX(i,j)); <span class="comment">// 上侧</span></span><br><span class="line">            <span class="keyword">if</span> (j != <span class="number">0</span> &amp;&amp; A[i][j - <span class="number">1</span>] == <span class="number">1</span>) uf.Union(INDEX(i,j - <span class="number">1</span>), INDEX(i,j)); <span class="comment">// 左侧</span></span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> landCount - uf.Rank(N * M);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-<h2 id="泛洪填充算法题目"><a href="#泛洪填充算法题目" class="headerlink" title="泛洪填充算法题目"></a>泛洪填充算法题目</h2><ul>
-<li>「力扣」第 733 题：图像渲染（简单）<a href="https://leetcode-cn.com/problems/flood-fill/">https://leetcode-cn.com/problems/flood-fill/</a></li>
-<li>「力扣」第 1034 题：边框着色（中等）<a href="https://leetcode-cn.com/problems/coloring-a-border">https://leetcode-cn.com/problems/coloring-a-border</a></li>
-<li>「力扣」第 785 题：判断二分图（中等）<a href="https://leetcode-cn.com/problems/is-graph-bipartite">https://leetcode-cn.com/problems/is-graph-bipartite</a></li>
-<li>「力扣」第 886 题：可能的二分法（中等）<a href="https://leetcode-cn.com/problems/possible-bipartition">https://leetcode-cn.com/problems/possible-bipartition</a></li>
-<li>「力扣」第 529 题：扫雷游戏（中等）<a href="https://leetcode-cn.com/problems/minesweeper">https://leetcode-cn.com/problems/minesweeper</a></li>
-<li>「力扣」第 200 题：岛屿数量（中等）<a href="https://leetcode-cn.com/problems/number-of-islands">https://leetcode-cn.com/problems/number-of-islands</a></li>
-<li>「力扣」第 827 题：最大人工岛（困难）<a href="https://leetcode-cn.com/problems/making-a-large-island">https://leetcode-cn.com/problems/making-a-large-island</a></li>
-<li>「力扣」第 695 题：岛屿的最大面积（中等）<a href="https://leetcode-cn.com/problems/max-area-of-island">https://leetcode-cn.com/problems/max-area-of-island</a></li>
-<li>「力扣」第 463 题：岛屿的周长（简单）<a href="https://leetcode-cn.com/problems/island-perimeter">https://leetcode-cn.com/problems/island-perimeter</a></li>
-<li>「力扣」第 1254 题：统计封闭岛屿的数目（中等）<a href="https://leetcode-cn.com/problems/number-of-closed-islands">https://leetcode-cn.com/problems/number-of-closed-islands</a></li>
-<li>「力扣」第 130 题：被围绕的区域（中等）<a href="https://leetcode-cn.com/problems/surrounded-regions">https://leetcode-cn.com/problems/surrounded-regions</a></li>
-<li>「力扣」第 289 题：生命游戏（中等）<a href="https://leetcode-cn.com/problems/game-of-life">https://leetcode-cn.com/problems/game-of-life</a></li>
-<li>「力扣」第 1020 题：飞地的数量（困难）<a href="https://leetcode-cn.com/problems/number-of-enclaves/">https://leetcode-cn.com/problems/number-of-enclaves/</a></li>
-</ul>
-<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><ul>
-<li>[1] <a href="https://blog.csdn.net/wat1r/article/details/113702607">搜索与图论之 FloodFill_wat1r 的博客 - CSDN 博客</a></li>
-</ul>
-]]></content>
-      <categories>
-        <category>力扣刷题总结</category>
-      </categories>
-      <tags>
-        <tag>图论</tag>
-        <tag>深度优先搜索</tag>
-        <tag>广度优先搜索</tag>
-        <tag>并查集</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>博客搭建 - Hexo 换机指导</title>
     <url>/post/2020/6a28acc4/</url>
     <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><p>由于最近更换电脑，需要将旧电脑的一些资料转移至新电脑，其中 <code>Hexo</code> 的资料转移过程中踩了不少坑，所以在此记录以下，防止后续换机时继续踩坑。</p>
@@ -629,6 +476,34 @@
 <h2 id="拷贝-Hexo-资料文件夹"><a href="#拷贝-Hexo-资料文件夹" class="headerlink" title="拷贝 Hexo 资料文件夹"></a>拷贝 Hexo 资料文件夹</h2><p>拷贝除 .deploy_git 和 public 文件夹以外的所有内容</p>
 <p><img data-src="https://gitee.com/hezhaojiang/MyPics/raw/master/img/20201220200545.png" alt="Hexo文件夹"></p>
 <p>此时即可用 <code>hexo g</code> 等命令正常使用 <code>Hexo</code> 了~~</p>
+]]></content>
+      <categories>
+        <category>博客搭建</category>
+      </categories>
+      <tags>
+        <tag>Hexo</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>博客搭建 - NexT Snippets</title>
+    <url>/post/2020/c73e32c0/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><div class="note danger no-icon"><h2 id="Danger-段落"><a href="#Danger-段落" class="headerlink" title="Danger 段落"></a>Danger 段落</h2><figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="comment">&lt;!-- 方法一 --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;note danger&quot;</span>&gt;</span></span><br><span class="line">插入文字</span><br><span class="line"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"><span class="comment">&lt;!-- 方法二--&gt;</span></span><br><span class="line">&#123;% note danger no-icon %&#125;</span><br><span class="line">插入文字</span><br><span class="line">&#123;% endnote %&#125;</span><br></pre></td></tr></table></figure>
+</div>
+<a id="more"></a>
+<div class="note default no-icon"><h2 id="Default-段落"><a href="#Default-段落" class="headerlink" title="Default 段落"></a>Default 段落</h2><figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="comment">&lt;!-- 方法一 --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;note default&quot;</span>&gt;</span></span><br><span class="line">插入文字</span><br><span class="line"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"><span class="comment">&lt;!-- 方法二--&gt;</span></span><br><span class="line">&#123;% note default no-icon %&#125;</span><br><span class="line">插入文字</span><br><span class="line">&#123;% endnote %&#125;</span><br></pre></td></tr></table></figure>
+</div>
+<div class="note info no-icon"><h2 id="Info-段落"><a href="#Info-段落" class="headerlink" title="Info 段落"></a>Info 段落</h2><figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="comment">&lt;!-- 方法一 --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;note info&quot;</span>&gt;</span></span><br><span class="line">插入文字</span><br><span class="line"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"><span class="comment">&lt;!-- 方法二--&gt;</span></span><br><span class="line">&#123;% note info no-icon %&#125;</span><br><span class="line">插入文字</span><br><span class="line">&#123;% endnote %&#125;</span><br></pre></td></tr></table></figure>
+</div>
+<div class="note primary no-icon"><h2 id="Primary-段落"><a href="#Primary-段落" class="headerlink" title="Primary 段落"></a>Primary 段落</h2><figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="comment">&lt;!-- 方法一 --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;note primary&quot;</span>&gt;</span></span><br><span class="line">插入文字</span><br><span class="line"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"><span class="comment">&lt;!-- 方法二--&gt;</span></span><br><span class="line">&#123;% note primary no-icon %&#125;</span><br><span class="line">插入文字</span><br><span class="line">&#123;% endnote %&#125;</span><br></pre></td></tr></table></figure>
+</div>
+<div class="note success no-icon"><h2 id="Success-段落"><a href="#Success-段落" class="headerlink" title="Success 段落"></a>Success 段落</h2><figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="comment">&lt;!-- 方法一 --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;note success&quot;</span>&gt;</span></span><br><span class="line">插入文字</span><br><span class="line"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"><span class="comment">&lt;!-- 方法二--&gt;</span></span><br><span class="line">&#123;% note success no-icon %&#125;</span><br><span class="line">插入文字</span><br><span class="line">&#123;% endnote %&#125;</span><br></pre></td></tr></table></figure>
+</div>
+<div class="note warning no-icon"><h2 id="Warning-段落"><a href="#Warning-段落" class="headerlink" title="Warning 段落"></a>Warning 段落</h2><figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="comment">&lt;!-- 方法一 --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;note warning&quot;</span>&gt;</span></span><br><span class="line">插入文字</span><br><span class="line"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"><span class="comment">&lt;!-- 方法二--&gt;</span></span><br><span class="line">&#123;% note warning no-icon %&#125;</span><br><span class="line">插入文字</span><br><span class="line">&#123;% endnote %&#125;</span><br></pre></td></tr></table></figure>
+</div>
+<blockquote class="blockquote-center">
+<h2 id="引用段落"><a href="#引用段落" class="headerlink" title="引用段落"></a>引用段落</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&#123;% cq %&#125;</span><br><span class="line">插入文字</span><br><span class="line">&#123;% endcq %&#125;</span><br></pre></td></tr></table></figure>
+
+</blockquote>
 ]]></content>
       <categories>
         <category>博客搭建</category>
@@ -695,34 +570,6 @@
  <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># defaultlinks 会显示在 跟着大佬走，成为小大佬 标签中</span><br><span class="line">defaultlinks:</span><br><span class="line">  - nickname: 雷霄骅</span><br><span class="line">    site: https:&#x2F;&#x2F;me.csdn.net&#x2F;leixiaohua1020</span><br><span class="line">    avatar: https:&#x2F;&#x2F;gitee.com&#x2F;hezhaojiang&#x2F;MyPics&#x2F;raw&#x2F;master&#x2F;img&#x2F;20201008135337.png</span><br><span class="line">    info: 中国传媒大学一个搞广播电视相关的视音频技术的学生</span><br><span class="line"></span><br><span class="line"># friendslinks 会显示在 五湖四海的朋友们 标签中</span><br><span class="line">friendslinks:</span><br><span class="line">  - nickname: 何照江</span><br><span class="line">    site: https:&#x2F;&#x2F;xiaoqingdu.gitee.io&#x2F;</span><br><span class="line">    avatar: https:&#x2F;&#x2F;xiaoqingdu.gitee.io&#x2F;images&#x2F;head.jpeg</span><br><span class="line">    info: 无</span><br></pre></td></tr></table></figure>
 </li>
 </ol>
-]]></content>
-      <categories>
-        <category>博客搭建</category>
-      </categories>
-      <tags>
-        <tag>Hexo</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>博客搭建 - NexT Snippets</title>
-    <url>/post/2020/c73e32c0/</url>
-    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><div class="note danger no-icon"><h2 id="Danger-段落"><a href="#Danger-段落" class="headerlink" title="Danger 段落"></a>Danger 段落</h2><figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="comment">&lt;!-- 方法一 --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;note danger&quot;</span>&gt;</span></span><br><span class="line">插入文字</span><br><span class="line"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"><span class="comment">&lt;!-- 方法二--&gt;</span></span><br><span class="line">&#123;% note danger no-icon %&#125;</span><br><span class="line">插入文字</span><br><span class="line">&#123;% endnote %&#125;</span><br></pre></td></tr></table></figure>
-</div>
-<a id="more"></a>
-<div class="note default no-icon"><h2 id="Default-段落"><a href="#Default-段落" class="headerlink" title="Default 段落"></a>Default 段落</h2><figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="comment">&lt;!-- 方法一 --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;note default&quot;</span>&gt;</span></span><br><span class="line">插入文字</span><br><span class="line"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"><span class="comment">&lt;!-- 方法二--&gt;</span></span><br><span class="line">&#123;% note default no-icon %&#125;</span><br><span class="line">插入文字</span><br><span class="line">&#123;% endnote %&#125;</span><br></pre></td></tr></table></figure>
-</div>
-<div class="note info no-icon"><h2 id="Info-段落"><a href="#Info-段落" class="headerlink" title="Info 段落"></a>Info 段落</h2><figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="comment">&lt;!-- 方法一 --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;note info&quot;</span>&gt;</span></span><br><span class="line">插入文字</span><br><span class="line"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"><span class="comment">&lt;!-- 方法二--&gt;</span></span><br><span class="line">&#123;% note info no-icon %&#125;</span><br><span class="line">插入文字</span><br><span class="line">&#123;% endnote %&#125;</span><br></pre></td></tr></table></figure>
-</div>
-<div class="note primary no-icon"><h2 id="Primary-段落"><a href="#Primary-段落" class="headerlink" title="Primary 段落"></a>Primary 段落</h2><figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="comment">&lt;!-- 方法一 --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;note primary&quot;</span>&gt;</span></span><br><span class="line">插入文字</span><br><span class="line"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"><span class="comment">&lt;!-- 方法二--&gt;</span></span><br><span class="line">&#123;% note primary no-icon %&#125;</span><br><span class="line">插入文字</span><br><span class="line">&#123;% endnote %&#125;</span><br></pre></td></tr></table></figure>
-</div>
-<div class="note success no-icon"><h2 id="Success-段落"><a href="#Success-段落" class="headerlink" title="Success 段落"></a>Success 段落</h2><figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="comment">&lt;!-- 方法一 --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;note success&quot;</span>&gt;</span></span><br><span class="line">插入文字</span><br><span class="line"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"><span class="comment">&lt;!-- 方法二--&gt;</span></span><br><span class="line">&#123;% note success no-icon %&#125;</span><br><span class="line">插入文字</span><br><span class="line">&#123;% endnote %&#125;</span><br></pre></td></tr></table></figure>
-</div>
-<div class="note warning no-icon"><h2 id="Warning-段落"><a href="#Warning-段落" class="headerlink" title="Warning 段落"></a>Warning 段落</h2><figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="comment">&lt;!-- 方法一 --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;note warning&quot;</span>&gt;</span></span><br><span class="line">插入文字</span><br><span class="line"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"><span class="comment">&lt;!-- 方法二--&gt;</span></span><br><span class="line">&#123;% note warning no-icon %&#125;</span><br><span class="line">插入文字</span><br><span class="line">&#123;% endnote %&#125;</span><br></pre></td></tr></table></figure>
-</div>
-<blockquote class="blockquote-center">
-<h2 id="引用段落"><a href="#引用段落" class="headerlink" title="引用段落"></a>引用段落</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&#123;% cq %&#125;</span><br><span class="line">插入文字</span><br><span class="line">&#123;% endcq %&#125;</span><br></pre></td></tr></table></figure>
-
-</blockquote>
 ]]></content>
       <categories>
         <category>博客搭建</category>
@@ -2595,8 +2442,8 @@ section 里程碑 0.3
         <category>数据结构与算法</category>
       </categories>
       <tags>
-        <tag>图论</tag>
         <tag>二叉树</tag>
+        <tag>图论</tag>
       </tags>
   </entry>
   <entry>
@@ -2623,8 +2470,8 @@ section 里程碑 0.3
         <category>数据结构与算法</category>
       </categories>
       <tags>
-        <tag>图论</tag>
         <tag>二叉树</tag>
+        <tag>图论</tag>
       </tags>
   </entry>
   <entry>
@@ -3189,7 +3036,7 @@ dp[s][i] = dp[s | (1 &lt;&lt; j)][j] + w[i][j]; 从 i 点转移到 j 点，这�
 <p>背包问题（Knapsack problem）是一种组合优化的 NP 完全问题。</p>
 <p>背包问题可以描述为：给定一组物品，每种物品都有自己的重量和价格，在限定的总重量内，我们如何选择，才能使得物品的总价格最高。</p>
 <p>有 n 种物品，物品 j 的体积为 $v_{j}$, 价值为 $w_{i}$, 有一个体积限制 V。如何选择物品使得总体积不超过 V，并使得总价值最大。<br>这是背包问题最基础的描述，再往下细分还可以把背包问题分成几大类，其中比较基础的是 3 种：01 背包，完全背包，多重背包。</p>
-<h2 id="背包动态规划简介"><a href="#背包动态规划简介" class="headerlink" title="背包动态规划简介"></a>背包动态规划简介</h2><h3 id="背包问题"><a href="#背包问题" class="headerlink" title="背包问题"></a>背包问题</h3><h4 id="背包的问题描述"><a href="#背包的问题描述" class="headerlink" title="背包的问题描述"></a>背包的问题描述</h4><p>有 <code>n</code> 种物品，物品 <code>j</code> 的体积为 $v_{j}$，价值为 $w_{i}$，有一个体积限制 V。每种物品只有 1 个，只有选或者不选，而没有选几个的问题，此问题称为 == 背包问题 ==。</p>
+<h2 id="背包动态规划简介"><a href="#背包动态规划简介" class="headerlink" title="背包动态规划简介"></a>背包动态规划简介</h2><h3 id="背包问题"><a href="#背包问题" class="headerlink" title="背包问题"></a>背包问题</h3><h4 id="背包的问题描述"><a href="#背包的问题描述" class="headerlink" title="背包的问题描述"></a>背包的问题描述</h4><p>有 <code>n</code> 种物品，物品 <code>j</code> 的体积为 $v_{j}$，价值为 $w_{i}$，有一个体积限制 V。每种物品只有 1 个，只有选或者不选，而没有选几个的问题，此问题称为 ==背包问题==。</p>
 <p>一个朴素的想法是，只考虑价值尽量大，状态设计是单串线性 DP 中最经典的状态设计，如下：</p>
 <pre><code>dp[i] = dp[i] 已经考虑前 i 个物品可以取得的最大价值
 </code></pre><p>由于只考虑价值，则当前物品应该尽量多拿，但是这是错的，因为后面可能有的物品虽然体积大，但是它的价值也很大，由于考虑每个物品时都尽可能多选，轮到后面的物品的时候可能就没有空间了。</p>
@@ -4165,12 +4012,143 @@ n == 4: dp[n] = k * (k * k * k - k) - k * k
     <url>/post/2020/759c397f/</url>
     <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p><img data-src="https://gitee.com/hezhaojiang/MyPics/raw/master/img/20200525214900.png" alt="各种排序算法的时间复杂度"></p>
 <a id="more"></a>
-<h2 id="时间复杂度O-n2"><a href="#时间复杂度O-n2" class="headerlink" title="时间复杂度O(n2)"></a>时间复杂度O(n<sup>2</sup>)</h2><h3 id="1-冒泡排序"><a href="#1-冒泡排序" class="headerlink" title="[1] 冒泡排序"></a>[1] 冒泡排序</h3><h3 id="2-选择排序"><a href="#2-选择排序" class="headerlink" title="[2] 选择排序"></a>[2] 选择排序</h3><h3 id="3-插入排序"><a href="#3-插入排序" class="headerlink" title="[3] 插入排序"></a>[3] 插入排序</h3><h2 id="时间复杂度O-nlogn"><a href="#时间复杂度O-nlogn" class="headerlink" title="时间复杂度O(nlogn)"></a>时间复杂度O(nlog<sub>n</sub>)</h2><h3 id="4-希尔排序"><a href="#4-希尔排序" class="headerlink" title="[4] 希尔排序"></a>[4] 希尔排序</h3><h3 id="5-归并排序"><a href="#5-归并排序" class="headerlink" title="[5] 归并排序"></a>[5] 归并排序</h3><h3 id="6-快速排序"><a href="#6-快速排序" class="headerlink" title="[6] 快速排序"></a>[6] 快速排序</h3><h3 id="7-堆排序"><a href="#7-堆排序" class="headerlink" title="[7] 堆排序"></a>[7] 堆排序</h3><h2 id="时间复杂度O-n"><a href="#时间复杂度O-n" class="headerlink" title="时间复杂度O(n)"></a>时间复杂度O(n)</h2><h3 id="8-计数排序"><a href="#8-计数排序" class="headerlink" title="[8] 计数排序"></a>[8] 计数排序</h3><h3 id="9-桶排序"><a href="#9-桶排序" class="headerlink" title="[9] 桶排序"></a>[9] 桶排序</h3><h3 id="10-基数排序"><a href="#10-基数排序" class="headerlink" title="[10] 基数排序"></a>[10] 基数排序</h3><h2 id="时间复杂度O-amp"><a href="#时间复杂度O-amp" class="headerlink" title="时间复杂度O(!@#$%^&amp;*)"></a>时间复杂度O(!@#$%^&amp;*)</h2><h3 id="i-猴子排序"><a href="#i-猴子排序" class="headerlink" title="[i] 猴子排序"></a>[i] 猴子排序</h3><h3 id="ii-睡眠排序"><a href="#ii-睡眠排序" class="headerlink" title="[ii] 睡眠排序"></a>[ii] 睡眠排序</h3><h3 id="iii-面条排序"><a href="#iii-面条排序" class="headerlink" title="[iii] 面条排序"></a>[iii] 面条排序</h3><h3 id="iv-珠排序"><a href="#iv-珠排序" class="headerlink" title="[iv] 珠排序"></a>[iv] 珠排序</h3><h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2>]]></content>
+<h2 id="时间复杂度O-n2"><a href="#时间复杂度O-n2" class="headerlink" title="时间复杂度O(n2)"></a>时间复杂度O(n<sup>2</sup>)</h2><h3 id="冒泡排序"><a href="#冒泡排序" class="headerlink" title="冒泡排序"></a>冒泡排序</h3><h3 id="选择排序"><a href="#选择排序" class="headerlink" title="选择排序"></a>选择排序</h3><h3 id="插入排序"><a href="#插入排序" class="headerlink" title="插入排序"></a>插入排序</h3><p><img data-src="https://gitee.com/hezhaojiang/MyPics/raw/master/img/20210216200055.png" alt="插入排序"></p>
+<h2 id="时间复杂度O-nlogn"><a href="#时间复杂度O-nlogn" class="headerlink" title="时间复杂度O(nlogn)"></a>时间复杂度O(nlog<sub>n</sub>)</h2><h3 id="希尔排序"><a href="#希尔排序" class="headerlink" title="希尔排序"></a>希尔排序</h3><h3 id="归并排序"><a href="#归并排序" class="headerlink" title="归并排序"></a>归并排序</h3><h3 id="快速排序"><a href="#快速排序" class="headerlink" title="快速排序"></a>快速排序</h3><h3 id="堆排序"><a href="#堆排序" class="headerlink" title="堆排序"></a>堆排序</h3><h2 id="时间复杂度O-n"><a href="#时间复杂度O-n" class="headerlink" title="时间复杂度O(n)"></a>时间复杂度O(n)</h2><h3 id="计数排序"><a href="#计数排序" class="headerlink" title="计数排序"></a>计数排序</h3><h3 id="桶排序"><a href="#桶排序" class="headerlink" title="桶排序"></a>桶排序</h3><h3 id="基数排序"><a href="#基数排序" class="headerlink" title="基数排序"></a>基数排序</h3><h2 id="时间复杂度O-amp"><a href="#时间复杂度O-amp" class="headerlink" title="时间复杂度O(!@#$%^&amp;*)"></a>时间复杂度O(!@#$%^&amp;*)</h2><h3 id="猴子排序"><a href="#猴子排序" class="headerlink" title="猴子排序"></a>猴子排序</h3><h3 id="睡眠排序"><a href="#睡眠排序" class="headerlink" title="睡眠排序"></a>睡眠排序</h3><h3 id="面条排序"><a href="#面条排序" class="headerlink" title="面条排序"></a>面条排序</h3><h3 id="珠排序"><a href="#珠排序" class="headerlink" title="珠排序"></a>珠排序</h3><h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2>]]></content>
       <categories>
         <category>数据结构与算法</category>
       </categories>
       <tags>
         <tag>排序</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>数据结构与算法 - 最小生成树</title>
+    <url>/post/2021/2d042192/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><p>我们定义无向连通图的 最小生成树（Minimum Spanning Tree，MST）为边权和最小的生成树。</p>
+<blockquote>
+<p>注意：只有连通图才有生成树，而对于非连通图，只存在生成森林。</p>
+</blockquote>
+<a id="more"></a>
+<h2 id="1584-连接所有点的最小费用"><a href="#1584-连接所有点的最小费用" class="headerlink" title="1584. 连接所有点的最小费用"></a>1584. 连接所有点的最小费用</h2><p>题目链接：<a href="https://leetcode-cn.com/problems/min-cost-to-connect-all-points/">https://leetcode-cn.com/problems/min-cost-to-connect-all-points/</a></p>
+<p>给你一个 points 数组，表示 2D 平面上的一些点，其中 points[i] = [xi, yi] 。</p>
+<p>连接点 [xi, yi] 和点 [xj, yj] 的费用为它们之间的 曼哈顿距离 ：|xi - xj| + |yi - yj| ，其中 |val| 表示 val 的绝对值。</p>
+<p>请你返回将所有点连接的最小总费用。只有任意两点之间 有且仅有 一条简单路径时，才认为所有点都已连接。</p>
+<p>示例：</p>
+<pre><code>输入：points = [[0,0],[2,2],[3,10],[5,2],[7,0]]
+输出：20
+</code></pre><h2 id="Kruskal-算法"><a href="#Kruskal-算法" class="headerlink" title="Kruskal 算法"></a>Kruskal 算法</h2><p>Kruskal 算法是一种常见并且好写的最小生成树算法，由 Kruskal 发明。该算法的基本思想是从小到大加入边，是个贪心算法。</p>
+<p>前置知识：</p>
+<ol>
+<li>并查集：<a href="/post/2020/4fe8298f/" title="数据结构与算法 - 并查集">数据结构与算法 - 并查集</a>)</li>
+<li>贪心</li>
+<li>图的存储（直接存边，邻接矩阵，邻接表）</li>
+</ol>
+<p>代码实现：</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 这里是基础的并查集实现</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">UnionFind</span> &#123;</span></span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">    <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; parent;</span><br><span class="line">    <span class="keyword">int</span> count;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    UnionFind(<span class="keyword">int</span> n) : count(n) &#123;</span><br><span class="line">        parent.resize(n);</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; n; i++) parent[i] = i;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">Count</span><span class="params">()</span> </span>&#123; <span class="keyword">return</span> count;&#125;</span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">Find</span><span class="params">(<span class="keyword">int</span> n)</span> </span>&#123; <span class="keyword">return</span> n == parent[n] ? n : parent[n] = Find(parent[n]); &#125;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">Union</span><span class="params">(<span class="keyword">int</span> a, <span class="keyword">int</span> b)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> rootA = Find(a), rootB = Find(b);</span><br><span class="line">        <span class="keyword">if</span> (rootA != rootB) count--, parent[rootA] = rootB;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 这个结构体使用直接存边的方式存图</span></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">Edge</span> &#123;</span></span><br><span class="line">    <span class="keyword">int</span> len, x, y;</span><br><span class="line">    Edge(<span class="keyword">int</span> len = <span class="number">0</span>, <span class="keyword">int</span> x = <span class="number">0</span>, <span class="keyword">int</span> y = <span class="number">0</span>) : len(len), x(x), y(y) &#123;&#125;;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">minCostConnectPoints</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&gt;&amp; points)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">auto</span> caldist = [&amp;](<span class="keyword">int</span> i, <span class="keyword">int</span> j) -&gt; <span class="keyword">int</span> &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="built_in">abs</span>(points[i][<span class="number">0</span>] - points[j][<span class="number">0</span>]) + <span class="built_in">abs</span>(points[i][<span class="number">1</span>] - points[j][<span class="number">1</span>]);</span><br><span class="line">        &#125;;</span><br><span class="line">        <span class="comment">// 1. 建图 存储方式：直接存边</span></span><br><span class="line">        <span class="keyword">int</span> N = points.<span class="built_in">size</span>();</span><br><span class="line">        <span class="function">UnionFind <span class="title">uf</span><span class="params">(N)</span></span>;</span><br><span class="line">        <span class="built_in">vector</span>&lt;Edge&gt; edges;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; N; i++) <span class="keyword">for</span> (<span class="keyword">int</span> j = i + <span class="number">1</span>; j &lt; N; j++) &#123;</span><br><span class="line">            edges.emplace_back(caldist(i, j), i, j);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// 2. 排序所有的边，贪心选择较短的边</span></span><br><span class="line">        <span class="keyword">int</span> cost = <span class="number">0</span>;</span><br><span class="line">        sort(edges.<span class="built_in">begin</span>(), edges.<span class="built_in">end</span>(), [](Edge &amp;a, Edge &amp;b) &#123; <span class="keyword">return</span> a.len &lt; b.len; &#125;);</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">auto</span> &amp; edge : edges) &#123;</span><br><span class="line">            <span class="comment">// 如果这条边的左右顶点已经连接上 则跳过这条边 否则这条边加入最小生成树</span></span><br><span class="line">            <span class="keyword">if</span> (uf.Find(edge.x) == uf.Find(edge.y)) <span class="keyword">continue</span>;</span><br><span class="line">            uf.Union(edge.x, edge.y);</span><br><span class="line">            cost += edge.len;</span><br><span class="line">            <span class="keyword">if</span> (uf.Count() == <span class="number">1</span>) <span class="keyword">return</span> cost; <span class="comment">// 最小生成树已经生成</span></span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>运行结果：</p>
+<pre><code>Accepted
+72/72 cases passed (532 ms)
+Your runtime beats 58.35 % of cpp submissions
+Your memory usage beats 25.13 % of cpp submissions (56.9 MB)
+</code></pre><h2 id="Prim-算法"><a href="#Prim-算法" class="headerlink" title="Prim 算法"></a>Prim 算法</h2><p>Prim 算法是一种常见并且好写的最小生成树算法。该算法的基本思想是从一个结点开始，不断加点（而不是 Kruskal 算法的加边）。</p>
+<p>在稠密图尤其是完全图上，暴力 Prim 的复杂度比 Kruskal 优，但不一定实际跑得更快。</p>
+<p>代码实现：</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="comment">// Distance 用来存储定点到最小生成树的距离</span></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">Distance</span> &#123;</span></span><br><span class="line">    <span class="keyword">int</span> index <span class="comment">/* 定点在 points 中的索引值 */</span>, len <span class="comment">/* 定点到最小生成树的距离 */</span>;</span><br><span class="line">    Distance(<span class="keyword">int</span> index = <span class="number">0</span>, <span class="keyword">int</span> len = <span class="number">0</span>) : index(index), len(len) &#123;&#125;;</span><br><span class="line">    <span class="keyword">bool</span> <span class="keyword">operator</span> &lt;(<span class="keyword">const</span> Distance&amp; a) <span class="keyword">const</span> &#123; <span class="keyword">return</span> len &gt; a.len; &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">minCostConnectPoints</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&gt;&amp; points)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">auto</span> caldist = [&amp;](<span class="keyword">int</span> i, <span class="keyword">int</span> j) -&gt; <span class="keyword">int</span> &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="built_in">abs</span>(points[i][<span class="number">0</span>] - points[j][<span class="number">0</span>]) + <span class="built_in">abs</span>(points[i][<span class="number">1</span>] - points[j][<span class="number">1</span>]);</span><br><span class="line">        &#125;;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">int</span> N = points.<span class="built_in">size</span>();</span><br><span class="line">        <span class="function"><span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; <span class="title">visited</span><span class="params">(N, <span class="number">0</span>)</span></span>;</span><br><span class="line">        <span class="keyword">int</span> cost = <span class="number">0</span>;</span><br><span class="line">        <span class="built_in">priority_queue</span>&lt;Distance&gt; Q; <span class="comment">// 优先队列 用来查找距离最小生成树最近的点</span></span><br><span class="line">        Q.push(Distance&#123;<span class="number">0</span>, <span class="number">0</span>&#125;);</span><br><span class="line">        <span class="keyword">while</span> (!Q.empty()) &#123;</span><br><span class="line">            Distance e = Q.top();</span><br><span class="line">            Q.pop();</span><br><span class="line">            <span class="keyword">if</span> (!visited[e.index]) &#123;</span><br><span class="line">                cost += e.len;</span><br><span class="line">                visited[e.index] = <span class="number">1</span>; <span class="comment">// 将找到的最近的点加入最小生成树</span></span><br><span class="line">                <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; N; i++) &#123;</span><br><span class="line">                    <span class="comment">// 遍历计算未加入点距离最小生成树的距离 这里不是最小距离 最小距离由优先队列选择</span></span><br><span class="line">                    <span class="keyword">if</span> (!visited[i] &amp;&amp; i != e.index) Q.push(Distance&#123;i, caldist(i, e.index)&#125;);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> cost;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>运行结果：</p>
+<pre><code>Accepted
+72/72 cases passed (668 ms)
+Your runtime beats 24.34 % of cpp submissions
+Your memory usage beats 64.91 % of cpp submissions (41.3 MB)
+</code></pre><h2 id="特殊的-Prim-算法"><a href="#特殊的-Prim-算法" class="headerlink" title="特殊的 Prim 算法"></a>特殊的 Prim 算法</h2><p>对于稠密图来说，有一种特殊的 Prim 算法可以达到 O(n^2) 的时间复杂度</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">minCostConnectPoints</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&gt;&amp; points)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">auto</span> caldist = [&amp;](<span class="keyword">int</span> i, <span class="keyword">int</span> j) -&gt; <span class="keyword">int</span> &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="built_in">abs</span>(points[i][<span class="number">0</span>] - points[j][<span class="number">0</span>]) + <span class="built_in">abs</span>(points[i][<span class="number">1</span>] - points[j][<span class="number">1</span>]);</span><br><span class="line">        &#125;;</span><br><span class="line">        <span class="comment">// 1. 建图 存储方式：邻接矩阵</span></span><br><span class="line">        <span class="keyword">int</span> N = points.<span class="built_in">size</span>();</span><br><span class="line">        <span class="function"><span class="built_in">vector</span>&lt;<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&gt; <span class="title">edges</span><span class="params">(N, <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;(N, <span class="number">0</span>))</span></span>;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; N; i++) <span class="keyword">for</span> (<span class="keyword">int</span> j = i + <span class="number">1</span>; j &lt; N; j++)</span><br><span class="line">            edges[i][j] = edges[j][i] = caldist(i, j);</span><br><span class="line"></span><br><span class="line">        vector&lt;int&gt; distance(N, INT_MAX), visited(N, 0);</span><br><span class="line">        distance[<span class="number">0</span>] = <span class="number">0</span>; <span class="comment">// 将 0 点加入最小生成树</span></span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; N; i++) &#123;</span><br><span class="line">            <span class="keyword">int</span> next = <span class="number">-1</span>;</span><br><span class="line">            <span class="keyword">for</span> (<span class="keyword">int</span> j = <span class="number">0</span>; j &lt; N; j++) &#123; <span class="comment">// 在剩余定点中，找到最小路径值的定点</span></span><br><span class="line">                <span class="keyword">if</span> (!visited[j] &amp;&amp; (next == <span class="number">-1</span> || distance[j] &lt; distance[next])) next = j;</span><br><span class="line">            &#125;</span><br><span class="line">            visited[next] = <span class="literal">true</span>;         <span class="comment">// 将找到最小路径值的定点加入最小生成树</span></span><br><span class="line">            <span class="keyword">for</span> (<span class="keyword">int</span> k = <span class="number">0</span>; k &lt; N; k++) &#123; <span class="comment">// 加入新定点后，导致连通分量到其他定点距离变化</span></span><br><span class="line">                <span class="keyword">if</span> (!visited[k]) distance[k] = <span class="built_in">min</span>(distance[k], edges[next][k]);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> accumulate(distance.<span class="built_in">begin</span>(), distance.<span class="built_in">end</span>(), <span class="number">0</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>运行结果：</p>
+<pre><code>Accepted
+72/72 cases passed (128 ms)
+Your runtime beats 82.67 % of cpp submissions
+Your memory usage beats 75.12 % of cpp submissions (26.1 MB)
+</code></pre><h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><ul>
+<li>[1] <a href="https://oi-wiki.org/graph/mst/">最小生成树 - OI Wiki</a></li>
+<li>[2] <a href="https://leetcode-cn.com/problems/min-cost-to-connect-all-points/">1584. 连接所有点的最小费用 - 力扣（LeetCode）</a></li>
+<li>[3] <a href="https://www.bilibili.com/video/BV1yh41117re">图的基础算法 (一) - MST 最小生成树_哔哩哔哩 (゜ - ゜) つロ 干杯~-bilibili</a></li>
+</ul>
+]]></content>
+      <categories>
+        <category>数据结构与算法</category>
+      </categories>
+      <tags>
+        <tag>图论</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>数据结构与算法 - 最短路径</title>
+    <url>/post/2021/b1770ae8/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><p>图的最短路算法有很多，在此记录一下非常常用的四个算法</p>
+<ul>
+<li>单源最短路：<ul>
+<li>不带负权边：<code>Dijkstra</code></li>
+<li>带负权边：<code>Bellman-Ford</code>、<code>SPFA</code></li>
+</ul>
+</li>
+<li>多源最短路：<ul>
+<li>适用于正负权边：<code>Floyd</code>（但不能有负环）</li>
+</ul>
+</li>
+</ul>
+<a id="more"></a>
+<h2 id="743-网络延迟时间"><a href="#743-网络延迟时间" class="headerlink" title="743. 网络延迟时间"></a>743. 网络延迟时间</h2><p>题目链接：<a href="https://leetcode-cn.com/problems/network-delay-time/">https://leetcode-cn.com/problems/network-delay-time/</a></p>
+<p>有 <code>n</code> 个网络节点，标记为 <code>1</code> 到 <code>n</code>。</p>
+<p>给你一个列表 times，表示信号经过 有向 边的传递时间。<code>times[i] = (ui, vi, wi)</code>，其中 <code>ui</code> 是源节点，<code>vi</code> 是目标节点，<code>wi</code> 是一个信号从源节点传递到目标节点的时间。</p>
+<p>现在，从某个节点 <code>K</code> 发出一个信号。需要多久才能使所有节点都收到信号？如果不能使所有节点收到信号，返回 <code>-1</code> 。</p>
+<p>示例：</p>
+<p><img data-src="https://assets.leetcode.com/uploads/2019/05/23/931_example_1.png" alt="743. 网络延迟时间"></p>
+<pre><code>输入：times = [[2,1,1],[2,3,1],[3,4,1]], n = 4, k = 2
+输出：2
+</code></pre><h2 id="Bellman-Ford-算法"><a href="#Bellman-Ford-算法" class="headerlink" title="Bellman-Ford 算法"></a>Bellman-Ford 算法</h2><p>支持负权。能找到某个结点出发到所有结点的最短路，或者报告某些最短路不存在。</p>
+<p><code>SPFA</code> 算法就是 <code>Bellman-Ford</code> 算法的一种实现。</p>
+<p>代码实现：</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">networkDelayTime</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&gt;&amp; times, <span class="keyword">int</span> n, <span class="keyword">int</span> k)</span> </span>&#123;</span><br><span class="line">        <span class="function"><span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; <span class="title">distance</span><span class="params">(n + <span class="number">1</span>, INT_MAX / <span class="number">2</span>)</span></span>;</span><br><span class="line">        distance[k] = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> t = <span class="number">0</span>; t &lt; n; t++) &#123;</span><br><span class="line">            <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; relax = distance;</span><br><span class="line">            <span class="keyword">for</span> (<span class="keyword">auto</span>&amp; time : times) &#123;</span><br><span class="line">                relax[time[<span class="number">1</span>]] = <span class="built_in">min</span>(relax[time[<span class="number">1</span>]], distance[time[<span class="number">0</span>]] + time[<span class="number">2</span>]);</span><br><span class="line">            &#125;</span><br><span class="line">            distance = relax;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">int</span> res = *max_element(distance.<span class="built_in">begin</span>() + <span class="number">1</span>, distance.<span class="built_in">end</span>());</span><br><span class="line">        <span class="keyword">return</span> res == INT_MAX / <span class="number">2</span> ? <span class="number">-1</span> : res;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>运行结果：</p>
+<pre><code>Accepted
+52/52 cases passed (248 ms)
+Your runtime beats 24.45 % of cpp submissions
+Your memory usage beats 45.09 % of cpp submissions (36.2 MB)
+</code></pre><h3 id="队列优化：SPFA"><a href="#队列优化：SPFA" class="headerlink" title="队列优化：SPFA"></a>队列优化：SPFA</h3><p>即 <code>Shortest Path Faster Algorithm</code>，很显然，只有上一次被松弛的结点所连接的边，才有可能引起下一次的松弛操作。</p>
+<p>那么我们用队列来维护哪些结点可能会引起松弛操作，就能只访问必要的边了。</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">networkDelayTime</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&gt;&amp; times, <span class="keyword">int</span> n, <span class="keyword">int</span> k)</span> </span>&#123;</span><br><span class="line">        <span class="comment">// 1. 建图 存储方式：邻接表（索引方式）</span></span><br><span class="line">        <span class="function"><span class="built_in">vector</span>&lt;<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&gt; <span class="title">edges</span><span class="params">(n + <span class="number">1</span>)</span></span>;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; times.<span class="built_in">size</span>(); i++) &#123;</span><br><span class="line">            edges[times[i][<span class="number">0</span>]].push_back(i);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// 2. 通过队列来判断哪些结点需要更新</span></span><br><span class="line">        <span class="function"><span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; <span class="title">distance</span><span class="params">(n + <span class="number">1</span>, INT_MAX / <span class="number">2</span>)</span></span>;</span><br><span class="line">        distance[k] = <span class="number">0</span>;</span><br><span class="line">        <span class="built_in">queue</span>&lt;<span class="keyword">int</span>&gt; q;</span><br><span class="line">        <span class="function"><span class="built_in">vector</span>&lt;<span class="keyword">bool</span>&gt; <span class="title">in_queue</span><span class="params">(n, <span class="literal">false</span>)</span></span>;</span><br><span class="line">        q.push(k);</span><br><span class="line">        in_queue[k] = <span class="literal">true</span>;</span><br><span class="line">        <span class="keyword">while</span> (!q.empty()) &#123;</span><br><span class="line">            <span class="keyword">int</span> u = q.front();</span><br><span class="line">            q.pop();</span><br><span class="line">            in_queue[u] = <span class="literal">false</span>;</span><br><span class="line">            <span class="keyword">for</span> (<span class="keyword">auto</span>&amp; index : edges[u]) &#123;</span><br><span class="line">                <span class="keyword">int</span> v = times[index][<span class="number">1</span>], w = times[index][<span class="number">2</span>];</span><br><span class="line">                <span class="keyword">if</span> (distance[v] &gt; distance[u] + w) &#123;</span><br><span class="line">                    distance[v] = distance[u] + w;</span><br><span class="line">                    <span class="keyword">if</span> (!in_queue[v]) &#123;</span><br><span class="line">                        q.push(v);</span><br><span class="line">                        in_queue[v] = <span class="literal">true</span>;</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">int</span> res = *max_element(distance.<span class="built_in">begin</span>() + <span class="number">1</span>, distance.<span class="built_in">end</span>());</span><br><span class="line">        <span class="keyword">return</span> res == INT_MAX / <span class="number">2</span> ? <span class="number">-1</span> : res;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>运行结果：</p>
+<pre><code>Accepted
+52/52 cases passed (128 ms)
+Your runtime beats 89.48 % of cpp submissions
+Your memory usage beats 32.26 % of cpp submissions (37.6 MB)
+</code></pre><h2 id="Dijkstra-算法"><a href="#Dijkstra-算法" class="headerlink" title="Dijkstra 算法"></a>Dijkstra 算法</h2><p>这种算法只适用于非负权图，但是时间复杂度非常优秀。是可以用来求单源最短路径的算法。</p>
+<p>代码实现：</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">Target</span> &#123;</span></span><br><span class="line">    <span class="keyword">int</span> pos;</span><br><span class="line">    <span class="keyword">int</span> time;</span><br><span class="line">    Target(<span class="keyword">int</span> p = <span class="number">0</span>, <span class="keyword">int</span> t = <span class="number">0</span>) : pos(p), time(t) &#123;&#125;</span><br><span class="line">    <span class="keyword">bool</span> <span class="keyword">operator</span>&lt;(<span class="keyword">const</span> Target&amp; a) <span class="keyword">const</span> &#123; <span class="keyword">return</span> time &gt; a.time; &#125;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">networkDelayTime</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&gt;&amp; times, <span class="keyword">int</span> n, <span class="keyword">int</span> k)</span> </span>&#123;</span><br><span class="line">        <span class="function"><span class="built_in">vector</span>&lt;<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&gt; <span class="title">edges</span><span class="params">(n + <span class="number">1</span>)</span></span>;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; times.<span class="built_in">size</span>(); i++) &#123;</span><br><span class="line">            edges[times[i][<span class="number">0</span>]].push_back(i);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="built_in">priority_queue</span>&lt;Target&gt; Q;</span><br><span class="line">        <span class="function"><span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; <span class="title">cost</span><span class="params">(n + <span class="number">1</span>, INT_MAX)</span></span>;</span><br><span class="line">        <span class="function"><span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; <span class="title">visited</span><span class="params">(n + <span class="number">1</span>, <span class="number">0</span>)</span></span>;</span><br><span class="line">        Q.push(Target&#123;k, <span class="number">0</span>&#125;);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">while</span> (!Q.empty()) &#123;</span><br><span class="line">            Target t = Q.top();</span><br><span class="line">            Q.pop();</span><br><span class="line">            <span class="keyword">if</span> (!visited[t.pos]) &#123;</span><br><span class="line">                cost[t.pos] = t.time;</span><br><span class="line">                <span class="keyword">for</span> (<span class="keyword">auto</span>&amp; index : edges[t.pos]) &#123;</span><br><span class="line">                    <span class="keyword">if</span> (!visited[times[index][<span class="number">1</span>]]) &#123;</span><br><span class="line">                        Q.push(Target&#123;times[index][<span class="number">1</span>], times[index][<span class="number">2</span>] + t.time&#125;);</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">                visited[t.pos] = <span class="number">1</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">int</span> res = *max_element(cost.<span class="built_in">begin</span>() + <span class="number">1</span>, cost.<span class="built_in">end</span>());</span><br><span class="line">        <span class="keyword">return</span> res == INT_MAX ? <span class="number">-1</span> : res;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>运行结果：</p>
+<pre><code>Accepted
+52/52 cases passed (164 ms)
+Your runtime beats 61.02 % of cpp submissions
+Your memory usage beats 31.36 % of cpp submissions (38.7 MB)
+</code></pre><h2 id="Floyd-算法"><a href="#Floyd-算法" class="headerlink" title="Floyd 算法"></a>Floyd 算法</h2><p>本质是动态规划，能解决任意两点间的最短路径，时间复杂度 O(V^3)</p>
+<p>主要算法思想如下：</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="keyword">for</span> (k = <span class="number">0</span>; k &lt; n; k++) &#123;</span><br><span class="line">    <span class="keyword">for</span> (i = <span class="number">0</span>; i &lt; n; i++) &#123;</span><br><span class="line">        <span class="keyword">for</span> (j = <span class="number">0</span>; j &lt; n; j++) &#123;</span><br><span class="line">            <span class="comment">// i 到 j 的最短路径 = i 到 k 的最短路径 + k 到 j 的最短路径</span></span><br><span class="line">            <span class="comment">// 当然 要取较小值</span></span><br><span class="line">            f[i][j] = <span class="built_in">min</span>(f[i][j], f[i][k] + f[k][j]);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>代码实现：</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">networkDelayTime</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&gt;&amp; times, <span class="keyword">int</span> n, <span class="keyword">int</span> k)</span> </span>&#123;</span><br><span class="line">        <span class="function"><span class="built_in">vector</span>&lt;<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&gt; <span class="title">cost</span><span class="params">(n, <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;(n, INT_MAX / <span class="number">2</span>))</span></span>;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; n; i++) cost[i][i] = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">auto</span>&amp; t : times) cost[t[<span class="number">0</span>] - <span class="number">1</span>][t[<span class="number">1</span>] - <span class="number">1</span>] = t[<span class="number">2</span>];</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> m = <span class="number">0</span>; m &lt; n; m++) &#123;</span><br><span class="line">            <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; n; i++) &#123;</span><br><span class="line">                <span class="keyword">for</span> (<span class="keyword">int</span> j = <span class="number">0</span>; j &lt; n; j++) &#123;</span><br><span class="line">                    cost[i][j] = <span class="built_in">min</span>(cost[i][j], cost[i][m] + cost[m][j]);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">int</span> res = *max_element(cost[k - <span class="number">1</span>].<span class="built_in">begin</span>(), cost[k - <span class="number">1</span>].<span class="built_in">end</span>());</span><br><span class="line">        <span class="keyword">return</span> res == INT_MAX / <span class="number">2</span> ? <span class="number">-1</span> : res;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>运行结果：</p>
+<pre><code>Accepted
+52/52 cases passed (240 ms)
+Your runtime beats 26.05 % of cpp submissions
+Your memory usage beats 40.68 % of cpp submissions (36.4 MB)
+</code></pre><h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><ul>
+<li>[1] <a href="https://oi-wiki.org/graph/shortest-path/">最短路 - OI Wiki</a></li>
+<li>[2] <a href="https://leetcode-cn.com/problems/network-delay-time/">743. 网络延迟时间 - 力扣（LeetCode）</a></li>
+<li>[3] <a href="https://www.bilibili.com/video/BV1L5411G7P8">图的基础算法 (二) - SSSP/MSSP 单源 / 多源 最短路径_哔哩哔哩 (゜ - ゜) つロ 干杯~-bilibili</a></li>
+</ul>
+]]></content>
+      <categories>
+        <category>数据结构与算法</category>
+      </categories>
+      <tags>
+        <tag>图论</tag>
       </tags>
   </entry>
   <entry>
@@ -4415,6 +4393,94 @@ n == 4: dp[n] = k * (k * k * k - k) - k * k
       </tags>
   </entry>
   <entry>
+    <title>数据结构与算法 - 泛洪填充算法</title>
+    <url>/post/2021/70c4ac0c/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><p>泛洪填充算法 (Flood Fill Algorithm) 泛洪填充算法又称洪水填充算法是在很多图形绘制软件中常用的填充算法，最熟悉不过就是 windows paint 的油漆桶功能。算法的原理很简单，就是从一个点开始附近像素点，填充成新的颜色，直到封闭区域内的所有像素点都被填充新颜色为止。泛红填充实现最常见有四邻域像素填充法，八邻域像素填充法，基于扫描线的像素填充方法。根据实现又可以分为递归与非递归方法，递归方法一般通过深度优先搜索进行实现，非递归方法一般通过广度优先搜索或并查集实现。</p>
+<a id="more"></a>
+<h2 id="泛洪填充题目解析"><a href="#泛洪填充题目解析" class="headerlink" title="泛洪填充题目解析"></a>泛洪填充题目解析</h2><h3 id="深度优先搜索"><a href="#深度优先搜索" class="headerlink" title="深度优先搜索"></a>深度优先搜索</h3><h4 id="200-岛屿数量"><a href="#200-岛屿数量" class="headerlink" title="200. 岛屿数量"></a>200. 岛屿数量</h4><p>题目描述：</p>
+<pre><code>给你一个由 &#39;1&#39;（陆地）和 &#39;0&#39;（水）组成的的二维网格，请你计算网格中岛屿的数量。
+岛屿总是被水包围，并且每座岛屿只能由水平方向和/或竖直方向上相邻的陆地连接形成。
+此外，你可以假设该网格的四条边均被水包围。
+
+示例 1：
+
+    输入：grid = [
+        [&quot;1&quot;,&quot;1&quot;,&quot;1&quot;,&quot;1&quot;,&quot;0&quot;],
+        [&quot;1&quot;,&quot;1&quot;,&quot;0&quot;,&quot;1&quot;,&quot;0&quot;],
+        [&quot;1&quot;,&quot;1&quot;,&quot;0&quot;,&quot;0&quot;,&quot;0&quot;],
+        [&quot;0&quot;,&quot;0&quot;,&quot;0&quot;,&quot;0&quot;,&quot;0&quot;]
+    ]
+    输出：1
+</code></pre><p>深度优先搜索解法：</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">    <span class="keyword">int</span> M, N;</span><br><span class="line">    <span class="keyword">const</span> <span class="built_in">vector</span>&lt;<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&gt; dis&#123;&#123;<span class="number">1</span>,<span class="number">0</span>&#125;,&#123;<span class="number">-1</span>,<span class="number">0</span>&#125;,&#123;<span class="number">0</span>,<span class="number">1</span>&#125;,&#123;<span class="number">0</span>,<span class="number">-1</span>&#125;&#125;;</span><br><span class="line">    <span class="function"><span class="keyword">bool</span> <span class="title">isvalid</span><span class="params">(<span class="keyword">int</span> i, <span class="keyword">int</span> j)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> i &gt;= <span class="number">0</span> &amp;&amp; j &gt;= <span class="number">0</span> &amp;&amp; i &lt; M &amp;&amp; j &lt; N;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">markIand</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="built_in">vector</span>&lt;<span class="keyword">char</span>&gt;&gt;&amp; grid, <span class="keyword">int</span> i, <span class="keyword">int</span> j)</span> </span>&#123;</span><br><span class="line">        grid[i][j] = <span class="string">&#x27;0&#x27;</span>;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">auto</span> &amp;d : dis) &#123;</span><br><span class="line">            <span class="keyword">int</span> x = i + d[<span class="number">0</span>], y = j + d[<span class="number">1</span>];</span><br><span class="line">            <span class="keyword">if</span> (isvalid(x, y) &amp;&amp; grid[x][y] == <span class="string">&#x27;1&#x27;</span>) markIand(grid, x, y);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">numIslands</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="built_in">vector</span>&lt;<span class="keyword">char</span>&gt;&gt;&amp; grid)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> num = <span class="number">0</span>;</span><br><span class="line">        M = grid.<span class="built_in">size</span>();</span><br><span class="line">        N = grid[<span class="number">0</span>].<span class="built_in">size</span>();</span><br><span class="line">        <span class="comment">/* 寻找未发现的岛屿 */</span></span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; M; i++) <span class="keyword">for</span>(<span class="keyword">int</span> j = <span class="number">0</span>; j &lt; N; j++) &#123;</span><br><span class="line">            <span class="keyword">if</span> (grid[i][j] == <span class="string">&#x27;1&#x27;</span>) &#123; <span class="comment">/* 找到新岛屿 进行标记 */</span></span><br><span class="line">                markIand(grid, i, j);</span><br><span class="line">                num++;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> num;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<h3 id="广度优先搜索"><a href="#广度优先搜索" class="headerlink" title="广度优先搜索"></a>广度优先搜索</h3><h4 id="733-图像渲染"><a href="#733-图像渲染" class="headerlink" title="733. 图像渲染"></a>733. 图像渲染</h4><p>题目描述：</p>
+<pre><code>有一幅以二维整数数组表示的图画，每一个整数表示该图画的像素值大小，数值在 0 到 65535 之间。
+给你一个坐标 (sr, sc) 表示图像渲染开始的像素值（行 ，列）和一个新的颜色值 newColor，让你重新上色这幅图像。
+
+为了完成上色工作，从初始坐标开始，记录初始坐标的上下左右四个方向上像素值与初始坐标相同的相连像素点，
+接着再记录这四个方向上符合条件的像素点与他们对应四个方向上像素值与初始坐标相同的相连像素点，……，
+重复该过程。将所有有记录的像素点的颜色值改为新的颜色值。
+
+最后返回经过上色渲染后的图像。
+
+示例 1:
+
+    输入: image = [[1,1,1],[1,1,0],[1,0,1]], sr = 1, sc = 1, newColor = 2
+    输出: [[2,2,2],[2,2,0],[2,0,1]]
+    解析: 在图像的正中间，(坐标(sr,sc)=(1,1)),
+          在路径上所有符合条件的像素点的颜色都被更改成2。
+          注意，右下角的像素没有更改为2，
+          因为它不是在上下左右四个方向上与初始点相连的像素点。
+</code></pre><p>广度优先搜索解法：</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">    <span class="keyword">int</span> M, N;</span><br><span class="line">    <span class="keyword">const</span> <span class="built_in">vector</span>&lt;<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&gt; dis&#123;&#123;<span class="number">1</span>,<span class="number">0</span>&#125;,&#123;<span class="number">-1</span>,<span class="number">0</span>&#125;,&#123;<span class="number">0</span>,<span class="number">1</span>&#125;,&#123;<span class="number">0</span>,<span class="number">-1</span>&#125;&#125;;</span><br><span class="line">    <span class="function"><span class="keyword">bool</span> <span class="title">isvalid</span><span class="params">(<span class="keyword">int</span> i, <span class="keyword">int</span> j)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> i &gt;= <span class="number">0</span> &amp;&amp; j &gt;= <span class="number">0</span> &amp;&amp; i &lt; M &amp;&amp; j &lt; N;</span><br><span class="line">    &#125;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="built_in">vector</span>&lt;<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&gt; <span class="title">floodFill</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&gt;&amp; <span class="built_in">image</span>, <span class="keyword">int</span> sr, <span class="keyword">int</span> sc, <span class="keyword">int</span> newColor)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> preColor = <span class="built_in">image</span>[sr][sc];</span><br><span class="line">        <span class="keyword">if</span> (preColor == newColor) <span class="keyword">return</span> <span class="built_in">image</span>;</span><br><span class="line">        M = <span class="built_in">image</span>.<span class="built_in">size</span>();</span><br><span class="line">        N = <span class="built_in">image</span>[<span class="number">0</span>].<span class="built_in">size</span>();</span><br><span class="line">        <span class="built_in">deque</span>&lt;<span class="built_in">pair</span>&lt;<span class="keyword">int</span>, <span class="keyword">int</span>&gt;&gt; q;</span><br><span class="line">        q.emplace_back(sr, sc);</span><br><span class="line">        <span class="built_in">image</span>[sr][sc] = newColor;</span><br><span class="line">        <span class="keyword">while</span> (!q.empty()) &#123;</span><br><span class="line">            <span class="keyword">int</span> i = q.front().first, j = q.front().second;</span><br><span class="line">            q.pop_front();</span><br><span class="line">            <span class="keyword">for</span> (<span class="keyword">auto</span> &amp; d : dis) &#123;</span><br><span class="line">                <span class="keyword">int</span> x = i + d[<span class="number">0</span>], y = j + d[<span class="number">1</span>];</span><br><span class="line">                <span class="keyword">if</span> (isvalid(x, y) &amp;&amp; <span class="built_in">image</span>[x][y] == preColor) &#123;</span><br><span class="line">                    q.emplace_back(x, y);</span><br><span class="line">                    <span class="built_in">image</span>[x][y] = newColor;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">image</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<h3 id="并查集"><a href="#并查集" class="headerlink" title="并查集"></a>并查集</h3><h4 id="1020-飞地的数量"><a href="#1020-飞地的数量" class="headerlink" title="1020. 飞地的数量"></a>1020. 飞地的数量</h4><p>题目描述：</p>
+<pre><code>给出一个二维数组 A，每个单元格为 0（代表海）或 1（代表陆地）。
+移动是指在陆地上从一个地方走到另一个地方（朝四个方向之一）或离开网格的边界。
+返回网格中无法在任意次数的移动中离开网格边界的陆地单元格的数量。
+
+示例 1：
+
+    输入：[[0,0,0,0],[1,0,1,0],[0,1,1,0],[0,0,0,0]]
+    输出：3
+    解释：有三个 1 被 0 包围。一个 1 没有被包围，因为它在边界上。
+
+示例 2：
+
+    输入：[[0,1,1,0],[0,0,1,0],[0,0,1,0],[0,0,0,0]]
+    输出：0
+    解释：所有 1 都在边界上或可以到达边界。
+</code></pre><p>并查集解法：</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">UnionFind</span> &#123;</span></span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">    <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; parent;</span><br><span class="line">    <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; rank;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    UnionFind(<span class="keyword">int</span> n) &#123;</span><br><span class="line">        parent.resize(n);</span><br><span class="line">        rank.resize(n, <span class="number">0</span>);</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; n; i++) parent[i] = i;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">Find</span><span class="params">(<span class="keyword">int</span> n)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> n == parent[n] ? n : parent[n] = Find(parent[n]);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">Union</span><span class="params">(<span class="keyword">int</span> a, <span class="keyword">int</span> b)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> rootA = Find(a), rootB = Find(b);</span><br><span class="line">        <span class="keyword">if</span> (rootA != rootB) &#123;</span><br><span class="line">            <span class="keyword">if</span> (rank[rootA] &gt; rank[rootB]) swap(rootA, rootB);</span><br><span class="line">            parent[rootA] = rootB;</span><br><span class="line">            rank[rootB] += rank[rootA] + <span class="number">1</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">Rank</span><span class="params">(<span class="keyword">int</span> a)</span> </span>&#123; <span class="keyword">return</span> rank[Find(a)]; &#125;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">numEnclaves</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&gt;&amp; A)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> M = A.<span class="built_in">size</span>();</span><br><span class="line">        <span class="keyword">int</span> N = A[<span class="number">0</span>].<span class="built_in">size</span>();</span><br><span class="line">        <span class="keyword">int</span> landCount = <span class="number">0</span>;</span><br><span class="line">        <span class="function">UnionFind <span class="title">uf</span><span class="params">(N * M + <span class="number">1</span>)</span></span>;</span><br><span class="line"><span class="meta">#       <span class="meta-keyword">define</span> INDEX(i,j) ((i) * N + (j))</span></span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; M; i++) <span class="keyword">for</span> (<span class="keyword">int</span> j = <span class="number">0</span>; j &lt; N; j++) &#123;</span><br><span class="line">            <span class="keyword">if</span> (A[i][j] != <span class="number">1</span>) <span class="keyword">continue</span>;</span><br><span class="line">            landCount++;</span><br><span class="line">            <span class="keyword">if</span> (i == <span class="number">0</span> || i == M - <span class="number">1</span> || j == <span class="number">0</span> || j == N - <span class="number">1</span>) uf.Union(M * N, INDEX(i,j)); <span class="comment">// 边界</span></span><br><span class="line">            <span class="keyword">if</span> (i != <span class="number">0</span> &amp;&amp; A[i - <span class="number">1</span>][j] == <span class="number">1</span>) uf.Union(INDEX(i - <span class="number">1</span>,j), INDEX(i,j)); <span class="comment">// 上侧</span></span><br><span class="line">            <span class="keyword">if</span> (j != <span class="number">0</span> &amp;&amp; A[i][j - <span class="number">1</span>] == <span class="number">1</span>) uf.Union(INDEX(i,j - <span class="number">1</span>), INDEX(i,j)); <span class="comment">// 左侧</span></span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> landCount - uf.Rank(N * M);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<h2 id="泛洪填充算法题目"><a href="#泛洪填充算法题目" class="headerlink" title="泛洪填充算法题目"></a>泛洪填充算法题目</h2><ul>
+<li>「力扣」第 733 题：图像渲染（简单）<a href="https://leetcode-cn.com/problems/flood-fill/">https://leetcode-cn.com/problems/flood-fill/</a></li>
+<li>「力扣」第 1034 题：边框着色（中等）<a href="https://leetcode-cn.com/problems/coloring-a-border">https://leetcode-cn.com/problems/coloring-a-border</a></li>
+<li>「力扣」第 785 题：判断二分图（中等）<a href="https://leetcode-cn.com/problems/is-graph-bipartite">https://leetcode-cn.com/problems/is-graph-bipartite</a></li>
+<li>「力扣」第 886 题：可能的二分法（中等）<a href="https://leetcode-cn.com/problems/possible-bipartition">https://leetcode-cn.com/problems/possible-bipartition</a></li>
+<li>「力扣」第 529 题：扫雷游戏（中等）<a href="https://leetcode-cn.com/problems/minesweeper">https://leetcode-cn.com/problems/minesweeper</a></li>
+<li>「力扣」第 200 题：岛屿数量（中等）<a href="https://leetcode-cn.com/problems/number-of-islands">https://leetcode-cn.com/problems/number-of-islands</a></li>
+<li>「力扣」第 827 题：最大人工岛（困难）<a href="https://leetcode-cn.com/problems/making-a-large-island">https://leetcode-cn.com/problems/making-a-large-island</a></li>
+<li>「力扣」第 695 题：岛屿的最大面积（中等）<a href="https://leetcode-cn.com/problems/max-area-of-island">https://leetcode-cn.com/problems/max-area-of-island</a></li>
+<li>「力扣」第 463 题：岛屿的周长（简单）<a href="https://leetcode-cn.com/problems/island-perimeter">https://leetcode-cn.com/problems/island-perimeter</a></li>
+<li>「力扣」第 1254 题：统计封闭岛屿的数目（中等）<a href="https://leetcode-cn.com/problems/number-of-closed-islands">https://leetcode-cn.com/problems/number-of-closed-islands</a></li>
+<li>「力扣」第 130 题：被围绕的区域（中等）<a href="https://leetcode-cn.com/problems/surrounded-regions">https://leetcode-cn.com/problems/surrounded-regions</a></li>
+<li>「力扣」第 289 题：生命游戏（中等）<a href="https://leetcode-cn.com/problems/game-of-life">https://leetcode-cn.com/problems/game-of-life</a></li>
+<li>「力扣」第 1020 题：飞地的数量（困难）<a href="https://leetcode-cn.com/problems/number-of-enclaves/">https://leetcode-cn.com/problems/number-of-enclaves/</a></li>
+</ul>
+<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><ul>
+<li>[1] <a href="https://blog.csdn.net/wat1r/article/details/113702607">搜索与图论之 FloodFill_wat1r 的博客 - CSDN 博客</a></li>
+</ul>
+]]></content>
+      <categories>
+        <category>数据结构与算法</category>
+      </categories>
+      <tags>
+        <tag>图论</tag>
+        <tag>深度优先搜索</tag>
+        <tag>广度优先搜索</tag>
+        <tag>并查集</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>数据结构与算法 - 自平衡二叉搜索树</title>
     <url>/post/2020/4e311301/</url>
     <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><h2 id="二叉搜索树的缺陷"><a href="#二叉搜索树的缺陷" class="headerlink" title="二叉搜索树的缺陷"></a>二叉搜索树的缺陷</h2><p>二叉搜索树的插入顺序决定了二叉搜索树的结构，如果按照 [1,2,3,4,5,6] 这样的顺序插入，其流程是这样的：</p>
@@ -4567,6 +4633,72 @@ n == 4: dp[n] = k * (k * k * k - k) - k * k
       </tags>
   </entry>
   <entry>
+    <title>日常生活 - 东方时尚实际道路训练考试路线图</title>
+    <url>/post/2018/32900a5b/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><p><img data-src="https://gitee.com/hezhaojiang/MyPics/raw/master/img/20200517155411.jpg" alt="东方时尚实际道路训练考试路线图"></p>
+]]></content>
+      <categories>
+        <category>日常生活</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>数据结构与算法 - 链表</title>
+    <url>/post/2021/759c397f/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><h2 id="链表基础"><a href="#链表基础" class="headerlink" title="链表基础"></a>链表基础</h2><p>链表的定义（来自维基百科）：</p>
+<p>在计算机科学中，链表作为一种基础的数据结构可以用来生成其它类型的数据结构。链表通常由一连串节点组成，每个节点包含任意的实例数据和一或两个用来指向上一个或下一个节点的位置的链接。</p>
+<a id="more"></a>
+<p>链表与顺序表的区别（来自维基百科）：</p>
+<p>链表是一种常见的基础数据结构，是一种线性表，但是并不会按线性的顺序存储数据，而是在每一个节点里存到下一个节点的指针 (Pointer)。由于不必须按顺序存储，链表在插入的时候可以达到 O(1) 的复杂度，比顺序表快得多，但是查找一个节点或者访问特定编号的节点则需要 O(n) 的时间，而顺序表相应的时间复杂度分别是 O(logn) 和 O(1)。</p>
+<p>链表的优缺点（来自维基百科）：</p>
+<p>使用链表结构可以克服数组链表需要预先知道数据大小的缺点，链表结构可以充分利用计算机内存空间，实现灵活的内存动态管理。但是链表失去了数组随机读取的优点，同时链表由于增加了结点的指针域，空间开销比较大。<br>链表最明显的好处就是，常规数组排列关联项目的方式可能不同于这些数据项目在记忆体或磁盘上顺序，数据的访问往往要在不同的排列顺序中转换。而链表是一种自我指示数据类型，因为它包含指向另一个相同类型的数据的指针（链接）。链表允许插入和移除表上任意位置上的节点，但是不允许随机存取。</p>
+<p>链表的类型（来自维基百科）：</p>
+<p>单向链表，双向链表以及循环链表。</p>
+<h2 id="链表练习题目"><a href="#链表练习题目" class="headerlink" title="链表练习题目"></a>链表练习题目</h2><h3 id="链表中的双指针技巧"><a href="#链表中的双指针技巧" class="headerlink" title="链表中的双指针技巧"></a>链表中的双指针技巧</h3><ul>
+<li><a href="https://leetcode-cn.com/problems/remove-nth-node-from-end-of-list">19. 删除链表的倒数第 N 个节点</a></li>
+<li><a href="https://leetcode-cn.com/problems/partition-list">86. 分隔链表</a></li>
+<li><a href="https://leetcode-cn.com/problems/reverse-linked-list-ii">92. 反转链表 II</a></li>
+<li><a href="https://leetcode-cn.com/problems/linked-list-cycle">141. 环形链表</a></li>
+<li><a href="https://leetcode-cn.com/problems/linked-list-cycle-ii">142. 环形链表 II</a></li>
+<li><a href="https://leetcode-cn.com/problems/reorder-list">143. 重排链表</a></li>
+<li><a href="https://leetcode-cn.com/problems/intersection-of-two-linked-lists">160. 相交链表</a></li>
+<li><a href="https://leetcode-cn.com/problems/convert-sorted-list-to-binary-search-tree">109. 有序链表转换二叉搜索树</a></li>
+<li><a href="https://leetcode-cn.com/problems/reverse-linked-list">206. 反转链表</a></li>
+<li><a href="https://leetcode-cn.com/problems/palindrome-linked-list">234. 回文链表</a></li>
+<li><a href="https://leetcode-cn.com/problems/middle-of-the-linked-list">876. 链表的中间结点</a></li>
+</ul>
+<h3 id="链表排序问题"><a href="#链表排序问题" class="headerlink" title="链表排序问题"></a>链表排序问题</h3><ul>
+<li><a href="https://leetcode-cn.com/problems/insertion-sort-list">147. 对链表进行插入排序</a></li>
+<li><a href="https://leetcode-cn.com/problems/sort-list">148. 排序链表</a></li>
+</ul>
+<h3 id="链表其他经典题目"><a href="#链表其他经典题目" class="headerlink" title="链表其他经典题目"></a>链表其他经典题目</h3><ul>
+<li><a href="https://leetcode-cn.com/problems/add-two-numbers">2. 两数相加</a></li>
+<li><a href="https://leetcode-cn.com/problems/merge-two-sorted-lists">21. 合并两个有序链表</a></li>
+<li><a href="https://leetcode-cn.com/problems/merge-k-sorted-lists">23. 合并 K 个排序链表</a></li>
+<li><a href="https://leetcode-cn.com/problems/swap-nodes-in-pairs">24. 两两交换链表中的节点</a></li>
+<li><a href="https://leetcode-cn.com/problems/reverse-nodes-in-k-group">25. K 个一组翻转链表</a></li>
+<li><a href="https://leetcode-cn.com/problems/rotate-list">61. 旋转链表</a></li>
+<li><a href="https://leetcode-cn.com/problems/remove-duplicates-from-sorted-list-ii">82. 删除排序链表中的重复元素 II</a></li>
+<li><a href="https://leetcode-cn.com/problems/remove-duplicates-from-sorted-list">83. 删除排序链表中的重复元素</a></li>
+<li><a href="https://leetcode-cn.com/problems/copy-list-with-random-pointer">138. 复制带随机指针的链表</a></li>
+<li><a href="https://leetcode-cn.com/problems/remove-linked-list-elements">203. 移除链表元素</a></li>
+<li><a href="https://leetcode-cn.com/problems/add-two-numbers-ii">445. 两数相加 II</a></li>
+<li><a href="https://leetcode-cn.com/problems/split-linked-list-in-parts">725. 分隔链表</a></li>
+<li><a href="https://leetcode-cn.com/problems/flatten-a-multilevel-doubly-linked-list">430. 扁平化多级双向链表</a></li>
+<li><a href="https://leetcode-cn.com/problems/linked-list-components">817. 链表组件</a></li>
+<li><a href="https://leetcode-cn.com/problems/remove-zero-sum-consecutive-nodes-from-linked-list">1171. 从链表中删去总和值为零的连续节点</a></li>
+</ul>
+<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><ul>
+<li>[1] <a href="https://xiaoneng.blog.csdn.net/article/details/104007259">leetcode 刷题总结之链表_algsup-CSDN 博客</a></li>
+</ul>
+]]></content>
+      <categories>
+        <category>数据结构与算法</category>
+      </categories>
+      <tags>
+        <tag>链表</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>树莓派日记 - 安装 SRS</title>
     <url>/post/2020/f3c9706d/</url>
     <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><p><code>SRS/3.0</code>，是一个流媒体集群，支持 <code>RTMP</code>/<code>HLS</code>/<code>WebRTC</code>/<code>SRT</code>/<code>GB28181</code>，高效、稳定、易用，简单而快乐。</p>
@@ -4600,15 +4732,6 @@ n == 4: dp[n] = k * (k * k * k - k) - k * k
       <tags>
         <tag>SRS</tag>
       </tags>
-  </entry>
-  <entry>
-    <title>日常生活 - 东方时尚实际道路训练考试路线图</title>
-    <url>/post/2018/32900a5b/</url>
-    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><p><img data-src="https://gitee.com/hezhaojiang/MyPics/raw/master/img/20200517155411.jpg" alt="东方时尚实际道路训练考试路线图"></p>
-]]></content>
-      <categories>
-        <category>日常生活</category>
-      </categories>
   </entry>
   <entry>
     <title>树莓派日记 - 安装 Ubuntu 20.04</title>
@@ -7052,79 +7175,6 @@ a = *（0 个或多个会话属性行）
       </tags>
   </entry>
   <entry>
-    <title>源码阅读 libevent - 数据结构：尾队列</title>
-    <url>/post/2020/e6338d04/</url>
-    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><p>本文分析的数据结构为 <code>TAILQ</code> 尾队列。</p>
-<p><code>libevent</code> 中 <code>TAILQ</code> 尾队列其实就是升级版的 <code>LIST</code> 双向链表。</p>
-<a id="more"></a>
-<blockquote>
-<p>数据结构 <code>LIST</code> 双向链表的分析详见：<a href="/post/2020/ee7292d/" title="源码阅读 libevent - 数据结构：双向链表">源码阅读 libevent - 数据结构：双向链表</a></p>
-</blockquote>
-<h2 id="尾队列的定义"><a href="#尾队列的定义" class="headerlink" title="尾队列的定义"></a>尾队列的定义</h2><h3 id="尾队列的定义宏"><a href="#尾队列的定义宏" class="headerlink" title="尾队列的定义宏"></a>尾队列的定义宏</h3><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">define</span> TAILQ_HEAD(name, type)                      \</span></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">name</span> &#123;</span>                                       \</span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">type</span> *<span class="title">tqh_first</span>;</span> <span class="comment">/* first element */</span>                         \</span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">type</span> **<span class="title">tqh_last</span>;</span> <span class="comment">/* addr of last next element */</span>             \</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> TAILQ_ENTRY(type)                           \</span></span><br><span class="line"><span class="class"><span class="keyword">struct</span> &#123;</span>                                            \</span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">type</span> *<span class="title">tqe_next</span>;</span>  <span class="comment">/* next element */</span>      \</span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">type</span> **<span class="title">tqe_prev</span>;</span> <span class="comment">/* address of previous next element */</span>      \</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h3 id="尾队列的节点结构"><a href="#尾队列的节点结构" class="headerlink" title="尾队列的节点结构"></a>尾队列的节点结构</h3><p>同双向链表一样，我们通过代码来分析尾队列的节点结构：</p>
-<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;stdlib.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&quot;queue.h&quot;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> <span class="title">Node</span> &#123;</span></span><br><span class="line">    <span class="keyword">int</span> val;</span><br><span class="line">    TAILQ_ENTRY(Node) node;</span><br><span class="line">&#125; Node;</span><br><span class="line">TAILQ_HEAD(Head, Node);</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">void</span>)</span> </span>&#123;</span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">Head</span> <span class="title">tailQHead</span>;</span></span><br><span class="line">    TAILQ_INIT(&amp;tailQHead);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">3</span>; i++) &#123;</span><br><span class="line">        Node* new_item = <span class="built_in">malloc</span>(<span class="keyword">sizeof</span>(Node));</span><br><span class="line">        new_item-&gt;val = i;</span><br><span class="line">        TAILQ_INSERT_HEAD(&amp;tailQHead, new_item, node); <span class="comment">// 头插法插入新节点</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    Node* p;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;[HEAD] %20p [HEAD ADDR] %20p\n\n&quot;</span>,tailQHead.tqh_first, &amp;tailQHead);</span><br><span class="line">    TAILQ_FOREACH(p, &amp;tailQHead, node) &#123;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;[NODE] %20d [NODE ADDR] %20p\n&quot;</span>, p-&gt;val, p);</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;[NEXT] %20p [NEXT ADDR] %20p\n&quot;</span>, p-&gt;node.tqe_next, &amp;p-&gt;node.tqe_next);</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;[PREV] %20p [PREV ADDR] %20p\n\n&quot;</span>, p-&gt;node.tqe_prev, &amp;p-&gt;node.tqe_prev);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;[TAIL] %20p [HEAD ADDR] %20p\n\n&quot;</span>,tailQHead.tqh_last, &amp;tailQHead);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>在该程序中，定义了节点类型为 <code>Node</code> 类型，其中包含了一个 <code>int</code> 型的 <code>val</code> 变量以及 <code>TAILQ_ENTRY</code> 所定义的结构体。可以看到，调用 <code>TAILQ_HEAD</code> 宏函数时，传入的 <code>name</code> 参数 <code>Head</code> 最终就成为了 <code>TAILQ_HEAD</code> 下结构体类型名。然后用 <code>struct Head</code> 来定义一个 <code>tailQHead</code> 变量作为尾队列的头节点，其中保存的即是尾队列中的首尾节点信息了。接着就是以头插法形式插入三个节点，然后遍历输出各个节点中关键成员的值与地址，结果如下：</p>
-<p><img data-src="https://gitee.com/hezhaojiang/MyPics/raw/master/img/20201025215558.png" alt="libevent 尾队列"></p>
-<p>从代码结果种可得出尾队列结构如下：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">      Head                       Node1                   Node2                   Node3</span><br><span class="line">+--------------+    +-----&gt;+--------------+    +--&gt;+--------------+    +--&gt;+--------------+</span><br><span class="line">|   tqh_first  |----+      |    value     |    |   |    value     |    |   |    value     |</span><br><span class="line">|              |&lt;-----+    +--------------+    |   +--------------+    |   +--------------+</span><br><span class="line">+--------------+      |    |   tqe_next   |----+   |   tqe_next   |----+   |   tqe_next   |-----------+</span><br><span class="line">|   tqh_last   |---+  |    |              |&lt;--+    |              |&lt;--+    |              |&lt;---+      |</span><br><span class="line">+--------------+   |  |    +--------------+   |    +--------------+   |    +--------------+    |    -----</span><br><span class="line">                   |  +----|   tqe_prev   |   +----|   tqe_prev   |   +----|   tqe_prev   |    |     ---</span><br><span class="line">                   |       +--------------+        +--------------+        +--------------+    |      -</span><br><span class="line">                   |                                                                           |</span><br><span class="line">                   +---------------------------------------------------------------------------+</span><br></pre></td></tr></table></figure>
-<h2 id="尾队列的访问"><a href="#尾队列的访问" class="headerlink" title="尾队列的访问"></a>尾队列的访问</h2><h3 id="尾队列的访问宏"><a href="#尾队列的访问宏" class="headerlink" title="尾队列的访问宏"></a>尾队列的访问宏</h3><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">define</span> TAILQ_FIRST(head)           ((head)-&gt;tqh_first)</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> TAILQ_END(head)             NULL</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> TAILQ_NEXT(elm, field)      ((elm)-&gt;field.tqe_next)</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> TAILQ_LAST(head, headname)  (*(((struct headname *)((head)-&gt;tqh_last))-&gt;tqh_last))</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> TAILQ_PREV(elm, headname, field)    (*(((struct headname *)((elm)-&gt;field.tqe_prev))-&gt;tqh_last))</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> TAILQ_EMPTY(head)           (TAILQ_FIRST(head) == TAILQ_END(head))</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> TAILQ_FOREACH(var, head, field)             \</span></span><br><span class="line">    <span class="keyword">for</span>((var) = TAILQ_FIRST(head); (var) != TAILQ_END(head); (var) = TAILQ_NEXT(var, field))</span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> TAILQ_FOREACH_REVERSE(var, head, headname, field)       \</span></span><br><span class="line">    <span class="keyword">for</span>((var) = TAILQ_LAST(head, headname); (var) != TAILQ_END(head); (var) = TAILQ_PREV(var, headname, field))</span><br></pre></td></tr></table></figure>
-<h3 id="尾队列的访问宏的作用"><a href="#尾队列的访问宏的作用" class="headerlink" title="尾队列的访问宏的作用"></a>尾队列的访问宏的作用</h3><p>从宏定义名即可看出每个宏的作用：</p>
-<ul>
-<li><code>TAILQ_FIRST</code>：获取尾队列的首节点</li>
-<li><code>TAILQ_END</code>：尾队列的末尾，值恒为 <code>NULL</code></li>
-<li><code>TAILQ_NEXT</code>：获取尾队列的后继节点的地址</li>
-<li><code>TAILQ_LAST</code>：获取尾队列的最后一个节点的地址</li>
-<li><code>TAILQ_PREV</code>：获取尾队列的前继节点的地址</li>
-<li><code>TAILQ_EMPTY</code>：判断尾队列是否为空，为空时返回真</li>
-<li><code>TAILQ_FOREACH</code>：遍历尾队列</li>
-<li><code>TAILQ_FOREACH_REVERSE</code>：反向遍历尾队列</li>
-</ul>
-<blockquote>
-<p>注意：在使用 <code>TAILQ_FOREACH</code> 或 <code>TAILQ_FOREACH_REVERSE</code> 遍历尾队列时要避免尾队列的初始化、删除、替换操作！</p>
-</blockquote>
-<h3 id="尾队列的访问过程"><a href="#尾队列的访问过程" class="headerlink" title="尾队列的访问过程"></a>尾队列的访问过程</h3><h4 id="尾队列的正向遍历"><a href="#尾队列的正向遍历" class="headerlink" title="尾队列的正向遍历"></a>尾队列的正向遍历</h4><p><code>libevent</code> 的尾队列正向遍历方式与双向链表遍历方式一致，可参见：<a href="/post/2020/ee7292d/" title="源码阅读 libevent - 数据结构：双向链表">源码阅读 libevent - 数据结构：双向链表</a>。</p>
-<h4 id="尾队列的尾节点获取"><a href="#尾队列的尾节点获取" class="headerlink" title="尾队列的尾节点获取"></a>尾队列的尾节点获取</h4><p>尾队列的尾节点获取方式如下：</p>
-<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">define</span> TAILQ_LAST(head, headname)  (*(((struct headname *)((head)-&gt;tqh_last))-&gt;tqh_last))</span></span><br></pre></td></tr></table></figure>
-<p>由尾队列结构结合下图可知，尾队列的尾节点获取可通过以下步骤获取：</p>
-<ol>
-<li>通过 <code>last</code> 指针获得尾结点的 <code>next</code> 指针的地址</li>
-<li>通过尾结点的 <code>next</code> 指针的地址加上偏移可以直到尾节点的 <code>prev</code> 指针地址</li>
-<li>通过 <code>prev</code> 指针指向的地址获取尾节点的前一个节点的 <code>next</code> 指针地址</li>
-<li>前一个节点的 <code>next</code> 指针指向的地址即为尾节点的地址</li>
-</ol>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">      Head                       Node1                   Node2                   Node3</span><br><span class="line">+--------------+    +-----&gt;+--------------+    +--&gt;+--------------+    +&gt;&gt;&gt;+--------------+</span><br><span class="line">|   tqh_first  |----+      |    value     |    |   |    value     |    ③   |    value     |</span><br><span class="line">|              |&lt;-----+    +--------------+    |   +--------------+    |   +--------------+</span><br><span class="line">+--------------+      |    |   tqe_next   |----+   |   tqe_next   |&gt;&gt;&gt;&gt;+   |   tqe_next   |-----------+</span><br><span class="line">|   tqh_last   |&gt;&gt;&gt;+  |    |              |&lt;--+    |              |&lt;&lt;&lt;+    |              |&lt;&lt;&lt;&lt;+      |</span><br><span class="line">+--------------+   |  |    +--------------+   |    +--------------+   ②    +--------------+    |    -----</span><br><span class="line">                   |  +----|   tqe_prev   |   +----|   tqe_prev   |   +&lt;&lt;&lt;&lt;|   tqe_prev   |    |     ---</span><br><span class="line">                   |       +--------------+        +--------------+        +--------------+    |      -</span><br><span class="line">                   |                                                                           |</span><br><span class="line">                   +&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;①&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;+</span><br></pre></td></tr></table></figure>
-<p>而 <code>TAILQ_LAST</code> 在实现时，为了屏蔽头节点和其他节点结构体上的区别，利用了头节点 <code>first</code>/<code>last</code> 两个指针和其他节点 <code>next</code>/<code>prev</code> 指针在内存中结构一致的特点，将 <code>next</code>/<code>prev</code> 结构体强转为了 <code>first</code>/<code>last</code> 结构体统一了头节点和其他节点在地址查找上的差异。</p>
-<h4 id="尾队列的前继节点获取"><a href="#尾队列的前继节点获取" class="headerlink" title="尾队列的前继节点获取"></a>尾队列的前继节点获取</h4><p>尾队列的前继节点获取方式如下：</p>
-<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">define</span> TAILQ_PREV(elm, headname, field)    (*(((struct headname *)((elm)-&gt;field.tqe_prev))-&gt;tqh_last))</span></span><br></pre></td></tr></table></figure>
-<p>尾队列的前继节点获取和尾队列的尾节点获取原理一致，可参考下图进行理解（获取 <code>Node3</code> 的前继节点）：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">      Head                       Node1                   Node2                   Node3</span><br><span class="line">+--------------+    +-----&gt;+--------------+    +&gt;&gt;&gt;+--------------+    +--&gt;+--------------+</span><br><span class="line">|   tqh_first  |----+      |    value     |    ③   |    value     |    |   |    value     |</span><br><span class="line">|              |&lt;-----+    +--------------+    |   +--------------+    |   +--------------+</span><br><span class="line">+--------------+      |    |   tqe_next   |&gt;&gt;&gt;&gt;+   |   tqe_next   |----+   |   tqe_next   |-----------+</span><br><span class="line">|   tqh_last   |---+  |    |              |&lt;&lt;&lt;+    |              |&lt;&lt;&lt;+    |              |&lt;---+      |</span><br><span class="line">+--------------+   |  |    +--------------+   ②    +--------------+   ①    +--------------+    |    -----</span><br><span class="line">                   |  +----|   tqe_prev   |   +&lt;&lt;&lt;&lt;|   tqe_prev   |   +&lt;&lt;&lt;&lt;|   tqe_prev   |    |     ---</span><br><span class="line">                   |       +--------------+        +--------------+        +--------------+    |      -</span><br><span class="line">                   |                                                                           |</span><br><span class="line">                   +---------------------------------------------------------------------------+</span><br></pre></td></tr></table></figure>
-<h4 id="尾队列的反向遍历"><a href="#尾队列的反向遍历" class="headerlink" title="尾队列的反向遍历"></a>尾队列的反向遍历</h4><p>反向遍历操作同样有三个关键点：遍历的起始节点，遍历的下一节点的获取，遍历的结束条件。</p>
-<ul>
-<li>遍历的起始节点：参考尾队列的尾节点获取</li>
-<li>遍历的下一节点的获取：参考尾队列的前继节点获取</li>
-<li><p>遍历的结束条件：<code>TAILQ_PREV</code> 获取地址为空，下图为反向遍历到最后一个节点的情况：</p>
-  <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">      Head                       Node1                   Node2                   Node3</span><br><span class="line">+--------------+    +-----&gt;+--------------+    +--&gt;+--------------+    +--&gt;+--------------+</span><br><span class="line">|   tqh_first  |----+      |    value     |    |   |    value     |    |   |    value     |</span><br><span class="line">|              |&lt;&lt;&lt;&lt;&lt;&lt;+    +--------------+    |   +--------------+    |   +--------------+</span><br><span class="line">+--------------+      |    |   tqe_next   |----+   |   tqe_next   |----+   |   tqe_next   |&gt;&gt;&gt;&gt;&gt;&gt;③&gt;&gt;&gt;&gt;+</span><br><span class="line">|   tqh_last   |&gt;&gt;&gt;+  ①    |              |&lt;--+    |              |&lt;--+    |              |&lt;&lt;&lt;&lt;+      |</span><br><span class="line">+--------------+   |  |    +--------------+   |    +--------------+   |    +--------------+    |    -----</span><br><span class="line">                   |  +&lt;&lt;&lt;&lt;|   tqe_prev   |   +----|   tqe_prev   |   +----|   tqe_prev   |    |     ---</span><br><span class="line">                   |       +--------------+        +--------------+        +--------------+    |      -</span><br><span class="line">                   |                                                                           |</span><br><span class="line">                   +&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;②&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;+</span><br></pre></td></tr></table></figure>
-</li>
-</ul>
-<h2 id="尾队列操作"><a href="#尾队列操作" class="headerlink" title="尾队列操作"></a>尾队列操作</h2><h3 id="初始化"><a href="#初始化" class="headerlink" title="初始化"></a>初始化</h3><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">define</span> TAILQ_INIT(head) do &#123;                       \</span></span><br><span class="line">    (head)-&gt;tqh_first = <span class="literal">NULL</span>;                       \</span><br><span class="line">    (head)-&gt;tqh_last = &amp;(head)-&gt;tqh_first;          \</span><br><span class="line">&#125; <span class="keyword">while</span> (<span class="number">0</span>)</span><br></pre></td></tr></table></figure>
-<h3 id="头插法"><a href="#头插法" class="headerlink" title="头插法"></a>头插法</h3><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">define</span> TAILQ_INSERT_HEAD(head, elm, field) do &#123;    \</span></span><br><span class="line">    <span class="keyword">if</span> (((elm)-&gt;field.tqe_next = (head)-&gt;tqh_first) != <span class="literal">NULL</span>)    \</span><br><span class="line">        (head)-&gt;tqh_first-&gt;field.tqe_prev = &amp;(elm)-&gt;field.tqe_next;             \</span><br><span class="line">    <span class="keyword">else</span> (head)-&gt;tqh_last = &amp;(elm)-&gt;field.tqe_next; \</span><br><span class="line">    (head)-&gt;tqh_first = (elm);                      \</span><br><span class="line">    (elm)-&gt;field.tqe_prev = &amp;(head)-&gt;tqh_first;     \</span><br><span class="line">&#125; <span class="keyword">while</span> (<span class="number">0</span>)</span><br></pre></td></tr></table></figure>
-<h3 id="尾插法"><a href="#尾插法" class="headerlink" title="尾插法"></a>尾插法</h3><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">define</span> TAILQ_INSERT_TAIL(head, elm, field) do &#123;    \</span></span><br><span class="line">    (elm)-&gt;field.tqe_next = <span class="literal">NULL</span>;                   \</span><br><span class="line">    (elm)-&gt;field.tqe_prev = (head)-&gt;tqh_last;       \</span><br><span class="line">    *(head)-&gt;tqh_last = (elm);                      \</span><br><span class="line">    (head)-&gt;tqh_last = &amp;(elm)-&gt;field.tqe_next;      \</span><br><span class="line">&#125; <span class="keyword">while</span> (<span class="number">0</span>)</span><br></pre></td></tr></table></figure>
-<h3 id="后插法"><a href="#后插法" class="headerlink" title="后插法"></a>后插法</h3><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">define</span> TAILQ_INSERT_AFTER(head, listelm, elm, field) do &#123;                      \</span></span><br><span class="line">    <span class="keyword">if</span> (((elm)-&gt;field.tqe_next = (listelm)-&gt;field.tqe_next) != <span class="literal">NULL</span>)            \</span><br><span class="line">        (elm)-&gt;field.tqe_next-&gt;field.tqe_prev = &amp;(elm)-&gt;field.tqe_next;         \</span><br><span class="line">    <span class="keyword">else</span> (head)-&gt;tqh_last = &amp;(elm)-&gt;field.tqe_next;                             \</span><br><span class="line">    (listelm)-&gt;field.tqe_next = (elm);              \</span><br><span class="line">    (elm)-&gt;field.tqe_prev = &amp;(listelm)-&gt;field.tqe_next;                         \</span><br><span class="line">&#125; <span class="keyword">while</span> (<span class="number">0</span>)</span><br></pre></td></tr></table></figure>
-<h3 id="前插法"><a href="#前插法" class="headerlink" title="前插法"></a>前插法</h3><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">define</span> TAILQ_INSERT_BEFORE(listelm, elm, field) do &#123;                           \</span></span><br><span class="line">    (elm)-&gt;field.tqe_prev = (listelm)-&gt;field.tqe_prev;                          \</span><br><span class="line">    (elm)-&gt;field.tqe_next = (listelm);              \</span><br><span class="line">    *(listelm)-&gt;field.tqe_prev = (elm);             \</span><br><span class="line">    (listelm)-&gt;field.tqe_prev = &amp;(elm)-&gt;field.tqe_next;                         \</span><br><span class="line">&#125; <span class="keyword">while</span> (<span class="number">0</span>)</span><br></pre></td></tr></table></figure>
-<h3 id="删除节点"><a href="#删除节点" class="headerlink" title="删除节点"></a>删除节点</h3><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">define</span> TAILQ_REMOVE(head, elm, field) do &#123;         \</span></span><br><span class="line">    <span class="keyword">if</span> (((elm)-&gt;field.tqe_next) != <span class="literal">NULL</span>)            \</span><br><span class="line">        (elm)-&gt;field.tqe_next-&gt;field.tqe_prev = (elm)-&gt;field.tqe_prev;          \</span><br><span class="line">    <span class="keyword">else</span> (head)-&gt;tqh_last = (elm)-&gt;field.tqe_prev;  \</span><br><span class="line">    *(elm)-&gt;field.tqe_prev = (elm)-&gt;field.tqe_next; \</span><br><span class="line">&#125; <span class="keyword">while</span> (<span class="number">0</span>)</span><br></pre></td></tr></table></figure>
-<h3 id="替换节点"><a href="#替换节点" class="headerlink" title="替换节点"></a>替换节点</h3><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">define</span> TAILQ_REPLACE(head, elm, elm2, field) do &#123;                              \</span></span><br><span class="line">    <span class="keyword">if</span> (((elm2)-&gt;field.tqe_next = (elm)-&gt;field.tqe_next) != <span class="literal">NULL</span>)               \</span><br><span class="line">        (elm2)-&gt;field.tqe_next-&gt;field.tqe_prev = &amp;(elm2)-&gt;field.tqe_next;       \</span><br><span class="line">    <span class="keyword">else</span> (head)-&gt;tqh_last = &amp;(elm2)-&gt;field.tqe_next;                            \</span><br><span class="line">    (elm2)-&gt;field.tqe_prev = (elm)-&gt;field.tqe_prev; \</span><br><span class="line">    *(elm2)-&gt;field.tqe_prev = (elm2);               \</span><br><span class="line">&#125; <span class="keyword">while</span> (<span class="number">0</span>)</span><br></pre></td></tr></table></figure>
-<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><ul>
-<li>[1] <a href="https://github.com/libevent/libevent/releases/download/release-2.1.11-stable/libevent-2.1.11-stable.tar.gz">libevent-2.1.11-stable.tar.gz (Released 2019-08-01)</a></li>
-</ul>
-]]></content>
-      <categories>
-        <category>源码阅读</category>
-      </categories>
-      <tags>
-        <tag>libevent</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>源码阅读 libevent - 数据结构：小根堆</title>
     <url>/post/2020/3a941cca/</url>
     <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><p>在 <code>libevent</code> 中，使用 <code>min_heap</code> 这一数据结构来管理各个 <code>event</code> 的超时，也就是小根堆，整个堆是根据各个 <code>event</code> 的超时时间来构成的，因此堆顶肯定就对应超时时间最小的 <code>event</code>，这样就可以按照超时顺序进行处理了。</p>
@@ -7210,6 +7260,79 @@ a = *（0 个或多个会话属性行）
 <h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><ul>
 <li>[1] <a href="https://github.com/libevent/libevent/releases/download/release-2.1.11-stable/libevent-2.1.11-stable.tar.gz">libevent-2.1.11-stable.tar.gz (Released 2019-08-01)</a></li>
 <li>[2] <a href="https://blog.csdn.net/qq_28114615/article/details/95342338">libevent 源码学习（10）：min_heap 数据结构解析_HerofH_的博客 - CSDN 博客</a></li>
+</ul>
+]]></content>
+      <categories>
+        <category>源码阅读</category>
+      </categories>
+      <tags>
+        <tag>libevent</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>源码阅读 libevent - 数据结构：尾队列</title>
+    <url>/post/2020/e6338d04/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><p>本文分析的数据结构为 <code>TAILQ</code> 尾队列。</p>
+<p><code>libevent</code> 中 <code>TAILQ</code> 尾队列其实就是升级版的 <code>LIST</code> 双向链表。</p>
+<a id="more"></a>
+<blockquote>
+<p>数据结构 <code>LIST</code> 双向链表的分析详见：<a href="/post/2020/ee7292d/" title="源码阅读 libevent - 数据结构：双向链表">源码阅读 libevent - 数据结构：双向链表</a></p>
+</blockquote>
+<h2 id="尾队列的定义"><a href="#尾队列的定义" class="headerlink" title="尾队列的定义"></a>尾队列的定义</h2><h3 id="尾队列的定义宏"><a href="#尾队列的定义宏" class="headerlink" title="尾队列的定义宏"></a>尾队列的定义宏</h3><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">define</span> TAILQ_HEAD(name, type)                      \</span></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">name</span> &#123;</span>                                       \</span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">type</span> *<span class="title">tqh_first</span>;</span> <span class="comment">/* first element */</span>                         \</span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">type</span> **<span class="title">tqh_last</span>;</span> <span class="comment">/* addr of last next element */</span>             \</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> TAILQ_ENTRY(type)                           \</span></span><br><span class="line"><span class="class"><span class="keyword">struct</span> &#123;</span>                                            \</span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">type</span> *<span class="title">tqe_next</span>;</span>  <span class="comment">/* next element */</span>      \</span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">type</span> **<span class="title">tqe_prev</span>;</span> <span class="comment">/* address of previous next element */</span>      \</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="尾队列的节点结构"><a href="#尾队列的节点结构" class="headerlink" title="尾队列的节点结构"></a>尾队列的节点结构</h3><p>同双向链表一样，我们通过代码来分析尾队列的节点结构：</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;stdlib.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&quot;queue.h&quot;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> <span class="title">Node</span> &#123;</span></span><br><span class="line">    <span class="keyword">int</span> val;</span><br><span class="line">    TAILQ_ENTRY(Node) node;</span><br><span class="line">&#125; Node;</span><br><span class="line">TAILQ_HEAD(Head, Node);</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">void</span>)</span> </span>&#123;</span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">Head</span> <span class="title">tailQHead</span>;</span></span><br><span class="line">    TAILQ_INIT(&amp;tailQHead);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">3</span>; i++) &#123;</span><br><span class="line">        Node* new_item = <span class="built_in">malloc</span>(<span class="keyword">sizeof</span>(Node));</span><br><span class="line">        new_item-&gt;val = i;</span><br><span class="line">        TAILQ_INSERT_HEAD(&amp;tailQHead, new_item, node); <span class="comment">// 头插法插入新节点</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    Node* p;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;[HEAD] %20p [HEAD ADDR] %20p\n\n&quot;</span>,tailQHead.tqh_first, &amp;tailQHead);</span><br><span class="line">    TAILQ_FOREACH(p, &amp;tailQHead, node) &#123;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;[NODE] %20d [NODE ADDR] %20p\n&quot;</span>, p-&gt;val, p);</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;[NEXT] %20p [NEXT ADDR] %20p\n&quot;</span>, p-&gt;node.tqe_next, &amp;p-&gt;node.tqe_next);</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;[PREV] %20p [PREV ADDR] %20p\n\n&quot;</span>, p-&gt;node.tqe_prev, &amp;p-&gt;node.tqe_prev);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;[TAIL] %20p [HEAD ADDR] %20p\n\n&quot;</span>,tailQHead.tqh_last, &amp;tailQHead);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>在该程序中，定义了节点类型为 <code>Node</code> 类型，其中包含了一个 <code>int</code> 型的 <code>val</code> 变量以及 <code>TAILQ_ENTRY</code> 所定义的结构体。可以看到，调用 <code>TAILQ_HEAD</code> 宏函数时，传入的 <code>name</code> 参数 <code>Head</code> 最终就成为了 <code>TAILQ_HEAD</code> 下结构体类型名。然后用 <code>struct Head</code> 来定义一个 <code>tailQHead</code> 变量作为尾队列的头节点，其中保存的即是尾队列中的首尾节点信息了。接着就是以头插法形式插入三个节点，然后遍历输出各个节点中关键成员的值与地址，结果如下：</p>
+<p><img data-src="https://gitee.com/hezhaojiang/MyPics/raw/master/img/20201025215558.png" alt="libevent 尾队列"></p>
+<p>从代码结果种可得出尾队列结构如下：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">      Head                       Node1                   Node2                   Node3</span><br><span class="line">+--------------+    +-----&gt;+--------------+    +--&gt;+--------------+    +--&gt;+--------------+</span><br><span class="line">|   tqh_first  |----+      |    value     |    |   |    value     |    |   |    value     |</span><br><span class="line">|              |&lt;-----+    +--------------+    |   +--------------+    |   +--------------+</span><br><span class="line">+--------------+      |    |   tqe_next   |----+   |   tqe_next   |----+   |   tqe_next   |-----------+</span><br><span class="line">|   tqh_last   |---+  |    |              |&lt;--+    |              |&lt;--+    |              |&lt;---+      |</span><br><span class="line">+--------------+   |  |    +--------------+   |    +--------------+   |    +--------------+    |    -----</span><br><span class="line">                   |  +----|   tqe_prev   |   +----|   tqe_prev   |   +----|   tqe_prev   |    |     ---</span><br><span class="line">                   |       +--------------+        +--------------+        +--------------+    |      -</span><br><span class="line">                   |                                                                           |</span><br><span class="line">                   +---------------------------------------------------------------------------+</span><br></pre></td></tr></table></figure>
+<h2 id="尾队列的访问"><a href="#尾队列的访问" class="headerlink" title="尾队列的访问"></a>尾队列的访问</h2><h3 id="尾队列的访问宏"><a href="#尾队列的访问宏" class="headerlink" title="尾队列的访问宏"></a>尾队列的访问宏</h3><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">define</span> TAILQ_FIRST(head)           ((head)-&gt;tqh_first)</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> TAILQ_END(head)             NULL</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> TAILQ_NEXT(elm, field)      ((elm)-&gt;field.tqe_next)</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> TAILQ_LAST(head, headname)  (*(((struct headname *)((head)-&gt;tqh_last))-&gt;tqh_last))</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> TAILQ_PREV(elm, headname, field)    (*(((struct headname *)((elm)-&gt;field.tqe_prev))-&gt;tqh_last))</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> TAILQ_EMPTY(head)           (TAILQ_FIRST(head) == TAILQ_END(head))</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> TAILQ_FOREACH(var, head, field)             \</span></span><br><span class="line">    <span class="keyword">for</span>((var) = TAILQ_FIRST(head); (var) != TAILQ_END(head); (var) = TAILQ_NEXT(var, field))</span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> TAILQ_FOREACH_REVERSE(var, head, headname, field)       \</span></span><br><span class="line">    <span class="keyword">for</span>((var) = TAILQ_LAST(head, headname); (var) != TAILQ_END(head); (var) = TAILQ_PREV(var, headname, field))</span><br></pre></td></tr></table></figure>
+<h3 id="尾队列的访问宏的作用"><a href="#尾队列的访问宏的作用" class="headerlink" title="尾队列的访问宏的作用"></a>尾队列的访问宏的作用</h3><p>从宏定义名即可看出每个宏的作用：</p>
+<ul>
+<li><code>TAILQ_FIRST</code>：获取尾队列的首节点</li>
+<li><code>TAILQ_END</code>：尾队列的末尾，值恒为 <code>NULL</code></li>
+<li><code>TAILQ_NEXT</code>：获取尾队列的后继节点的地址</li>
+<li><code>TAILQ_LAST</code>：获取尾队列的最后一个节点的地址</li>
+<li><code>TAILQ_PREV</code>：获取尾队列的前继节点的地址</li>
+<li><code>TAILQ_EMPTY</code>：判断尾队列是否为空，为空时返回真</li>
+<li><code>TAILQ_FOREACH</code>：遍历尾队列</li>
+<li><code>TAILQ_FOREACH_REVERSE</code>：反向遍历尾队列</li>
+</ul>
+<blockquote>
+<p>注意：在使用 <code>TAILQ_FOREACH</code> 或 <code>TAILQ_FOREACH_REVERSE</code> 遍历尾队列时要避免尾队列的初始化、删除、替换操作！</p>
+</blockquote>
+<h3 id="尾队列的访问过程"><a href="#尾队列的访问过程" class="headerlink" title="尾队列的访问过程"></a>尾队列的访问过程</h3><h4 id="尾队列的正向遍历"><a href="#尾队列的正向遍历" class="headerlink" title="尾队列的正向遍历"></a>尾队列的正向遍历</h4><p><code>libevent</code> 的尾队列正向遍历方式与双向链表遍历方式一致，可参见：<a href="/post/2020/ee7292d/" title="源码阅读 libevent - 数据结构：双向链表">源码阅读 libevent - 数据结构：双向链表</a>。</p>
+<h4 id="尾队列的尾节点获取"><a href="#尾队列的尾节点获取" class="headerlink" title="尾队列的尾节点获取"></a>尾队列的尾节点获取</h4><p>尾队列的尾节点获取方式如下：</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">define</span> TAILQ_LAST(head, headname)  (*(((struct headname *)((head)-&gt;tqh_last))-&gt;tqh_last))</span></span><br></pre></td></tr></table></figure>
+<p>由尾队列结构结合下图可知，尾队列的尾节点获取可通过以下步骤获取：</p>
+<ol>
+<li>通过 <code>last</code> 指针获得尾结点的 <code>next</code> 指针的地址</li>
+<li>通过尾结点的 <code>next</code> 指针的地址加上偏移可以直到尾节点的 <code>prev</code> 指针地址</li>
+<li>通过 <code>prev</code> 指针指向的地址获取尾节点的前一个节点的 <code>next</code> 指针地址</li>
+<li>前一个节点的 <code>next</code> 指针指向的地址即为尾节点的地址</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">      Head                       Node1                   Node2                   Node3</span><br><span class="line">+--------------+    +-----&gt;+--------------+    +--&gt;+--------------+    +&gt;&gt;&gt;+--------------+</span><br><span class="line">|   tqh_first  |----+      |    value     |    |   |    value     |    ③   |    value     |</span><br><span class="line">|              |&lt;-----+    +--------------+    |   +--------------+    |   +--------------+</span><br><span class="line">+--------------+      |    |   tqe_next   |----+   |   tqe_next   |&gt;&gt;&gt;&gt;+   |   tqe_next   |-----------+</span><br><span class="line">|   tqh_last   |&gt;&gt;&gt;+  |    |              |&lt;--+    |              |&lt;&lt;&lt;+    |              |&lt;&lt;&lt;&lt;+      |</span><br><span class="line">+--------------+   |  |    +--------------+   |    +--------------+   ②    +--------------+    |    -----</span><br><span class="line">                   |  +----|   tqe_prev   |   +----|   tqe_prev   |   +&lt;&lt;&lt;&lt;|   tqe_prev   |    |     ---</span><br><span class="line">                   |       +--------------+        +--------------+        +--------------+    |      -</span><br><span class="line">                   |                                                                           |</span><br><span class="line">                   +&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;①&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;+</span><br></pre></td></tr></table></figure>
+<p>而 <code>TAILQ_LAST</code> 在实现时，为了屏蔽头节点和其他节点结构体上的区别，利用了头节点 <code>first</code>/<code>last</code> 两个指针和其他节点 <code>next</code>/<code>prev</code> 指针在内存中结构一致的特点，将 <code>next</code>/<code>prev</code> 结构体强转为了 <code>first</code>/<code>last</code> 结构体统一了头节点和其他节点在地址查找上的差异。</p>
+<h4 id="尾队列的前继节点获取"><a href="#尾队列的前继节点获取" class="headerlink" title="尾队列的前继节点获取"></a>尾队列的前继节点获取</h4><p>尾队列的前继节点获取方式如下：</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">define</span> TAILQ_PREV(elm, headname, field)    (*(((struct headname *)((elm)-&gt;field.tqe_prev))-&gt;tqh_last))</span></span><br></pre></td></tr></table></figure>
+<p>尾队列的前继节点获取和尾队列的尾节点获取原理一致，可参考下图进行理解（获取 <code>Node3</code> 的前继节点）：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">      Head                       Node1                   Node2                   Node3</span><br><span class="line">+--------------+    +-----&gt;+--------------+    +&gt;&gt;&gt;+--------------+    +--&gt;+--------------+</span><br><span class="line">|   tqh_first  |----+      |    value     |    ③   |    value     |    |   |    value     |</span><br><span class="line">|              |&lt;-----+    +--------------+    |   +--------------+    |   +--------------+</span><br><span class="line">+--------------+      |    |   tqe_next   |&gt;&gt;&gt;&gt;+   |   tqe_next   |----+   |   tqe_next   |-----------+</span><br><span class="line">|   tqh_last   |---+  |    |              |&lt;&lt;&lt;+    |              |&lt;&lt;&lt;+    |              |&lt;---+      |</span><br><span class="line">+--------------+   |  |    +--------------+   ②    +--------------+   ①    +--------------+    |    -----</span><br><span class="line">                   |  +----|   tqe_prev   |   +&lt;&lt;&lt;&lt;|   tqe_prev   |   +&lt;&lt;&lt;&lt;|   tqe_prev   |    |     ---</span><br><span class="line">                   |       +--------------+        +--------------+        +--------------+    |      -</span><br><span class="line">                   |                                                                           |</span><br><span class="line">                   +---------------------------------------------------------------------------+</span><br></pre></td></tr></table></figure>
+<h4 id="尾队列的反向遍历"><a href="#尾队列的反向遍历" class="headerlink" title="尾队列的反向遍历"></a>尾队列的反向遍历</h4><p>反向遍历操作同样有三个关键点：遍历的起始节点，遍历的下一节点的获取，遍历的结束条件。</p>
+<ul>
+<li>遍历的起始节点：参考尾队列的尾节点获取</li>
+<li>遍历的下一节点的获取：参考尾队列的前继节点获取</li>
+<li><p>遍历的结束条件：<code>TAILQ_PREV</code> 获取地址为空，下图为反向遍历到最后一个节点的情况：</p>
+  <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">      Head                       Node1                   Node2                   Node3</span><br><span class="line">+--------------+    +-----&gt;+--------------+    +--&gt;+--------------+    +--&gt;+--------------+</span><br><span class="line">|   tqh_first  |----+      |    value     |    |   |    value     |    |   |    value     |</span><br><span class="line">|              |&lt;&lt;&lt;&lt;&lt;&lt;+    +--------------+    |   +--------------+    |   +--------------+</span><br><span class="line">+--------------+      |    |   tqe_next   |----+   |   tqe_next   |----+   |   tqe_next   |&gt;&gt;&gt;&gt;&gt;&gt;③&gt;&gt;&gt;&gt;+</span><br><span class="line">|   tqh_last   |&gt;&gt;&gt;+  ①    |              |&lt;--+    |              |&lt;--+    |              |&lt;&lt;&lt;&lt;+      |</span><br><span class="line">+--------------+   |  |    +--------------+   |    +--------------+   |    +--------------+    |    -----</span><br><span class="line">                   |  +&lt;&lt;&lt;&lt;|   tqe_prev   |   +----|   tqe_prev   |   +----|   tqe_prev   |    |     ---</span><br><span class="line">                   |       +--------------+        +--------------+        +--------------+    |      -</span><br><span class="line">                   |                                                                           |</span><br><span class="line">                   +&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;②&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;+</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h2 id="尾队列操作"><a href="#尾队列操作" class="headerlink" title="尾队列操作"></a>尾队列操作</h2><h3 id="初始化"><a href="#初始化" class="headerlink" title="初始化"></a>初始化</h3><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">define</span> TAILQ_INIT(head) do &#123;                       \</span></span><br><span class="line">    (head)-&gt;tqh_first = <span class="literal">NULL</span>;                       \</span><br><span class="line">    (head)-&gt;tqh_last = &amp;(head)-&gt;tqh_first;          \</span><br><span class="line">&#125; <span class="keyword">while</span> (<span class="number">0</span>)</span><br></pre></td></tr></table></figure>
+<h3 id="头插法"><a href="#头插法" class="headerlink" title="头插法"></a>头插法</h3><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">define</span> TAILQ_INSERT_HEAD(head, elm, field) do &#123;    \</span></span><br><span class="line">    <span class="keyword">if</span> (((elm)-&gt;field.tqe_next = (head)-&gt;tqh_first) != <span class="literal">NULL</span>)    \</span><br><span class="line">        (head)-&gt;tqh_first-&gt;field.tqe_prev = &amp;(elm)-&gt;field.tqe_next;             \</span><br><span class="line">    <span class="keyword">else</span> (head)-&gt;tqh_last = &amp;(elm)-&gt;field.tqe_next; \</span><br><span class="line">    (head)-&gt;tqh_first = (elm);                      \</span><br><span class="line">    (elm)-&gt;field.tqe_prev = &amp;(head)-&gt;tqh_first;     \</span><br><span class="line">&#125; <span class="keyword">while</span> (<span class="number">0</span>)</span><br></pre></td></tr></table></figure>
+<h3 id="尾插法"><a href="#尾插法" class="headerlink" title="尾插法"></a>尾插法</h3><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">define</span> TAILQ_INSERT_TAIL(head, elm, field) do &#123;    \</span></span><br><span class="line">    (elm)-&gt;field.tqe_next = <span class="literal">NULL</span>;                   \</span><br><span class="line">    (elm)-&gt;field.tqe_prev = (head)-&gt;tqh_last;       \</span><br><span class="line">    *(head)-&gt;tqh_last = (elm);                      \</span><br><span class="line">    (head)-&gt;tqh_last = &amp;(elm)-&gt;field.tqe_next;      \</span><br><span class="line">&#125; <span class="keyword">while</span> (<span class="number">0</span>)</span><br></pre></td></tr></table></figure>
+<h3 id="后插法"><a href="#后插法" class="headerlink" title="后插法"></a>后插法</h3><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">define</span> TAILQ_INSERT_AFTER(head, listelm, elm, field) do &#123;                      \</span></span><br><span class="line">    <span class="keyword">if</span> (((elm)-&gt;field.tqe_next = (listelm)-&gt;field.tqe_next) != <span class="literal">NULL</span>)            \</span><br><span class="line">        (elm)-&gt;field.tqe_next-&gt;field.tqe_prev = &amp;(elm)-&gt;field.tqe_next;         \</span><br><span class="line">    <span class="keyword">else</span> (head)-&gt;tqh_last = &amp;(elm)-&gt;field.tqe_next;                             \</span><br><span class="line">    (listelm)-&gt;field.tqe_next = (elm);              \</span><br><span class="line">    (elm)-&gt;field.tqe_prev = &amp;(listelm)-&gt;field.tqe_next;                         \</span><br><span class="line">&#125; <span class="keyword">while</span> (<span class="number">0</span>)</span><br></pre></td></tr></table></figure>
+<h3 id="前插法"><a href="#前插法" class="headerlink" title="前插法"></a>前插法</h3><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">define</span> TAILQ_INSERT_BEFORE(listelm, elm, field) do &#123;                           \</span></span><br><span class="line">    (elm)-&gt;field.tqe_prev = (listelm)-&gt;field.tqe_prev;                          \</span><br><span class="line">    (elm)-&gt;field.tqe_next = (listelm);              \</span><br><span class="line">    *(listelm)-&gt;field.tqe_prev = (elm);             \</span><br><span class="line">    (listelm)-&gt;field.tqe_prev = &amp;(elm)-&gt;field.tqe_next;                         \</span><br><span class="line">&#125; <span class="keyword">while</span> (<span class="number">0</span>)</span><br></pre></td></tr></table></figure>
+<h3 id="删除节点"><a href="#删除节点" class="headerlink" title="删除节点"></a>删除节点</h3><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">define</span> TAILQ_REMOVE(head, elm, field) do &#123;         \</span></span><br><span class="line">    <span class="keyword">if</span> (((elm)-&gt;field.tqe_next) != <span class="literal">NULL</span>)            \</span><br><span class="line">        (elm)-&gt;field.tqe_next-&gt;field.tqe_prev = (elm)-&gt;field.tqe_prev;          \</span><br><span class="line">    <span class="keyword">else</span> (head)-&gt;tqh_last = (elm)-&gt;field.tqe_prev;  \</span><br><span class="line">    *(elm)-&gt;field.tqe_prev = (elm)-&gt;field.tqe_next; \</span><br><span class="line">&#125; <span class="keyword">while</span> (<span class="number">0</span>)</span><br></pre></td></tr></table></figure>
+<h3 id="替换节点"><a href="#替换节点" class="headerlink" title="替换节点"></a>替换节点</h3><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">define</span> TAILQ_REPLACE(head, elm, elm2, field) do &#123;                              \</span></span><br><span class="line">    <span class="keyword">if</span> (((elm2)-&gt;field.tqe_next = (elm)-&gt;field.tqe_next) != <span class="literal">NULL</span>)               \</span><br><span class="line">        (elm2)-&gt;field.tqe_next-&gt;field.tqe_prev = &amp;(elm2)-&gt;field.tqe_next;       \</span><br><span class="line">    <span class="keyword">else</span> (head)-&gt;tqh_last = &amp;(elm2)-&gt;field.tqe_next;                            \</span><br><span class="line">    (elm2)-&gt;field.tqe_prev = (elm)-&gt;field.tqe_prev; \</span><br><span class="line">    *(elm2)-&gt;field.tqe_prev = (elm2);               \</span><br><span class="line">&#125; <span class="keyword">while</span> (<span class="number">0</span>)</span><br></pre></td></tr></table></figure>
+<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><ul>
+<li>[1] <a href="https://github.com/libevent/libevent/releases/download/release-2.1.11-stable/libevent-2.1.11-stable.tar.gz">libevent-2.1.11-stable.tar.gz (Released 2019-08-01)</a></li>
 </ul>
 ]]></content>
       <categories>
@@ -7925,6 +8048,25 @@ p2&#39; = (2*p3 + 3*p2 + p1 + p0 + q0 + 4) &gt;&gt; 3
       </tags>
   </entry>
   <entry>
+    <title>编解码技术：H264 - CAVLC</title>
+    <url>/post/2020/4f888bde/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><p><code>CAVLC(Context-based Adaptive Variable-Length Code)</code>：基于上下文的可变长度编码，是 <code>H.264</code> 中进行 <code>4x4</code> 像素块进行熵编码的方法，基本 (baseline) 档次中只能使用 <code>CAVLC</code>，只有主要 (main) 档次和扩展 (extern) 档次才能使用 <code>CABAC</code>。</p>
+<a id="more"></a>
+<blockquote>
+<p>CLBAC 编码详见：<a href="#">Post not found: 编解码技术：H264 - CABAC</a></p>
+</blockquote>
+<h2 id="CAVLC-的基本原理"><a href="#CAVLC-的基本原理" class="headerlink" title="CAVLC 的基本原理"></a>CAVLC 的基本原理</h2><p>在 <code>H.264</code> 的 <code>CAVLC</code> 中，通过根据已编码句法元素的情况动态调整编码中使用的码表，取得了极高的压缩比。</p>
+<p><code>CAVLC</code> 用于亮度和色度残差数据的编码。残差经过变换量化后的数据表现出如下特性：<code>4*4</code> 块数据经过预测、变换、量化后，非零系数主要集中在低频部分，而高频系数大部分是零；量化后的数据经过<code>zig-zag</code> 扫描，<code>DC</code> 系数附近的非零系数值较大，而高频位置上的非零系数值大部分是 <code>+1</code> 和<br><code>-1</code>；相邻的 <code>4*4</code> 块的非零系数的数目是相关的。<code>CAVLC</code> 充分利用残差经过整数变换、量化后数据的特性进行压缩，进一步减少数据中的冗余信息，为 <code>H.264</code> 卓越的编码效率奠定了基础。</p>
+<h2 id="CAVLC-的上下文模型"><a href="#CAVLC-的上下文模型" class="headerlink" title="CAVLC 的上下文模型"></a>CAVLC 的上下文模型</h2><p>利用相邻已编码符号所提供的相关性，为所要编码的符号选择合适的上下文模型。利用合适的上下文模型，就可以大大降低符号间的冗余度。在 <code>CAVLC</code> 中上下文模型的选择主要体现在两个方面, 非零系数编码所需表格的选择以及拖尾系数后缀长度的更新，以下有详细的论述。</p>
+<h2 id="CAVLC-的编码过程"><a href="#CAVLC-的编码过程" class="headerlink" title="CAVLC 的编码过程"></a>CAVLC 的编码过程</h2>]]></content>
+      <categories>
+        <category>编解码技术</category>
+      </categories>
+      <tags>
+        <tag>H.264</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>源码阅读 x264 - 量化</title>
     <url>/post/2021/6f5ffb09/</url>
     <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><p><code>x264</code> 中 <code>x264_quant_init</code> 函数中初始化了量化有关的函数，本文分析部分量化函数的实现</p>
@@ -7961,17 +8103,28 @@ p2&#39; = (2*p3 + 3*p2 + p1 + p0 + q0 + 4) &gt;&gt; 3
       </tags>
   </entry>
   <entry>
-    <title>编解码技术：H264 - CAVLC</title>
-    <url>/post/2020/4f888bde/</url>
-    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><p><code>CAVLC(Context-based Adaptive Variable-Length Code)</code>：基于上下文的可变长度编码，是 <code>H.264</code> 中进行 <code>4x4</code> 像素块进行熵编码的方法，基本 (baseline) 档次中只能使用 <code>CAVLC</code>，只有主要 (main) 档次和扩展 (extern) 档次才能使用 <code>CABAC</code>。</p>
+    <title>编解码技术：H264 - Level</title>
+    <url>/post/2020/3552c034/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><h2 id="H-264-Level"><a href="#H-264-Level" class="headerlink" title="H.264 Level"></a>H.264 Level</h2><p>在 H.264 标准中，有许多不同的 “级别” 指定约束，指示配置文件所需的解码器性能程度，这些 “级别” 即为 Level。Level 指定设备可以播放的最大数据速率和视频分辨率。</p>
+<p>例如，配置文件中的支持级别将指定解码器可能能够使用的最大图像分辨率、帧速率和比特率。较低的级别意味着较低的分辨率、允许的最大比特率较低以及存储参考帧的内存要求更低。需要符合给定级别的解码器才能解码为该级别和所有较低级别编码的所有位流。</p>
 <a id="more"></a>
-<blockquote>
-<p>CLBAC 编码详见：<a href="#">Post not found: 编解码技术：H264 - CABAC</a></p>
-</blockquote>
-<h2 id="CAVLC-的基本原理"><a href="#CAVLC-的基本原理" class="headerlink" title="CAVLC 的基本原理"></a>CAVLC 的基本原理</h2><p>在 <code>H.264</code> 的 <code>CAVLC</code> 中，通过根据已编码句法元素的情况动态调整编码中使用的码表，取得了极高的压缩比。</p>
-<p><code>CAVLC</code> 用于亮度和色度残差数据的编码。残差经过变换量化后的数据表现出如下特性：<code>4*4</code> 块数据经过预测、变换、量化后，非零系数主要集中在低频部分，而高频系数大部分是零；量化后的数据经过<code>zig-zag</code> 扫描，<code>DC</code> 系数附近的非零系数值较大，而高频位置上的非零系数值大部分是 <code>+1</code> 和<br><code>-1</code>；相邻的 <code>4*4</code> 块的非零系数的数目是相关的。<code>CAVLC</code> 充分利用残差经过整数变换、量化后数据的特性进行压缩，进一步减少数据中的冗余信息，为 <code>H.264</code> 卓越的编码效率奠定了基础。</p>
-<h2 id="CAVLC-的上下文模型"><a href="#CAVLC-的上下文模型" class="headerlink" title="CAVLC 的上下文模型"></a>CAVLC 的上下文模型</h2><p>利用相邻已编码符号所提供的相关性，为所要编码的符号选择合适的上下文模型。利用合适的上下文模型，就可以大大降低符号间的冗余度。在 <code>CAVLC</code> 中上下文模型的选择主要体现在两个方面, 非零系数编码所需表格的选择以及拖尾系数后缀长度的更新，以下有详细的论述。</p>
-<h2 id="CAVLC-的编码过程"><a href="#CAVLC-的编码过程" class="headerlink" title="CAVLC 的编码过程"></a>CAVLC 的编码过程</h2>]]></content>
+<h3 id="基础通用-Level-限制"><a href="#基础通用-Level-限制" class="headerlink" title="基础通用 Level 限制"></a>基础通用 Level 限制</h3><p>基础通用 Level 限制的适用于 Baseline, Main and Extended profiles，下表该说明了通用 Level 限制：</p>
+<ul>
+<li>如果表条目标记为 “-“，则变量的值不受限制，这是在指定 Level 对 Profile 进行位流一致性的要求。</li>
+<li>否则，表条目将为相关限制指定变量的值，该限制是对 Level 符合 Profile 的级别的要求。</li>
+</ul>
+<p>为 Level 能力比较的目的，如果一个 Level 比另一 Level 更接近于下表的表头（表底），该 Level 应认为比另一 Level 更低（高）。</p>
+<p>与比特流相一致的 Level 应在语法元素 level_idc 与 constraint_set3_flag 里指明，如下所示：</p>
+<ul>
+<li>如果 level_idc 等于 11 且 constraint_set3_flag 也等于 1，表明 Level 为 1b 级</li>
+<li>否则（level_idc 不等于 11，或 constraint_set3_flag 不等于 1），level_idc 应设为等于下表中 Level 号的 10 倍的值，且 constraint_set3_flag 应设为 0。</li>
+</ul>
+<p><img data-src="https://gitee.com/hezhaojiang/MyPics/raw/master/img/20200809221330.jpg" alt="Level limits"></p>
+<h3 id="其他通用-Level-限制"><a href="#其他通用-Level-限制" class="headerlink" title="其他通用 Level 限制"></a>其他通用 Level 限制</h3><p>其他通用 Level 限制的适用于 High, Progressive High, Constrained High, High 10, Progressive High 10,High 4:2:2, High 4:4:4 Predictive, High 10 Intra, High 4:2:2 Intra, High 4:4:4 Intra, and CAVLC 4:4:4 Intra profiles，变量 level_idc 指示比特流符合指定级别：</p>
+<p>– 如果 level_idc 等于 9, 表明 Level 为 1b 级<br>– 否则（level_idc 不等于 9）, level_idc 应设为等于上表中 Level 号的 10 倍的值。</p>
+<h2 id="不同-Level-最大帧率"><a href="#不同-Level-最大帧率" class="headerlink" title="不同 Level 最大帧率"></a>不同 Level 最大帧率</h2><p>不同 Level 最大帧率举例：</p>
+<p><img data-src="https://gitee.com/hezhaojiang/MyPics/raw/master/img/20200805232842.jpg" alt="不同 Level 最大帧率举例"></p>
+]]></content>
       <categories>
         <category>编解码技术</category>
       </categories>
@@ -8038,36 +8191,6 @@ p2&#39; = (2*p3 + 3*p2 + p1 + p0 + q0 + 4) &gt;&gt; 3
 <li>[2] 《 新一代视频压缩编码标准 — H264/AVC（第二版）》</li>
 <li>[3] 《 H.265/HEVC 视频编码新标准及其拓展 》</li>
 </ul>
-]]></content>
-      <categories>
-        <category>编解码技术</category>
-      </categories>
-      <tags>
-        <tag>H.264</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>编解码技术：H264 - Level</title>
-    <url>/post/2020/3552c034/</url>
-    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><h2 id="H-264-Level"><a href="#H-264-Level" class="headerlink" title="H.264 Level"></a>H.264 Level</h2><p>在 H.264 标准中，有许多不同的 “级别” 指定约束，指示配置文件所需的解码器性能程度，这些 “级别” 即为 Level。Level 指定设备可以播放的最大数据速率和视频分辨率。</p>
-<p>例如，配置文件中的支持级别将指定解码器可能能够使用的最大图像分辨率、帧速率和比特率。较低的级别意味着较低的分辨率、允许的最大比特率较低以及存储参考帧的内存要求更低。需要符合给定级别的解码器才能解码为该级别和所有较低级别编码的所有位流。</p>
-<a id="more"></a>
-<h3 id="基础通用-Level-限制"><a href="#基础通用-Level-限制" class="headerlink" title="基础通用 Level 限制"></a>基础通用 Level 限制</h3><p>基础通用 Level 限制的适用于 Baseline, Main and Extended profiles，下表该说明了通用 Level 限制：</p>
-<ul>
-<li>如果表条目标记为 “-“，则变量的值不受限制，这是在指定 Level 对 Profile 进行位流一致性的要求。</li>
-<li>否则，表条目将为相关限制指定变量的值，该限制是对 Level 符合 Profile 的级别的要求。</li>
-</ul>
-<p>为 Level 能力比较的目的，如果一个 Level 比另一 Level 更接近于下表的表头（表底），该 Level 应认为比另一 Level 更低（高）。</p>
-<p>与比特流相一致的 Level 应在语法元素 level_idc 与 constraint_set3_flag 里指明，如下所示：</p>
-<ul>
-<li>如果 level_idc 等于 11 且 constraint_set3_flag 也等于 1，表明 Level 为 1b 级</li>
-<li>否则（level_idc 不等于 11，或 constraint_set3_flag 不等于 1），level_idc 应设为等于下表中 Level 号的 10 倍的值，且 constraint_set3_flag 应设为 0。</li>
-</ul>
-<p><img data-src="https://gitee.com/hezhaojiang/MyPics/raw/master/img/20200809221330.jpg" alt="Level limits"></p>
-<h3 id="其他通用-Level-限制"><a href="#其他通用-Level-限制" class="headerlink" title="其他通用 Level 限制"></a>其他通用 Level 限制</h3><p>其他通用 Level 限制的适用于 High, Progressive High, Constrained High, High 10, Progressive High 10,High 4:2:2, High 4:4:4 Predictive, High 10 Intra, High 4:2:2 Intra, High 4:4:4 Intra, and CAVLC 4:4:4 Intra profiles，变量 level_idc 指示比特流符合指定级别：</p>
-<p>– 如果 level_idc 等于 9, 表明 Level 为 1b 级<br>– 否则（level_idc 不等于 9）, level_idc 应设为等于上表中 Level 号的 10 倍的值。</p>
-<h2 id="不同-Level-最大帧率"><a href="#不同-Level-最大帧率" class="headerlink" title="不同 Level 最大帧率"></a>不同 Level 最大帧率</h2><p>不同 Level 最大帧率举例：</p>
-<p><img data-src="https://gitee.com/hezhaojiang/MyPics/raw/master/img/20200805232842.jpg" alt="不同 Level 最大帧率举例"></p>
 ]]></content>
       <categories>
         <category>编解码技术</category>
